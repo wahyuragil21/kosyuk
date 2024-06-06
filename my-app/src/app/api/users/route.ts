@@ -1,3 +1,5 @@
+import { NextResponse } from "next/server";
+
 export async function GET() {
   console.log('tes');
   
@@ -7,5 +9,5 @@ export async function GET() {
   let user: User = {
     'hihi': 'hoho'
   }
-  return Response.json(user)
+  return NextResponse.json(user)
 }
