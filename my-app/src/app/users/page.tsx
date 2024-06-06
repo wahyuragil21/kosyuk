@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from "react"
-import User from "../types/types"
+import User from "../../types/types"
 
 export default function Page() {
 
