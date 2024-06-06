@@ -9,8 +9,11 @@ export default function Page() {
   
   const fetchUser = async ()=>{
 
-    let res : Response = await fetch('http://localhost:3000/api/users')
-    let user = await res.json() as User
+    // let res : Response = await fetch('http://localhost:3000/api/users')
+    let user : User = {
+      hihi: 'hoho'
+    }
+    // let user = await res.json() as User
     
     setUser(user)
   }
