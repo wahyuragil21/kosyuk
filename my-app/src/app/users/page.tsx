@@ -8,14 +8,15 @@ export default function Page() {
   const [user,setUser] = useState({hihi:""})
   
   const fetchUser = async ()=>{
+    try {
+      
+      let res : Response = await fetch(process.env.NEXT_PUBLIC_URL_SERVER + "/users")
+      let user = await res.json()
 
-    // let res : Response = await fetch('http://localhost:3000/api/users')
-    let user : User = {
-      hihi: 'hoho'
+      setUser(user)
+    } catch (error) {
+      console.log(error);
     }
-    // let user = await res.json() as User
-    
-    setUser(user)
   }
 
   useEffect(()=>{
