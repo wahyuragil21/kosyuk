@@ -9,7 +9,7 @@ export async function GET(request: Request) {
     }
   
     let user: User = {
-      'hihi': 'akhirnya'
+      'hihi': 'deploy'
     }
   
     return NextResponse.json(user)
