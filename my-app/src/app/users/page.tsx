@@ -17,7 +17,7 @@ export default function Page() {
   const fetchUser = async ()=>{
     try {
       
-      let res : Response = await fetch(process.env.NEXT_PUBLIC_URL_SERVER + "/users")
+      let res : Response = await fetch(process.env.NEXT_PUBLIC_URL_SERVER + "/users/1")
       let user = await res.json()
 
       setUser(user)
