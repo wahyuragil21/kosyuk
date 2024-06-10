@@ -1,16 +1,23 @@
 'use client'
 
 import { useEffect, useState } from "react"
-import User from "../../types/types"
+import {User} from "../../types/types"
 
 export default function Page() {
 
-  const [user,setUser] = useState({hihi:""})
+  const User : User = {
+    id: 0,
+    username: "",
+    telp: "",
+    password : "",
+  }
+
+  const [user,setUser] = useState(User)
   
   const fetchUser = async ()=>{
     try {
       
-      let res : Response = await fetch(process.env.NEXT_PUBLIC_URL_SERVER + "/users")
+      let res : Response = await fetch(process.env.NEXT_PUBLIC_URL_SERVER + "/users/1")
       let user = await res.json()
 
       setUser(user)
@@ -23,5 +30,5 @@ export default function Page() {
     fetchUser()
   },[])
 
-  return <h1>Hello, Next.js! {`${user.hihi}`}</h1>
+  return <h1>Hello, Next.js! {`${user.username}`}</h1>
 }
