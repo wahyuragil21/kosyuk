@@ -79,12 +79,12 @@ export default function NavbarProduct({
             {dropdownOpenCariApa && (
               <ul className="dropdown-menu absolute top-10 bg-white shadow-md py-2 w-56 rounded-md">
                 <li className="hover:bg-gray-100">
-                  <a href="#" className="block px-4 py-2">
+                  <a href="/kost" className="block px-4 py-2">
                     Kost
                   </a>
                 </li>
                 <li className="hover:bg-gray-100">
-                  <a href="#" className="block px-4 py-2">
+                  <a href="/kontrakan" className="block px-4 py-2">
                     Tempat Usaha
                   </a>
                 </li>

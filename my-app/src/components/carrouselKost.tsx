@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { GoStarFill } from "react-icons/go";
 import { GiRoundStar } from "react-icons/gi";
 
 export default async function CarrouselKost({ kost }) {
@@ -24,6 +23,8 @@ export default async function CarrouselKost({ kost }) {
             src={value.thumbnail}
             className="rounded-md w-full h-48 object-cover"
             alt="Carousel Item"
+            width={500} 
+            height={500}
           />
           <div className="mt-2 mb-5">
           <div className="flex items-center">
