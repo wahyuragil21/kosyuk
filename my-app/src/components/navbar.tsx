@@ -85,7 +85,7 @@ export default function NavbarProduct({
                 </li>
                 <li className="hover:bg-gray-100">
                   <a href="/kontrakan" className="block px-4 py-2">
-                    Tempat Usaha
+                    Kontrakan
                   </a>
                 </li>
               </ul>
