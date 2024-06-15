@@ -15,7 +15,6 @@ export default function NavbarProduct({
   placeholder?: string;
 }) {
   const pathname = usePathname();
-  console.log(pathname);
   
   const [dropdownOpenCariApa, setDropdownOpenCariApa] = useState(false);
   const [dropdownOpenMasuk, setDropdownOpenMasuk] = useState(false);
@@ -118,7 +117,7 @@ export default function NavbarProduct({
                     </a>
                   </li>
                   <li className="hover:bg-gray-100">
-                    <a href="#" className="block px-4 py-2">
+                    <a href="/login/pemilik" className="block px-4 py-2">
                       Pemilik
                     </a>
                   </li>

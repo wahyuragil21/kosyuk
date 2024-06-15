@@ -10,7 +10,7 @@ export default function FormLogin() {
   return (
     <div className="bg-gray-100 text-gray-900 flex justify-center">
       <div className="bg-white shadow flex justify-center flex-1">
-        <div className="lg:w-1/2 mt-10 xl:w-5/12 sm:p-12">
+        <div className="lg:w-1/2 mt-20 xl:w-5/12 sm:p-12">
             <h2 className="text-2xl font-bold">{pathname === "/login/pencari" ? "Login Sebagai Pencari Kost : " : "Login Sebagai Pemilik Kost : "} </h2>
           <div className="flex flex-col items-center">
             <form action="{handleRegister}" className="w-full flex-1 mt-8">
@@ -47,7 +47,7 @@ export default function FormLogin() {
             </form>
             <p className="text-sm text-gray-600 text-center">
               Belum punya akun?{" "}
-              <Link href="/login" className="hover:text-blue-600 font-bold">
+              <Link href={pathname === "/login/pencari" ? "/register/pencari" : "/register/pemilik"} className="hover:text-blue-600 font-bold">
                 Daftar
               </Link>
             </p>
@@ -57,7 +57,7 @@ export default function FormLogin() {
           <Image
             src={login}
             alt="Registration Image"
-            className="object-cover rounded-lg h-[500px]"
+            className="object-cover rounded-lg h-[600px]"
           />
         </div>
       </div>
