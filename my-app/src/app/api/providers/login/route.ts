@@ -4,12 +4,12 @@ import {User} from "../../../../types/types"
 var bcrypt = require('bcryptjs');
 
 import { NextResponse } from "next/server";
+import { signToken } from "@/helpers/jwt";
 
 export async function POST(request: Request) {
   try {
     
     const {username , password} = await request.json()
-    
 
     const { rows }: {rows: User[]} = await sql`SELECT * from "Users" where username=${username}`
     
@@ -24,8 +24,12 @@ export async function POST(request: Request) {
     if (!compare) {
       return NextResponse.json({message: 'incorect username / password'},{status: 403})
     }
-
-    return NextResponse.json(user)
+    
+    const access_token = signToken(user)
+    
+    return NextResponse.json({
+      "access_token": access_token
+    })
 
   } catch (error) {
     console.log(error);

@@ -19,7 +19,7 @@ export async function POST(request: Request) {
       return NextResponse.json({message: 'please input password'},{status: 400})
     }
 
-    const { rows }: {rows: User[]} = await sql`SELECT * from "Users" where username=${username}`
+    const { rows }: {rows: User[]} = await sql`SELECT * from "Providers" where username=${username}`
     
     if (rows.length != 0) {
       return NextResponse.json({message: 'username already exist'},{status: 400})
@@ -27,12 +27,12 @@ export async function POST(request: Request) {
 
     const hash = bcrypt.hashSync(password, 10)
     
-    const insert = await sql`INSERT INTO "Users" 
+    const insert = await sql`INSERT INTO "Providers" 
     ("username","telp", "password")
     VALUES
     (${username}, ${telp}, ${hash})
     `
-    return NextResponse.json({message: 'success to register user'})
+    return NextResponse.json({message: 'success to register provider'})
 
   } catch (error) {
     console.log(error);

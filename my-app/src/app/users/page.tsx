@@ -17,9 +17,10 @@ export default function Page() {
   const fetchUser = async ()=>{
     try {
       
-      let res : Response = await fetch(process.env.NEXT_PUBLIC_URL_SERVER + "/users/1")
+      let res : Response = await fetch('http://localhost:3000/api' + "/users/1")
+      // let res : Response = await fetch(process.env.NEXT_PUBLIC_URL_SERVER + "/users/1")
       let user = await res.json()
-
+      
       setUser(user)
     } catch (error) {
       console.log(error);
