@@ -1,4 +1,3 @@
-import Navbar from "../components/navbar";
 import CarrouselKost from "@/components/carrouselKost";
 import CarrouselKontrakan from "@/components/carrouselKontrakan";
 import Footer from "@/components/footer";
@@ -94,10 +93,8 @@ export default async function Home() {
     }
   ]
 
-  const isLogin = false;
   return (
     <>
-      <Navbar isLogin={isLogin} />
       <div className="w-11/12 m-auto">
         <Ads />
         <CarrouselKost kost={kost} />
