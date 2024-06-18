@@ -7,11 +7,11 @@ import { GiRoundStar } from "react-icons/gi";
 export default function CardKost({ kosts }) {
   return (
     <>
-      <div className="card bg-white px-1 w-1/4 relative overflow-hidden transform transition-transform duration-500 hover:shadow-lg flex flex-col mt-5">
-        <Link href="{`/products/${product.slug}`}">
+      <div className="card bg-white w-1/4 relative overflow-hidden transform transition-transform duration-500 hover:shadow-lg flex flex-col mt-5">
+        <Link href={`/kost/${kosts.slug}`}>
           <Image
             src={kosts?.thumbnail}
-            className="rounded-md w-full h-48 object-cover"
+            className="rounded-md w-[295px] h-48 object-cover"
             alt="Carousel Item"
             width={500}
             height={500}

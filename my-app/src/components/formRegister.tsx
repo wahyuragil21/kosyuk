@@ -86,7 +86,7 @@ export default function FormRegister() {
             </form>
             <p className="mt-6 text-xs text-gray-600 text-center">
               Sudah Punya Akun?{" "}
-              <Link href="/login" className="hover:text-blue-600 font-bold">
+              <Link href={pathname === "/register/pencari" ? "/login/pencari" : "/login/pemilik"} className="hover:text-blue-600 font-bold">
                 Masuk
               </Link>
             </p>
