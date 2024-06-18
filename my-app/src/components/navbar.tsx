@@ -15,7 +15,7 @@ export default function NavbarProduct({
   placeholder?: string;
 }) {
   const pathname = usePathname();
-  
+
   const [dropdownOpenCariApa, setDropdownOpenCariApa] = useState(false);
   const [dropdownOpenMasuk, setDropdownOpenMasuk] = useState(false);
 
@@ -31,10 +31,16 @@ export default function NavbarProduct({
   };
 
   const handleClickOutside = (event) => {
-    if (dropdownRefCariApa.current && !dropdownRefCariApa.current.contains(event.target)) {
+    if (
+      dropdownRefCariApa.current &&
+      !dropdownRefCariApa.current.contains(event.target)
+    ) {
       setDropdownOpenCariApa(false);
     }
-    if (dropdownRefMasuk.current && !dropdownRefMasuk.current.contains(event.target)) {
+    if (
+      dropdownRefMasuk.current &&
+      !dropdownRefMasuk.current.contains(event.target)
+    ) {
       setDropdownOpenMasuk(false);
     }
   };
@@ -52,22 +58,25 @@ export default function NavbarProduct({
         <Image src={kosyuk} alt="Kosyuk logo" width={35} height={35} />
         <Link href="/">
           <h1 className="text-2xl text-black font-sans font-bold ml-2">
-            Kosyuk
+            KOSYUK
           </h1>
         </Link>
       </div>
       <div className="nav-right flex items-center">
-        {pathname !== "/login/pencari" && pathname !== "/login/pemilik" && pathname !== "/register/pencari" && pathname !== "/register/pemilik" && (
-          <form className="mr-5">
-            <input
-              className="border border-black bg-white h-10 px-5 pr-16 rounded-lg text-sm focus:border-none"
-              type="search"
-              name="search"
-              placeholder="Masukkan lokasi..."
-            />
-            <button type="button"></button>
-          </form>
-        )}
+        {pathname !== "/login/pencari" &&
+          pathname !== "/login/pemilik" &&
+          pathname !== "/register/pencari" &&
+          pathname !== "/register/pemilik" && (
+            <form className="mr-5">
+              <input
+                className="border border-black bg-white h-10 px-5 pr-16 rounded-lg text-sm focus:border-none"
+                type="search"
+                name="search"
+                placeholder="Masukkan lokasi..."
+              />
+              <button type="button"></button>
+            </form>
+          )}
         <ul className="flex flex-wrap gap-5 text-black font-sans font-semibold">
           <li className="relative" ref={dropdownRefCariApa}>
             <a
@@ -91,6 +100,11 @@ export default function NavbarProduct({
               </ul>
             )}
           </li>
+          {isLogin && (
+            <li className="hover:text-orange-500">
+              <Link href="/dashboard">Riwayat Booking</Link>
+            </li>
+          )}
           <li className="hover:text-orange-500">
             <a>Pusat Bantuan</a>
           </li>

@@ -1,0 +1,78 @@
+import DetailImage from "./detailImage";
+import { GiRoundStar } from "react-icons/gi";
+import ModalPengajuan from "./modalPengajuan";
+import { FaWhatsapp } from "react-icons/fa";
+
+export default function ContentDetailKost({ kosts }) {
+  const openModal = () => {
+    document.getElementById("my_modal_1").showModal();
+  };
+
+  return (
+    <div className="bg-white py-8">
+      <div className=" mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col md:flex-row -mx-4">
+          <DetailImage imageBuilding={kosts} />
+          <div className="md:flex-1 px-4 flex flex-col justify-between relative text-black">
+            <div>
+              <h2 className="text-2xl font-bold text-black">{kosts.nama}</h2>
+              <div className="flex mb-2">
+                <div className="mr-4">
+                  <div className="flex items-center mt-2">
+                    <button className="flex items-center justify-center text-black font-semibold py-0 px-1 mt-1 mb-2 mr-2 rounded-lg border border-gray-300">
+                      {kosts.status}
+                    </button>
+                    <button className="flex items-center justify-center text-black font-semibold py-0 px-1 mt-1 mb-2 rounded-lg border border-gray-300">
+                      {kosts.type}
+                    </button>
+                    <GiRoundStar className={`m-2 w-4 h-4 text-orange-500`} />{" "}
+                    <span className="text-orange-500 mr-2">0</span>{" "}
+                    <span>{kosts.alamat}</span>
+                  </div>
+                </div>
+              </div>
+
+              <span className="font-bold">Fasilitas :</span>
+              <p className="text-sm mt-2 mb-2 text-justify">
+                {kosts.fasilitas.join(", ")}
+              </p>
+
+              <span className="font-bold">Peraturan :</span>
+              <p className="text-sm mt-2 mb-2 text-justify">-</p>
+              <div>
+                <span className="font-bold">Deskripsi Kost:</span>
+                <p className="text-sm mt-2 text-justify">{kosts.description}</p>
+                <div className="absolute bottom-0 left-0 w-full p-4">
+                  <div className="flex -mx-2 mb-2">
+                    <div className="w-full px-2">
+                      <span className="font-bold text-lg mb-4">
+                        Rp. {kosts.harga.toLocaleString("id-ID")}
+                      </span>
+                      <span className="text-sm pb-4">/ Bulan</span>
+                      <div className="flex space-x-2">
+                        <button
+                          className="flex-1 bg-orange-500 text-white py-2 px-4 rounded-lg font-bold hover:bg-orange-400"
+                          onClick={openModal}
+                        >
+                          Ajukan Sewa
+                        </button>
+                        <button
+                          className="flex-1 bg-green-600 text-white py-2 px-4 rounded-lg font-bold flex items-center justify-center hover:bg-green-500"
+                          onClick={openModal}
+                        >
+                          <span>Hubungi Pemilik</span>
+                          <FaWhatsapp className="ml-2" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ModalPengajuan />
+    </div>
+  );
+}

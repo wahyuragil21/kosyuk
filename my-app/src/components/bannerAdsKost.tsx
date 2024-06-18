@@ -6,7 +6,7 @@ export default function BannerAdsKost() {
             Mau cari kost yang sesuai keinginanmu? <span className="text-orange-500">Kosyuk</span> Solusinya!
           </h2>
           <p className="text-lg text-black">
-            Aman, Nyaman, dan Terpercaya. Tunggu apa lagi?
+            Aman, Nyaman, dan Terpercaya. Pilih sekarang!
           </p>
         </div>
       </div>

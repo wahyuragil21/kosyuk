@@ -11,12 +11,12 @@ export default function Footer() {
               <Image src={Logo} alt="Kosyuk logo" width={150} height={150} />
             </div>
             <h1 className="text-4xl text-center text-black font-sans font-bold">
-              Kosyuk
+              KOSYUK
             </h1>
           </div>
 
           <div className="w-full md:w-1/4 xl:w-1/4 p-6">
-            <h3 className="text-lg font-bold mb-2 text-black">Kosyuk</h3>
+            <h3 className="text-lg font-bold mb-2 text-black">KOSYUK</h3>
             <ul>
               <li>
                 <a href="#" className="text-gray-600 hover:text-gray-900">
