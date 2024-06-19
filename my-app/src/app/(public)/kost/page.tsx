@@ -1,6 +1,6 @@
 'use client'
 import BannerAdsKost from "@/components/bannerAdsKost";
-import CardKost from "@/components/cardCost";
+import CardProperty from "@/components/cardProperty";
 import Footer from "@/components/footer";
 import Skeleton from "@/components/skeleton";
 
@@ -207,7 +207,7 @@ export default function Kostan() {
                     )
                     : (
                         kosts.map((kosts, index) => (
-                            <CardKost key={index} kosts={kosts} />
+                            <CardProperty key={index} property={kosts} />
                         ))
                     )}
             </div>

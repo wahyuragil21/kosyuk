@@ -1,6 +1,6 @@
 'use client'
 import BannerAdsKost from "@/components/bannerAdsKost";
-import CardKontrakan from "@/components/cardKontrakan";
+import CardProperty from "@/components/cardProperty";
 import Footer from "@/components/footer";
 import Skeleton from "@/components/skeleton";
 
@@ -127,7 +127,7 @@ export default function Kontrakan() {
                     )
                     : (
                         kontrakans.map((kontrakans, index) => (
-                            <CardKontrakan key={index} kontrakans={kontrakans} />
+                            <CardProperty key={index} property={kontrakans} />
                         ))
                     )}
             </div>
