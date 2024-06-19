@@ -3,6 +3,7 @@ import { sql } from "@vercel/postgres";
 import {Building} from "../../../../types/types"
 
 import { NextResponse } from "next/server";
+import { pool } from "@/configDB/pg-config";
 
 export async function GET(request: Request, {params}: {params: {slug:string}}) {
   try {
@@ -10,14 +11,14 @@ export async function GET(request: Request, {params}: {params: {slug:string}}) {
     
     const {slug} = params
 
-    const { rows }: {rows: Building[]} = await sql`
+    const { rows }: {rows: Building[]} = await pool.query(`
     SELECT 
     *
     FROM 
         "Buildings" b
     WHERE
         b.slug = ${slug}
-    `
+    `)
     
     const buildings : Building = rows[0]
 

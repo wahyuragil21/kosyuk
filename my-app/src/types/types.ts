@@ -38,5 +38,9 @@ export interface Building {
 }
 
 export interface Booking {
-  
+  id: number; 
+  user_id: number;  
+  building_id: number;  
+  duration: number; 
+  status: string;
 }

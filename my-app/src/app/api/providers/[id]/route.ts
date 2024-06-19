@@ -3,12 +3,13 @@ import { sql, QueryResultRow } from "@vercel/postgres";
 import {User} from "../../../../types/types"
 
 import { NextResponse } from "next/server";
+import { pool } from "@/configDB/pg-config";
 
 export async function GET(request: Request, {params}: {params: {id: string}}) {
   try {
     const {id} = params
     
-    const { rows }: {rows: User[]} = await sql`
+    const { rows }: {rows: User[]} = await pool.query(`
     SELECT 
     *
     FROM 
@@ -19,7 +20,7 @@ export async function GET(request: Request, {params}: {params: {id: string}}) {
         "Buildings" b ON bk.building_id = b.id
     WHERE 
         u.id = ${id}
-    `
+    `)
     
     const user = rows[0]
 
@@ -33,7 +34,7 @@ export async function GET(request: Request, {params}: {params: {id: string}}) {
 
 export async function POST(request: Request) {
   try {
-    const { rows } = await sql`SELECT * from "Users" where id=1`
+    const { rows } = await pool.query(`SELECT * from "Users" where id=1`)
 
     const user = rows[0] as User
     console.log(user)
