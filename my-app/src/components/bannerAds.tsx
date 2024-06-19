@@ -10,7 +10,7 @@ export default function BannerAds() {
         </p>
       </div>
       <div className="flex justify-center p-4">
-        <button className="bg-orange-500 hover:bg-gray-100 text-white font-bold py-2 px-4 rounded">
+        <button className="bg-orange-500 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded">
           Pelajari Lebih Lanjut
         </button>
       </div>

@@ -69,7 +69,7 @@ export default function NavbarProduct({
           pathname !== "/register/pemilik" && (
             <form className="mr-5">
               <input
-                className="border border-black bg-white h-10 px-5 pr-16 rounded-lg text-sm focus:border-none"
+                className="border border-gray-400 bg-white h-10 px-5 pr-16 rounded-lg text-sm focus:border-none"
                 type="search"
                 name="search"
                 placeholder="Masukkan lokasi..."
@@ -102,7 +102,7 @@ export default function NavbarProduct({
           </li>
           {isLogin && (
             <li className="hover:text-orange-500">
-              <Link href="/dashboard">Riwayat Booking</Link>
+              <Link href="/riwayat-pengajuan">Riwayat Pengajuan</Link>
             </li>
           )}
           <li className="hover:text-orange-500">
