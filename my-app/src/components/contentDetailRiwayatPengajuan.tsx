@@ -51,10 +51,10 @@ export default function ContentDetailRiwayatPengajuan({ property }) {
                 <p className="text-sm mt-2 text-justify">
                   {property.description}
                 </p>
-                <div className="absolute bottom-0 left-0 w-full p-4">
-                  <div className="flex -mx-2 mb-2">
+                <div className="w-full mt-4">
+                  <div className="flex -mx-2">
                     <div className="w-full px-2">
-                      <label className="block text-black font-bold mb-2">
+                      <label className="block text-black font-bold mb-1">
                         Informasi
                       </label>
                       <div
@@ -62,18 +62,18 @@ export default function ContentDetailRiwayatPengajuan({ property }) {
                         style={{ height: "70px", overflowY: "auto" }}
                       >
                         {property.statusPengajuan === "Menunggu" && (
-                          <p className="text-sm mt-2 text-justify">
+                          <p className="text-sm text-justify">
                             Pengajuan anda masih dalam status{" "}
-                            <span className="text-orange-500 font-bold">
+                            <span className="text-orange-500 font-bold text-lg">
                               {property.statusPengajuan}
                             </span>{" "}
                             persetujuan dari pihak pemilik kos.
                           </p>
                         )}
                         {property.statusPengajuan === "Disetujui" && (
-                          <p className="text-sm mt-2 text-justify">
+                          <p className="text-sm text-justify">
                             Pengajuan anda{" "}
-                            <span className="text-green-500 font-bold">
+                            <span className="text-green-500 font-bold text-lg">
                               {property.statusPengajuan}
                             </span>
                             , Silahkan cek email anda untuk melakukan pembayaran
@@ -81,9 +81,9 @@ export default function ContentDetailRiwayatPengajuan({ property }) {
                           </p>
                         )}
                         {property.statusPengajuan === "Tidak Disetujui" && (
-                          <p className="text-sm mt-2 text-justify">
+                          <p className="text-sm text-justify">
                             Pengajuan anda{" "}
-                            <span className="text-red-500 font-bold">
+                            <span className="text-red-500 font-bold text-lg">
                               {property.statusPengajuan}
                             </span>{" "}
                             dikarenakan sudah Penuh/Tidak Tersedia.

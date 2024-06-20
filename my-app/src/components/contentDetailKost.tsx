@@ -25,8 +25,8 @@ export default function ContentDetailKost({ kosts }) {
                     <button className="flex items-center justify-center text-black font-semibold py-0 px-1 mt-1 mb-2 rounded-lg border border-gray-300">
                       {kosts.type}
                     </button>
-                    <GiRoundStar className={`m-2 w-4 h-4 text-orange-500`} />{" "}
-                    <span className="text-orange-500 mr-2">0</span>{" "}
+                    <GiRoundStar className={`m-2 w-4 h-4 text-blue-600`} />{" "}
+                    <span className="text-blue-600 mr-2">0</span>{" "}
                     <span>{kosts.alamat}</span>
                   </div>
                 </div>
@@ -51,7 +51,7 @@ export default function ContentDetailKost({ kosts }) {
                       <span className="text-sm pb-4">/ Bulan</span>
                       <div className="flex space-x-2">
                         <button
-                          className="flex-1 bg-orange-500 text-white py-2 px-4 rounded-lg font-bold hover:bg-orange-400"
+                          className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg font-bold hover:bg-blue-500"
                           onClick={openModal}
                         >
                           Ajukan Sewa
