@@ -5,7 +5,7 @@ import BackGround from "../assets/bg.png"
 export default function WelcomePage() {
   return (
     <section 
-      className="bg-cover bg-center h-screen w-full flex items-center justify-center font-sans mt-10" 
+      className="bg-cover bg-center h-screen w-full flex items-center justify-center font-sans -mt-20" 
     >
       <div className="text-center bg-white bg-opacity-80 p-10 rounded-lg" style={{ 
         backgroundImage: `url(${BackGround.src})`,
