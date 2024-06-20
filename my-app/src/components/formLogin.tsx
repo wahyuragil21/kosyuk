@@ -38,12 +38,14 @@ export default function FormLogin() {
                   placeholder="Password"
                 />
               </div>
+              <Link href="/dashboard-pemilik">
               <button
                 className="text-center mt-10 mb-5 w-full max-w-full font-bold shadow-sm rounded-lg py-3 bg-black text-white flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline"
                 type="submit"
               >
                 Masuk
               </button>
+              </Link>
             </form>
             <p className="text-sm text-gray-600 text-center">
               Belum punya akun?{" "}

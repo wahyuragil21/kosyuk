@@ -11,12 +11,12 @@ export default function Footer() {
               <Image src={Logo} alt="Kosyuk logo" width={150} height={150} />
             </div>
             <h1 className="text-4xl text-center text-black font-sans font-bold">
-              KOSYUK
+              SERLOK AJA
             </h1>
           </div>
 
           <div className="w-full md:w-1/4 xl:w-1/4 p-6">
-            <h3 className="text-lg font-bold mb-2 text-black">KOSYUK</h3>
+            <h3 className="text-lg font-bold mb-2 text-black">SERLOK AJA</h3>
             <ul>
               <li>
                 <a href="#" className="text-gray-600 hover:text-gray-900">
@@ -25,7 +25,7 @@ export default function Footer() {
               </li>
               <li>
                 <a href="#" className="text-gray-600 hover:text-gray-900">
-                  Job Kosyuk
+                  Job SERLOK AJA
                 </a>
               </li>
               <li>
@@ -75,7 +75,7 @@ export default function Footer() {
                   href="mailto:cs@Kosyuk.com"
                   className="text-gray-600 hover:text-gray-900"
                 >
-                  <i className="fas fa-envelope"></i> cs@kosyuk.com
+                  <i className="fas fa-envelope"></i> cs@serlok_aja.com
                 </a>
               </li>
               <li>

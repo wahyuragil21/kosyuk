@@ -1,5 +1,4 @@
 "use client";
-import BannerAdsKost from "@/components/bannerAdsKost";
 import CardPengajuan from "@/components/cardPengajuan";
 import Footer from "@/components/footer";
 import Skeleton from "@/components/skeleton";
@@ -88,7 +87,6 @@ export default function RiwayatPengajuan() {
             Array.from({ length: 8 }).map((_, index) => <Skeleton key={index} />)
         ) : dataPengajuan.length === 0 ? (
             <div className="flex flex-col justify-center items-center text-center text-black font-semi-bold h-full py-36 mx-auto">
-                <p className="text-xl font-bold mb-5">Belum ada riwayat pengajuan</p>
             <Image
             src={ImageNoData}
             className="rounded-md w-[295px] h-48 object-cover"
