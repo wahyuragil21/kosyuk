@@ -1,6 +1,5 @@
 export const dynamic = 'force-dynamic' // defaults to auto
-import { sql } from "@vercel/postgres";
-var bcrypt = require('bcryptjs');
+import { pool } from "@/configDB/pg-config";
 
 import { NextResponse } from "next/server";
 
@@ -18,11 +17,11 @@ export async function POST(request: Request) {
 
     }
     
-    const insert = await sql`INSERT INTO "image" 
+    const insert = await pool.query(`INSERT INTO "image" 
     ("building_id", "image_url")
     VALUES
     (${1}, ${image})
-    `
+    `)
     return NextResponse.json({message: 'success to register user'})
 
   } catch (error) {

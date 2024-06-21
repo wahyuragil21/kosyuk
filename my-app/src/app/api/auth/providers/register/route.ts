@@ -1,11 +1,9 @@
 export const dynamic = 'force-dynamic' // defaults to auto
-import { sql } from "@vercel/postgres";
-import {User} from "../../../../types/types"
-var bcrypt = require('bcryptjs');
+import {User} from "../../../../../types/types"
+import bcrypt from 'bcryptjs'
 
 import { NextResponse } from "next/server";
 import { pool } from "@/configDB/pg-config";
-
 
 export async function POST(request: Request) {
   try {

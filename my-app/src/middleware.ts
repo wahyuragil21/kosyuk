@@ -6,7 +6,12 @@ import { headers } from 'next/headers'
 // This function can be marked `async` if using `await` inside
 export async function middleware(request: NextRequest) {
   // return NextResponse.next()
-
+  const isLoginPage = request.nextUrl.pathname.startsWith('/api/auth')
+  
+  if (isLoginPage) {
+    return NextResponse.next()
+  }
+  
   const requestHeaders = new Headers(request.headers)
   const token = requestHeaders.get('access_token')
   
@@ -31,5 +36,8 @@ export async function middleware(request: NextRequest) {
 
 // See "Matching Paths" below to learn more
 export const config = {
-  matcher:  '/((?!api/users/login).*)',
+  matcher:  [
+    '/api/:path*',
+  ],
+  
 }

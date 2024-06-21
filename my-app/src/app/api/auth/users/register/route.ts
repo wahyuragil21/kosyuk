@@ -1,9 +1,9 @@
 export const dynamic = 'force-dynamic' // defaults to auto
-import { sql } from "@vercel/postgres";
-import {User} from "../../../../types/types"
+import {User} from "../../../../../types/types"
 var bcrypt = require('bcryptjs');
 
 import { NextResponse } from "next/server";
+import { pool } from "@/configDB/pg-config";
 
 
 export async function POST(request: Request) {
@@ -19,7 +19,7 @@ export async function POST(request: Request) {
       return NextResponse.json({message: 'please input password'},{status: 400})
     }
 
-    const { rows }: {rows: User[]} = await sql`SELECT * from "Users" where username=${username}`
+    const { rows }: {rows: User[]} = await pool.query(`SELECT * from "Users" where username=${username}`)
     
     if (rows.length != 0) {
       return NextResponse.json({message: 'username already exist'},{status: 400})
@@ -27,11 +27,11 @@ export async function POST(request: Request) {
 
     const hash = bcrypt.hashSync(password, 10)
     
-    const insert = await sql`INSERT INTO "Users" 
+    const insert = await pool.query(`INSERT INTO "Users" 
     ("username","telp", "password")
     VALUES
     (${username}, ${telp}, ${hash})
-    `
+    `)
     return NextResponse.json({message: 'success to register user'})
 
   } catch (error) {

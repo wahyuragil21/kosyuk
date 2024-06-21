@@ -1,6 +1,5 @@
 export const dynamic = 'force-dynamic' // defaults to auto
-import { sql, QueryResultRow } from "@vercel/postgres";
-import {User} from "../../../../types/types"
+import {User} from "../../../../../types/types"
 
 import { NextResponse } from "next/server";
 import { pool } from "@/configDB/pg-config";
@@ -13,16 +12,14 @@ export async function GET(request: Request, {params}: {params: {id: string}}) {
     SELECT 
     *
     FROM 
-        "Users" u
-    JOIN 
-        "Bookings" bk ON u.id = bk.user_id
-    JOIN 
-        "Buildings" b ON bk.building_id = b.id
+        "Providers" p
+    JOIN
+        "Buildings" b ON b.provider_id = p.id
     WHERE 
-        u.id = ${id}
+        p.id = ${id}
     `)
     
-    const user = rows[0]
+    const user = rows
 
     return NextResponse.json(user)
 
@@ -35,8 +32,8 @@ export async function GET(request: Request, {params}: {params: {id: string}}) {
 export async function POST(request: Request) {
   try {
     const { rows } = await pool.query(`SELECT * from "Users" where id=1`)
+
     const user = rows[0] as User
-    console.log(user)
 
     return NextResponse.json(user)
 

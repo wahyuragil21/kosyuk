@@ -1,5 +1,4 @@
 export const dynamic = 'force-dynamic' // defaults to auto
-import { sql } from "@vercel/postgres";
 import {Building} from "../../../../types/types"
 
 import { NextResponse } from "next/server";
@@ -49,8 +48,9 @@ export async function POST(request: Request) {
       INSERT INTO "Buildings"(${column})
       VALUES(${value});
     `)
-    const buildings = insert.rowCount
-    return NextResponse.json(buildings)
+    if (insert.rowCount == 1) {
+      return NextResponse.json({message: 'success post building'}, {status: 201})
+    }
       
   } catch (error) {
     console.log(error);

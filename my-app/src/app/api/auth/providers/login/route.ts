@@ -1,6 +1,5 @@
 export const dynamic = 'force-dynamic' // defaults to auto
-import { sql } from "@vercel/postgres";
-import {User} from "../../../../types/types"
+import {User} from "../../../../../types/types"
 var bcrypt = require('bcryptjs');
 
 import { NextResponse } from "next/server";
@@ -12,7 +11,7 @@ export async function POST(request: Request) {
     
     const {username , password} = await request.json()
 
-    const { rows }: {rows: User[]} = await pool.query(`SELECT * from "Users" where username=${username}`)
+    const { rows }: {rows: User[]} = await pool.query(`SELECT * from "Providers" where username='${username}'`)
     
     if (rows.length == 0) {
       return NextResponse.json({message: 'incorect username / password'},{status: 403})
@@ -26,8 +25,8 @@ export async function POST(request: Request) {
       return NextResponse.json({message: 'incorect username / password'},{status: 403})
     }
     
-    const access_token = signToken(user)
-    
+    const access_token = await signToken(user)
+    console.log(access_token);
     return NextResponse.json({
       "access_token": access_token
     })

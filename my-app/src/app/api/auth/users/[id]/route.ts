@@ -1,6 +1,5 @@
 export const dynamic = 'force-dynamic' // defaults to auto
-import { sql, QueryResultRow } from "@vercel/postgres";
-import {User} from "../../../../types/types"
+import {User} from "../../../../../types/types"
 
 import { NextResponse } from "next/server";
 import { pool } from "@/configDB/pg-config";
@@ -35,7 +34,6 @@ export async function GET(request: Request, {params}: {params: {id: string}}) {
 export async function POST(request: Request) {
   try {
     const { rows } = await pool.query(`SELECT * from "Users" where id=1`)
-
     const user = rows[0] as User
     console.log(user)
 
