@@ -1,8 +1,11 @@
 "use client";
 
 import Image from "next/image";
+import { usePathname } from "next/navigation";
+import ModalTerimaSewa from "./modalTerimaSewa";
+import ModalTolakSewa from "./modalTolakSewa";
 
-export default function CardPropertiPemilik({ property }) {
+export default function CardManajemenProperti({ property }) {
   const getStatusColor = (status) => {
     switch (status) {
       case "Tersedia":
@@ -13,6 +16,15 @@ export default function CardPropertiPemilik({ property }) {
         return "text-black";
     }
   };
+
+  const openModal = () => {
+    document.getElementById("my_modal_2").showModal();
+  };
+  const openModalTolak = () => {
+    document.getElementById("my_modal_3").showModal();
+  };
+
+  const pathname = usePathname();
 
   return (
     <div className="card card-side bg-slate-100 shadow-xl w-full mt-5">
@@ -36,14 +48,26 @@ export default function CardPropertiPemilik({ property }) {
           {property?.status}
         </p>
         <div className="card-actions justify-end">
-              <button className="bg-blue-600 text-white py-1 px-3 rounded-lg font-bold hover:bg-blue-500">
-                Detail
+          {pathname == "/manajemen-properti/pengajuan-sewa" ? (
+            <>
+              <button className="bg-green-500 text-white py-1 px-3 rounded-lg font-bold hover:bg-green-400" onClick={openModal}>
+                Terima
               </button>
+              <button className="bg-red-600 text-white py-1 px-3 rounded-lg font-bold hover:bg-red-500" onClick={openModalTolak}>
+                Tolak
+              </button>
+            </>
+          ) : (
+            <>
               <button className="bg-red-600 text-white py-1 px-3 rounded-lg font-bold hover:bg-red-500">
                 Hapus
               </button>
+            </>
+          )}
         </div>
       </div>
+      <ModalTerimaSewa />
+      <ModalTolakSewa />
     </div>
   );
 }

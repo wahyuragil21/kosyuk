@@ -54,104 +54,117 @@ export default function NavbarProduct({
 
   return (
     <div className="navbar bg-white sticky top-0 z-50 flex justify-between px-5 border-b border-gray-200">
-      {pathname == "/dashboard-pemilik" || pathname == "/properti-saya" || pathname == "/profil" || pathname == "/manajemen-properti" ? (
-         <div className="logo flex items-center">
-         <Image src={kosyuk} alt="Kosyuk logo" width={35} height={35} />
-         <Link href="/dashboard-pemilik">
-           <h1 className="text-2xl text-black font-sans font-bold ml-2">
-           SERLOK AJA
-           </h1>
-         </Link>
-       </div>
+      {pathname == "/dashboard-pemilik" ||
+      pathname == "/properti-saya" ||
+      pathname == "/profil" ||
+      pathname == "/manajemen-properti/pengajuan-sewa" ||
+      pathname == "/manajemen-properti/penyewa" ? (
+        <div className="logo flex items-center">
+          <Image src={kosyuk} alt="Kosyuk logo" width={35} height={35} />
+          <Link href="/dashboard-pemilik">
+            <h1 className="text-2xl text-black font-sans font-bold ml-2">
+              SERLOK AJA
+            </h1>
+          </Link>
+        </div>
       ) : (
         <>
-         <div className="logo flex items-center">
-        <Image src={kosyuk} alt="Kosyuk logo" width={35} height={35} />
-        <Link href="/">
-          <h1 className="text-2xl text-black font-sans font-bold ml-2">
-            SERLOK AJA
-          </h1>
-        </Link>
-      </div>
-        <div className="nav-right flex items-center">
-          {pathname !== "/login/pencari" &&
-            pathname !== "/login/pemilik" &&
-            pathname !== "/register/pencari" &&
-            pathname !== "/register/pemilik" && (
-              <form className="mr-5">
-                <input
-                  className="border border-gray-400 bg-white h-10 px-5 pr-16 rounded-lg text-sm focus:border-none"
-                  type="search"
-                  name="search"
-                  placeholder="Masukkan lokasi..."
-                />
-                <button type="button"></button>
-              </form>
-            )}
-          <ul className="flex flex-wrap gap-5 text-black font-sans font-semibold">
-            <li className="relative" ref={dropdownRefCariApa}>
-              <a
-                className="cursor-pointer hover:text-blue-700 font-bold"
-                onClick={toggleDropdownCariApa}
-              >
-                Cari Apa?
-              </a>
-              {dropdownOpenCariApa && (
-                <ul className="dropdown-menu absolute top-10 bg-white shadow-md py-2 w-56 rounded-md">
-                  <li className="hover:bg-gray-100">
-                    <a href="/kost" className="block px-4 py-2 font-bold">
-                      Kost
-                    </a>
-                  </li>
-                  <li className="hover:bg-gray-100">
-                    <a href="/kontrakan" className="block px-4 py-2 font-bold">
-                      Kontrakan
-                    </a>
-                  </li>
-                </ul>
+          <div className="logo flex items-center">
+            <Image src={kosyuk} alt="Kosyuk logo" width={35} height={35} />
+            <Link href="/">
+              <h1 className="text-2xl text-black font-sans font-bold ml-2">
+                SERLOK AJA
+              </h1>
+            </Link>
+          </div>
+          <div className="nav-right flex items-center">
+            {pathname !== "/login/pencari" &&
+              pathname !== "/login/pemilik" &&
+              pathname !== "/register/pencari" &&
+              pathname !== "/register/pemilik" && (
+                <form className="mr-5">
+                  <input
+                    className="border border-gray-400 bg-white h-10 px-5 pr-16 rounded-lg text-sm focus:border-none"
+                    type="search"
+                    name="search"
+                    placeholder="Masukkan lokasi..."
+                  />
+                  <button type="button"></button>
+                </form>
               )}
-            </li>
-            {isLogin && (
-              <li className="hover:text-blue-700 font-bold">
-                <Link href="/riwayat-pengajuan">Riwayat Pengajuan</Link>
-              </li>
-            )}
-            <li className="hover:text-blue-700 font-bold">
-              <a>Pusat Bantuan</a>
-            </li>
-            <li className="hover:text-blue-700 font-bold">
-              <a>Syarat dan Ketentuan</a>
-            </li>
-            {isLogin ? (
-              <li className="hover:text-blue-700 font-bold">
-                <Link href="/login">Logout</Link>
-              </li>
-            ) : (
-              <li className="relative" ref={dropdownRefMasuk}>
+            <ul className="flex flex-wrap gap-5 text-black font-sans font-semibold">
+              <li className="relative" ref={dropdownRefCariApa}>
                 <a
                   className="cursor-pointer hover:text-blue-700 font-bold"
-                  onClick={toggleDropdownMasuk}
+                  onClick={toggleDropdownCariApa}
                 >
-                  Masuk
+                  Cari Apa?
                 </a>
-                {dropdownOpenMasuk && (
-                  <ul className="dropdown-menu absolute top-10 right-0 bg-white shadow-md py-2 w-56 rounded-md">
+                {dropdownOpenCariApa && (
+                  <ul className="dropdown-menu absolute top-10 bg-white shadow-md py-2 w-56 rounded-md">
                     <li className="hover:bg-gray-100">
-                      <a href="/login/pencari" className="block px-4 py-2 font-bold">
-                        Pencari
+                      <a href="/kost" className="block px-4 py-2 font-bold">
+                        Kost
                       </a>
                     </li>
                     <li className="hover:bg-gray-100">
-                      <a href="/login/pemilik" className="block px-4 py-2 font-bold">
-                        Pemilik
+                      <a
+                        href="/kontrakan"
+                        className="block px-4 py-2 font-bold"
+                      >
+                        Kontrakan
                       </a>
                     </li>
                   </ul>
                 )}
               </li>
-            )}
-          </ul>
-        </div>
+              {isLogin && (
+                <li className="hover:text-blue-700 font-bold">
+                  <Link href="/riwayat-pengajuan">Riwayat Pengajuan</Link>
+                </li>
+              )}
+              <li className="hover:text-blue-700 font-bold">
+                <a>Pusat Bantuan</a>
+              </li>
+              <li className="hover:text-blue-700 font-bold">
+                <a>Syarat dan Ketentuan</a>
+              </li>
+              {isLogin ? (
+                <li className="hover:text-blue-700 font-bold">
+                  <Link href="/login">Logout</Link>
+                </li>
+              ) : (
+                <li className="relative" ref={dropdownRefMasuk}>
+                  <a
+                    className="cursor-pointer hover:text-blue-700 font-bold"
+                    onClick={toggleDropdownMasuk}
+                  >
+                    Masuk
+                  </a>
+                  {dropdownOpenMasuk && (
+                    <ul className="dropdown-menu absolute top-10 right-0 bg-white shadow-md py-2 w-56 rounded-md">
+                      <li className="hover:bg-gray-100">
+                        <a
+                          href="/login/pencari"
+                          className="block px-4 py-2 font-bold"
+                        >
+                          Pencari
+                        </a>
+                      </li>
+                      <li className="hover:bg-gray-100">
+                        <a
+                          href="/login/pemilik"
+                          className="block px-4 py-2 font-bold"
+                        >
+                          Pemilik
+                        </a>
+                      </li>
+                    </ul>
+                  )}
+                </li>
+              )}
+            </ul>
+          </div>
         </>
       )}
     </div>
