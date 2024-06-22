@@ -4,6 +4,7 @@ import Footer from "@/components/footer";
 import Ads from "@/components/bannerAds";
 import Skeleton from "@/components/skeleton";
 import HeroProfileWeb from "@/components/heroProfileWeb";
+import NavbarProduct from "@/components/navbar";
 
 
 export default async function Home() {
@@ -93,9 +94,12 @@ export default async function Home() {
     }
   ]
 
+  const isLogin = false
   return (
     <>
+    <NavbarProduct isLogin={isLogin}/>
       <div className="w-11/12 m-auto">
+
         <Ads />
         <CarrouselKost kost={kost} />
         <CarrouselKontrakan kontrakan={kontrakan} />
