@@ -3,8 +3,10 @@ import BannerAdsKost from "@/components/bannerAdsKost";
 import CardProperty from "@/components/cardProperty";
 import Footer from "@/components/footer";
 import Skeleton from "@/components/skeleton";
+import { useEffect, useState } from "react";
 
 export default function Kostan() {
+
   const kosts = [
     {
       "nama": "Kost Merpati",
