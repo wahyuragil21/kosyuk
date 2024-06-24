@@ -41,6 +41,8 @@ export default function PengajuanSewa() {
           "type": "Cewek",
           "statusPengajuan": "Menunggu",
           "harga": 1500000,
+          "penyewa": "John Doe",
+          "tanggalPengajuan": "01-07-2024",
         },
         {
           "nama": "Kost Merpati",
@@ -60,6 +62,8 @@ export default function PengajuanSewa() {
           "type": "Cewek",
           "statusPengajuan": "Disetujui",
           "harga": 1500000,
+          "penyewa": "Anna Adame",
+          "tanggalPengajuan": "01-07-2024",
         },
         {
           "nama": "Kontrakan Merpati",
@@ -83,6 +87,8 @@ export default function PengajuanSewa() {
           "kontak": "08987654321",
           "statusPengajuan": "Tidak Disetujui",
           "harga": 1500000,
+          "penyewa": "George Smith",
+          "tanggalPengajuan": "01-08-2024",
         },
       ]);
       setLoading(false);
