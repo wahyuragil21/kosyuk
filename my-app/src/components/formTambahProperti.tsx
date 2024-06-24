@@ -1,9 +1,10 @@
 "use client";
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 import { FaTrash } from "react-icons/fa";
 import { FaMinusCircle } from "react-icons/fa";
-import { RxDotFilled } from "react-icons/rx";
+import { usePathname } from "next/navigation";
 
 export default function FormTambahProperti() {
   const [formData, setFormData] = useState({
@@ -23,8 +24,8 @@ export default function FormTambahProperti() {
 
   const [imagePreviews, setImagePreviews] = useState([]);
   const [thumbnailPreview, setThumbnailPreview] = useState(null);
-//   const [fasilitasPreview, setFasilitasPreview] = useState([]);
-//   const [peraturanPreview, setPeraturanPreview] = useState([]);
+
+  const pathname = usePathname();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -101,7 +102,9 @@ export default function FormTambahProperti() {
   };
 
   const handleRemoveFasilitas = (index) => {
-    const newFasilitasPreview = formData.fasilitasPreview.filter((_, i) => i !== index);
+    const newFasilitasPreview = formData.fasilitasPreview.filter(
+      (_, i) => i !== index
+    );
     setFormData({ ...formData, fasilitasPreview: newFasilitasPreview });
   };
 
@@ -119,11 +122,11 @@ export default function FormTambahProperti() {
   };
 
   const handleRemovePeraturan = (index) => {
-    const newPeraturanPreview = formData.peraturanPreview.filter((_, i) => i !== index);
+    const newPeraturanPreview = formData.peraturanPreview.filter(
+      (_, i) => i !== index
+    );
     setFormData({ ...formData, peraturanPreview: newPeraturanPreview });
   };
-
-  
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -134,11 +137,11 @@ export default function FormTambahProperti() {
   return (
     <>
       <h2 className="text-2xl font-bold text-black text-center mt-10">
-        Form Tambah Properti
+        {pathname === "/tambah-properti" ? "Form Tambah Properti" : "Detail Properti"}
       </h2>
 
-      <form onSubmit={handleSubmit}>
-        <div className="max-w-3xl mx-auto mt-1 grid grid-cols-2 gap-10">
+      <form onSubmit={handleSubmit} className="relative pb-20">
+        <div className="max-w-4xl mx-auto mt-1 grid grid-cols-2 gap-10 overflow-auto h-screen">
           <div className="col-span-1 mt-12">
             <div className="mb-4">
               <label
@@ -311,7 +314,9 @@ export default function FormTambahProperti() {
                 className="bg-slate-100 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 required
               >
-                <option value="" disabled>Pilih Kategori</option>
+                <option value="" disabled>
+                  Pilih Kategori
+                </option>
                 <option value="Kost">Kost</option>
                 <option value="Kontrakan">Kontrakan</option>
               </select>
@@ -332,7 +337,9 @@ export default function FormTambahProperti() {
                 className="bg-slate-100 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 required
               >
-                <option value="" disabled>Pilih Type</option>
+                <option value="" disabled>
+                  Pilih Type
+                </option>
                 <option value="Putra">Putra</option>
                 <option value="Putri">Putri</option>
                 <option value="Campur">Campur</option>
@@ -370,8 +377,8 @@ export default function FormTambahProperti() {
             </div>
             {formData.fasilitasPreview.length > 0 && (
               <div className="mb-4">
-                  {formData.fasilitasPreview.map((fasilitas, index) => (
-                    <div className="flex justify-between items-center w-full mb-2">
+                {formData.fasilitasPreview.map((fasilitas, index) => (
+                  <div className="flex justify-between items-center w-full mb-2">
                     <p className="text-base text-gray-700 ml-2 font-semibold">
                       {fasilitas}
                     </p>
@@ -383,7 +390,7 @@ export default function FormTambahProperti() {
                       <FaMinusCircle />
                     </button>
                   </div>
-                  ))}
+                ))}
               </div>
             )}
 
@@ -414,8 +421,8 @@ export default function FormTambahProperti() {
             </div>
             {formData.peraturanPreview.length > 0 && (
               <div className="mb-4">
-                  {formData.peraturanPreview.map((peraturan, index) => (
-                    <div className="flex justify-between items-center w-full mb-2">
+                {formData.peraturanPreview.map((peraturan, index) => (
+                  <div className="flex justify-between items-center w-full mb-2">
                     <p className="text-base text-gray-700 ml-2 font-semibold">
                       {peraturan}
                     </p>
@@ -427,18 +434,22 @@ export default function FormTambahProperti() {
                       <FaMinusCircle />
                     </button>
                   </div>
-                  ))}
+                ))}
               </div>
             )}
           </div>
-
-          <div className="flex items-center justify-between -mt-10 mb-10">
+          <div className="fixed bottom-0 right-0 flex items-center gap-2 p-4 bg-white">
             <button
               type="submit"
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             >
               Tambah Properti
             </button>
+              
+            <Link className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" href="/properti-saya">
+            
+              Kembali
+            </Link>
           </div>
         </div>
       </form>

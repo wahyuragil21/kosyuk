@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import { CookiesProvider } from 'next-client-cookies/server';
 
 export const metadata: Metadata = {
     title: 'Official Website Kosyuk',
@@ -13,9 +12,9 @@ export default function RootLayout({
 }) {
     return (
         <>
-            <CookiesProvider>
+            {/* <CookiesProvider> */}
                 {children}
-            </CookiesProvider>
+            {/* </CookiesProvider> */}
         </>
     )
 }

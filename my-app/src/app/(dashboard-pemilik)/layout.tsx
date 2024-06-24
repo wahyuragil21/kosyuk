@@ -1,6 +1,5 @@
 import Sidebar from '@/components/sidebar';
 import type { Metadata } from 'next';
-// import { CookiesProvider } from 'next-client-cookies/server';
 
 export const metadata: Metadata = {
     title: 'Official Website Kosyuk',
@@ -14,7 +13,6 @@ export default function NestedLayout({
 }) {
     return (
         <>
-            {/* <CookiesProvider> */}
                 <div style={{ display: 'flex', height: '100vh' }}>
                     <div style={{ flex: '0 0 250px', position: 'fixed', top: 0, left: 0, bottom: 0, height: '100vh' }}>
                         <Sidebar />
@@ -23,7 +21,6 @@ export default function NestedLayout({
                         {children}
                     </div>
                 </div>
-            {/* </CookiesProvider> */}
         </>
     )
 }

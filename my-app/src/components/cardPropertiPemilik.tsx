@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 
 export default function CardPropertiPemilik({ property }) {
   const getStatusColor = (status) => {
@@ -36,9 +37,9 @@ export default function CardPropertiPemilik({ property }) {
           {property?.status}
         </p>
         <div className="card-actions justify-end">
-              <button className="bg-blue-600 text-white py-1 px-3 rounded-lg font-bold hover:bg-blue-500">
+              <Link href={`/properti-saya/${property?.slug}`} className="bg-blue-600 text-white py-1 px-3 rounded-lg font-bold hover:bg-blue-500">
                 Detail
-              </button>
+              </Link>
               <button className="bg-red-600 text-white py-1 px-3 rounded-lg font-bold hover:bg-red-500">
                 Hapus
               </button>

@@ -6,8 +6,22 @@ import Skeleton from "@/components/skeleton";
 import HeroProfileWeb from "@/components/heroProfileWeb";
 import NavbarProduct from "@/components/navbar";
 
+async function getDataKost() {
+  const response = await fetch('http://localhost:3000/api/buildings/users', { cache: 'no-store', })
+  const data  = await response.json()
+  return data.slice(0, 6); 
+}
+
+async function getDataKontrakan() {
+  const response = await fetch('http://localhost:3000/api/buildings/users', { cache: 'no-store', })
+  const data  = await response.json()
+  return data.slice(0, 6); 
+}
 
 export default async function Home() {
+  const kosts = await getDataKost()
+  const kontrakans = await getDataKontrakan()
+  console.log(kosts)
   const kost = [
     {
       "nama": "Kost Merpati",
