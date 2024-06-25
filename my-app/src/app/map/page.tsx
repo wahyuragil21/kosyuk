@@ -5,11 +5,9 @@ import MapComponent from "../components/map"
 
 export default function Map(){
 
-
   const [loading,setLoading] = useState(true)
   const [address, setAddress] = useState("Jalan Citarum Raya No. 4, Depok")
   const [coordinates, setCoordinates] = useState({ lat: -6.1751, lon: 106.8650 });
-
 
   const handleMapClick = async (e) => {
     const { lat, lng } = e.latlng;
@@ -28,7 +26,6 @@ export default function Map(){
       console.error("Error fetching address: ", error);
       setAddress("Error fetching address");
     }
-    
   };
 
   return (

@@ -6,7 +6,6 @@ import dynamic from 'next/dynamic';
 const getCoordinates = async (address: string) => {
   const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`);
   const data = await response.json();
-  console.log(data);
   
   if (data.length > 0) {
     return {
