@@ -9,7 +9,6 @@ export async function GET(request: Request, {params}: {params: {slug:string}}) {
   try {
     
     const {slug} = params
-    console.log(slug);
     
     const { rows }: {rows: Building[]} = await pool.query(`SELECT 
           b.id,
@@ -23,7 +22,6 @@ export async function GET(request: Request, {params}: {params: {slug:string}}) {
           b.description,
           b.provider_id,
           b.slug,
-          b.type,
           p.telp AS provider_telp,
           COALESCE(json_agg(DISTINCT i.image_url) FILTER (WHERE i.id IS NOT NULL), '[]') AS images,
           COALESCE(json_agg(DISTINCT f.facility_name) FILTER (WHERE f.id IS NOT NULL), '[]') AS facilities,

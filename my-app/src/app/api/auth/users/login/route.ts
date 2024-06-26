@@ -25,7 +25,7 @@ export async function POST(request: Request) {
       return NextResponse.json({message: 'incorect email / password'},{status: 403})
     }
     
-    const access_token = await signToken({...user, role : 'user'})
+    const access_token = await signToken({...user, role : "user"})
     
     return NextResponse.json({
       "access_token": access_token
