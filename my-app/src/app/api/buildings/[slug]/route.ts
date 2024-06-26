@@ -3,10 +3,10 @@ import {Building} from "../../../../types/types"
 
 import { NextResponse } from "next/server";
 import { pool } from "@/configDB/pg-config";
+import { mappingDetail } from "@/helpers/mapping";
 
 export async function GET(request: Request, {params}: {params: {slug:string}}) {
   try {
-    console.log(request.headers.get('user_id'));
     
     const {slug} = params
     console.log(slug);
@@ -23,6 +23,7 @@ export async function GET(request: Request, {params}: {params: {slug:string}}) {
           b.description,
           b.provider_id,
           b.slug,
+          p.telp AS provider_telp,
           COALESCE(json_agg(DISTINCT i.image_url) FILTER (WHERE i.id IS NOT NULL), '[]') AS images,
           COALESCE(json_agg(DISTINCT f.facility_name) FILTER (WHERE f.id IS NOT NULL), '[]') AS facilities,
           COALESCE(json_agg(DISTINCT bk.status) FILTER (WHERE bk.id IS NOT NULL), '[]') AS bookings,
@@ -40,15 +41,17 @@ export async function GET(request: Request, {params}: {params: {slug:string}}) {
           "Rules" r ON b.id = r.building_id
       LEFT JOIN 
           "Specifications" s ON b.id = s.building_id
+      LEFT JOIN 
+        "Providers" p ON b.provider_id = p.id
       WHERE 
-          b.slug = '${slug}'
+          b.slug = $1
       GROUP BY 
-          b.id
-    `)
+          b.id, p.telp
+    `,[slug])
     
     const buildings : Building = rows[0]
 
-    return NextResponse.json(buildings)
+    return NextResponse.json(mappingDetail(buildings))
 
   } catch (error) {
     console.log(error);

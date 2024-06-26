@@ -5,10 +5,10 @@ import { headers } from 'next/headers'
  
 // This function can be marked `async` if using `await` inside
 export async function middleware(request: NextRequest) {
-  return NextResponse.next()
   const isLoginPage = request.nextUrl.pathname.startsWith('/api/auth')
+  const isCarrouselPage = request.nextUrl.pathname.startsWith('/api/carrousels')
   
-  if (isLoginPage) {
+  if (isLoginPage || isCarrouselPage) {
     return NextResponse.next()
   }
   
