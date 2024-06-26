@@ -20,6 +20,7 @@ export async function GET(request: Request) {
         b.category,
         b.price,
         b.size,
+        b.type,
         b.number_of_rooms,
         b.description,
         b.provider_id,
