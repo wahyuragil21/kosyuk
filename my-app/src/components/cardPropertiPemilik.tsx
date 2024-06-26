@@ -14,7 +14,8 @@ export default function CardPropertiPemilik({ property }) {
         return "text-black";
     }
   };
-
+  console.log(property);
+  
   return (
     <div className="card card-side bg-slate-100 shadow-xl w-full mt-5">
       <figure className="w-48 h-48 overflow-hidden">
