@@ -78,11 +78,12 @@ export async function GET(request: NextRequest) {
     }
   
     // Tambahkan kondisi filter lainnya di sini sesuai kebutuhan
-    role == 'provider' ? query += ` WHERE b.provider_id = ${id}` : null
-
+    if (role == 'provider') {
+      query += ` WHERE b.provider_id = '${id}'`
+    } 
+    
     if (conditions.length > 0) {
-      if (role == 'providers') {
-
+      if (role == 'provider') {
         query += ` AND ${conditions.join(' AND ')}`;
       } else {
         query += ` WHERE ${conditions.join(' AND ')}`;
@@ -95,7 +96,8 @@ export async function GET(request: NextRequest) {
       ORDER BY 
         b.id;
     `;
-    const { rows }: {rows: Building[]} = await pool.query(query,values)
+    
+    const { rows }: {rows: Building[]} = await pool.query(query, values)
     
     const buildings = rows
 
