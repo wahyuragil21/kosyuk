@@ -19,7 +19,7 @@ export async function POST(request: Request) {
       return NextResponse.json({message: 'please input password'},{status: 400})
     }
 
-    const { rows }: {rows: User[]} = await pool.query(`SELECT * from "Users" where email=${email}`)
+    const { rows }: {rows: User[]} = await pool.query(`SELECT * from "Users" where email='${email}'`)
     
     if (rows.length != 0) {
       return NextResponse.json({message: 'email already exist'},{status: 400})
@@ -30,7 +30,7 @@ export async function POST(request: Request) {
     const insert = await pool.query(`INSERT INTO "Users" 
     ("email","telp", "password")
     VALUES
-    (${email}, ${telp}, ${hash})
+    ('${email}', '${telp}', '${hash}')
     `)
     return NextResponse.json({message: 'success to register user'})
 
