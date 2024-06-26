@@ -1,5 +1,4 @@
 export const mappingBuildings = (data)=>{
-  console.log(data);
   
   let map = data.map(e => {return {
     nama : e.building_name,
@@ -8,9 +7,8 @@ export const mappingBuildings = (data)=>{
     thumbnail : e.thumbnail,
     images : e.images,
     fasilitas : e.facilities,
-    kategoi : e.category,
-    harga : e.price,
-    type : e.type
+    type : e.category,
+    harga : e.price
   }})
   return map
 }
@@ -27,15 +25,13 @@ export const mappingDetail = (data)=>{
     spesifikasi : data.specification,
     peraturan : data.rules,
     images : data.images,
-    kategori : data.category,
+    type : data.type,
     kontak : data.provider_telp,
-    harga : data.price,
-    type : data.type
+    harga : data.price
   }
 }
 
 export const mappingBookings = (data)=>{
-  console.log(data);
   
   return data.map(e=>{
     return {
@@ -47,10 +43,9 @@ export const mappingBookings = (data)=>{
       status: e.status,
       images: e.images,
       type: e.type,
-      kategory : e.category,
       statusPengajuan: e.bookings[0],
       harga: e.price,
-      kontak : e.provider_telp,
+      kontak : e.provider_telp ?? e.user_telp,
     }
   }) 
 }
@@ -67,9 +62,8 @@ export const mappingDetailBook = (data)=>{
       spesifikasi : data.specification,
       peraturan : data.rules,
       images : data.images,
-      kategori : data.category,
       type : data.type,
-      kontak : data.provider_telp,
+      kontak : data.provider_telp ?? data.user_telp,
       statusPengajuan : data.bookings[0],
       harga : data.price,
     }

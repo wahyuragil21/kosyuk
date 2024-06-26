@@ -1,15 +1,31 @@
 export const dynamic = 'force-dynamic' // defaults to auto
-import {Booking} from "../../../../types/types"
+import {Booking} from "../../../types/types"
 
 import { NextResponse } from "next/server";
 import { pool } from "@/configDB/pg-config";
-import { mappingBookings } from "@/helpers/mapping";
+import { mappingBookings, mappingDetailBook } from "@/helpers/mapping";
 
-export async function GET(request: Request) {
+export async function GET(request: Request, {params}: {params: {id:string}}) {
   try {
+    const role = request.headers.get('user_role')
 
-    const userId = request.headers.get('user_id')
-    
+    let queryGroupBy = '' 
+    let queryPhone = ''
+    let addQuery = [] as any
+    if (role == "provider") {
+      queryGroupBy = `  LEFT JOIN 
+      "Providers" p ON b.provider_id = p.id
+      GROUP BY b.id, p.telp`
+      queryPhone = `p.telp AS provider_telp,
+  `
+    } else {
+      queryGroupBy = `  LEFT JOIN 
+      "Users" u ON bk.user_id = u.id
+      GROUP BY b.id, u.telp`
+      queryPhone = `u.telp AS user_telp,
+  `
+    }
+
     let query = `
     SELECT 
         b.id,
@@ -24,8 +40,7 @@ export async function GET(request: Request) {
         b.description,
         b.provider_id,
         b.slug,
-        b.type,
-        p.telp AS provider_telp,
+        ${queryPhone}
         COALESCE((array_agg( i.image_url) FILTER (WHERE i.id IS NOT NULL))[1], '') AS thumbnail,
         COALESCE(
           json_agg(DISTINCT i.image_url) FILTER (
@@ -50,52 +65,44 @@ export async function GET(request: Request) {
         "Rules" r ON b.id = r.building_id
     LEFT JOIN 
         "Specifications" s ON b.id = s.building_id
-    LEFT JOIN 
-        "Providers" p ON b.provider_id = p.id
-    WHERE bk.user_id = $1
-    GROUP BY 
-        b.id, p.telp
+    ${queryGroupBy}
     ORDER BY 
         b.id;
   `
-    const { rows }: {rows: Booking[]} = await pool.query(query, [userId])
+
+    const { rows }: {rows: Booking[]} = await pool.query(query)
     
+    const Bookings : Booking[] = rows
+    console.log(Bookings);
+    
+    return NextResponse.json(mappingBookings(Bookings))
 
-    const bookings = rows
-
-    return NextResponse.json(mappingBookings(bookings))
   } catch (error) {
     console.log(error);
     return NextResponse.json(error)
   }
 }
 
-export async function POST(request: Request) {
+export async function PATCH(request: Request) {
   try {
+
+    const providerId = request.headers.get('user_id')
     const body = await request.json()
-    const userId = request.headers.get('user_id')
-    
-    const data = {
-      ...body,
-      user_id : userId,
-      slug : 'book' + userId + 'buildings' + body.building_id + Math.random().toString().slice(-5)
-    }
-    
-    let column = Object.keys(data).map(e=>`"${e}"`).join(', ')
-    let value = Object.values(data).map(e=>`'${e}'`).join(', ')
-    
-     const insert = await pool.query(`
-      INSERT INTO "Bookings"(${column})
-      VALUES(${value});
+    const {status} = body
+    const patch = await pool.query(`
+      UPDATE "Bookings"
+      SET "status" = '${status}',
+      WHERE condition;
     `)
     
-    if (insert.rowCount == 1) {
-      return NextResponse.json({message: 'success post booking'}, {status: 201})
-    }
+    const Bookings = patch
+
+    return NextResponse.json(Bookings)
 
   } catch (error) {
     console.log(error);
     return NextResponse.json(error)
   }
 }
+
 

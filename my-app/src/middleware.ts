@@ -20,11 +20,9 @@ export async function middleware(request: NextRequest) {
   }
 
   const payload = await verifyToken(token) as any
-  
-  if (!payload?.id && !payload?.role) {
+  if (!payload?.id) {
     return NextResponse.json({"message": "invalid token"}, {status: 401})
   }
-  
   const id : string = payload.id.toString()
   const role : string = payload.role.toString()
 

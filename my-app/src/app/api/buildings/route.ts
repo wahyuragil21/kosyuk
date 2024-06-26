@@ -1,5 +1,5 @@
 export const dynamic = 'force-dynamic' // defaults to auto
-import {Building} from "../../../../types/types"
+import {Building} from "../../../types/types"
 
 import { NextResponse, NextRequest } from "next/server";
 import { pool } from "@/configDB/pg-config";
@@ -10,7 +10,9 @@ export async function GET(request: NextRequest) {
     const filters : any = {}
     const params = request.nextUrl
     params.search.substring(1).split('&').forEach(e=>{filters[e.split('=')[0]]= e.split('=')[1]})
-    console.log(filters);
+    const role = request.headers.get('user_role')
+    
+    const id = request.headers.get('user_id')
     
     let query = `
       SELECT 
@@ -22,7 +24,6 @@ export async function GET(request: NextRequest) {
           b.category,
           b.price,
           b.size,
-          b.type,
           b.number_of_rooms,
           b.description,
           b.provider_id,
@@ -77,10 +78,15 @@ export async function GET(request: NextRequest) {
     }
   
     // Tambahkan kondisi filter lainnya di sini sesuai kebutuhan
-    console.log(conditions);
-    
+    role == 'provider' ? query += ` WHERE b.provider_id = ${id}` : null
+
     if (conditions.length > 0) {
-      query += ` WHERE ${conditions.join(' AND ')}`;
+      if (role == 'providers') {
+
+        query += ` AND ${conditions.join(' AND ')}`;
+      } else {
+        query += ` WHERE ${conditions.join(' AND ')}`;
+      }
     }
   
     query += `
@@ -101,3 +107,31 @@ export async function GET(request: NextRequest) {
   }
 }
 
+export async function POST(request: Request) {
+  try {
+    const body = await request.json();
+    
+    const providerId = request.headers.get('user_id')
+    
+    const data = {
+      ...body,
+      provider_id : providerId,
+      slug : body.building_name.split(" ").join("") + "_" + Math.random().toString().slice(-5)
+    }
+    
+    let column = Object.keys(data).map(e=>`"${e}"`).join(', ')
+    let value = Object.values(data).map(e=>`'${e}'`).join(', ')
+    
+     const insert = await pool.query(`
+      INSERT INTO "Buildings"(${column})
+      VALUES(${value});
+    `)
+    if (insert.rowCount == 1) {
+      return NextResponse.json({message: 'success post building'}, {status: 201})
+    }
+      
+  } catch (error) {
+    console.log(error);
+    return NextResponse.json(error)
+  }
+}

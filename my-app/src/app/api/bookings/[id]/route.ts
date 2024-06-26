@@ -5,8 +5,30 @@ import { NextResponse } from "next/server";
 import { pool } from "@/configDB/pg-config";
 import { mappingDetailBook } from "@/helpers/mapping";
 
-export async function GET(request: Request, {params}: {params: {slug:string}}) {
+export async function GET(request: Request, {params}: {params: {id:string}}) {
   try {
+
+    const role = request.headers.get('user_role')
+
+    let queryGroupBy = '' 
+    let queryPhone = ''
+    if (role == "provider") {
+      queryGroupBy = `  LEFT JOIN 
+        "Providers" p ON b.provider_id = p.id
+    WHERE bk.id = $1
+    GROUP BY 
+        b.id, p.telp`
+      queryPhone = `p.telp AS provider_telp,
+  `
+    } else {
+      queryGroupBy = `  LEFT JOIN 
+        "Users" u ON bk.user_id = u.id
+    WHERE bk.id = $1
+    GROUP BY 
+        b.id, u.telp`
+      queryPhone = `u.telp AS user_telp,
+  `
+    }
     
     const {id} = params
 
@@ -20,12 +42,11 @@ export async function GET(request: Request, {params}: {params: {slug:string}}) {
         b.category,
         b.price,
         b.size,
-        b.type,
         b.number_of_rooms,
         b.description,
         b.provider_id,
         b.slug,
-        p.telp AS provider_telp,
+        ${queryPhone}
         COALESCE((array_agg( i.image_url) FILTER (WHERE i.id IS NOT NULL))[1], '') AS thumbnail,
         COALESCE(
           json_agg(DISTINCT i.image_url) FILTER (
@@ -50,11 +71,7 @@ export async function GET(request: Request, {params}: {params: {slug:string}}) {
         "Rules" r ON b.id = r.building_id
     LEFT JOIN 
         "Specifications" s ON b.id = s.building_id
-    LEFT JOIN 
-        "Providers" p ON b.provider_id = p.id
-    WHERE bk.id = $1
-    GROUP BY 
-        b.id, p.telp
+    ${queryGroupBy}
     ORDER BY 
         b.id;
   `
