@@ -24,6 +24,7 @@ export async function GET(request: Request) {
         b.description,
         b.provider_id,
         b.slug,
+        b.type,
         p.telp AS provider_telp,
         COALESCE((array_agg( i.image_url) FILTER (WHERE i.id IS NOT NULL))[1], '') AS thumbnail,
         COALESCE(

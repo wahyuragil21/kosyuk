@@ -19,13 +19,17 @@ export async function middleware(request: NextRequest) {
     return NextResponse.json({"message": "Unauthorzied"}, {status: 401})
   }
 
-  const payload = await verifyToken(token)
-  if (!payload?.id) {
+  const payload = await verifyToken(token) as any
+  
+  if (!payload?.id && !payload?.role) {
     return NextResponse.json({"message": "invalid token"}, {status: 401})
   }
+  
   const id : string = payload.id.toString()
+  const role : string = payload.role.toString()
 
   requestHeaders.set('user_id', id)
+  requestHeaders.set('user_role', role)
   const response = NextResponse.next({
     request: {
       headers: requestHeaders,
