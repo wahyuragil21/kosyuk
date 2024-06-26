@@ -3,13 +3,13 @@ import {Booking} from "../../../../types/types"
 
 import { NextResponse } from "next/server";
 import { pool } from "@/configDB/pg-config";
-import { mappingBookings } from "@/helpers/mapping";
+import { mappingDetailBook } from "@/helpers/mapping";
 
-export async function GET(request: Request) {
+export async function GET(request: Request, {params}: {params: {slug:string}}) {
   try {
-
-    const userId = request.headers.get('user_id')
     
+    const {id} = params
+
     let query = `
     SELECT 
         b.id,
@@ -51,50 +51,45 @@ export async function GET(request: Request) {
         "Specifications" s ON b.id = s.building_id
     LEFT JOIN 
         "Providers" p ON b.provider_id = p.id
-    WHERE bk.user_id = $1
+    WHERE bk.id = $1
     GROUP BY 
         b.id, p.telp
     ORDER BY 
         b.id;
   `
-    const { rows }: {rows: Booking[]} = await pool.query(query, [userId])
+
+    const { rows }: {rows: Booking[]} = await pool.query(query,[id])
     
+    const Bookings : Booking = rows[0]
 
-    const bookings = rows
+    return NextResponse.json(mappingDetailBook(Bookings))
 
-    return NextResponse.json(mappingBookings(bookings))
   } catch (error) {
     console.log(error);
     return NextResponse.json(error)
   }
 }
 
-export async function POST(request: Request) {
+export async function PATCH(request: Request) {
   try {
+
+    const providerId = request.headers.get('user_id')
     const body = await request.json()
-    const userId = request.headers.get('user_id')
-    
-    const data = {
-      ...body,
-      user_id : userId,
-      slug : 'book' + userId + 'buildings' + body.building_id + Math.random().toString().slice(-5)
-    }
-    
-    let column = Object.keys(data).map(e=>`"${e}"`).join(', ')
-    let value = Object.values(data).map(e=>`'${e}'`).join(', ')
-    
-     const insert = await pool.query(`
-      INSERT INTO "Bookings"(${column})
-      VALUES(${value});
+    const {status} = body
+    const patch = await pool.query(`
+      UPDATE "Bookings"
+      SET "status" = '${status}',
+      WHERE condition;
     `)
     
-    if (insert.rowCount == 1) {
-      return NextResponse.json({message: 'success post booking'}, {status: 201})
-    }
+    const Bookings = patch
+
+    return NextResponse.json(Bookings)
 
   } catch (error) {
     console.log(error);
     return NextResponse.json(error)
   }
 }
+
 

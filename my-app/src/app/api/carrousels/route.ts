@@ -1,5 +1,5 @@
 export const dynamic = 'force-dynamic' // defaults to auto
-import {Building} from "../../../../types/types"
+import {Building} from "../../../types/types"
 
 import { NextResponse, NextRequest } from "next/server";
 import { pool } from "@/configDB/pg-config";
@@ -76,8 +76,6 @@ export async function GET(request: NextRequest) {
     }
   
     // Tambahkan kondisi filter lainnya di sini sesuai kebutuhan
-    console.log(conditions);
-    
     if (conditions.length > 0) {
       query += ` WHERE ${conditions.join(' AND ')}`;
     }
@@ -91,7 +89,7 @@ export async function GET(request: NextRequest) {
     const { rows }: {rows: Building[]} = await pool.query(query,values)
     
     const buildings = rows
-
+    
     return NextResponse.json(mappingBuildings(buildings))
 
   } catch (error) {
