@@ -18,23 +18,18 @@ export async function GET(request: NextRequest) {
       SELECT 
           b.id,
           b.building_name,
+          b.thumbnail,
           b.address,
           b.coordinate,
           b.status,
           b.category,
+          b.type,
           b.price,
           b.description,
           b.provider_id,
           b.slug,
           b.amount,
-          COALESCE((array_agg( i.image_url) FILTER (WHERE i.id IS NOT NULL))[1], '') AS thumbnail,
-          COALESCE(
-            json_agg(DISTINCT i.image_url) FILTER (
-            WHERE i.id IS NOT NULL 
-            AND i.image_url != (SELECT (array_agg(i2.image_url) FILTER (WHERE i2.id IS NOT NULL))[1] FROM "Images" i2 WHERE i2.building_id = b.id)
-            ), 
-            '[]'
-          ) AS images,
+          COALESCE(json_agg(DISTINCT i.image_url) FILTER (WHERE i.id IS NOT NULL), '[]') AS images,
           COALESCE(json_agg(DISTINCT f.facility_name) FILTER (WHERE f.id IS NOT NULL), '[]') AS facilities,
           COALESCE(json_agg(DISTINCT bk.status) FILTER (WHERE bk.id IS NOT NULL), '[]') AS bookings,
           COALESCE(json_agg(DISTINCT r.rules_name) FILTER (WHERE r.id IS NOT NULL), '[]') AS rules,
