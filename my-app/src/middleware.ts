@@ -7,8 +7,9 @@ import { headers } from 'next/headers'
 export async function middleware(request: NextRequest) {
   const isLoginPage = request.nextUrl.pathname.startsWith('/api/auth')
   const isCarrouselPage = request.nextUrl.pathname.startsWith('/api/carrousels')
+  const isBuildingUserPage = request.nextUrl.pathname.startsWith('/api/buildings/users')
   
-  if (isLoginPage || isCarrouselPage) {
+  if (isLoginPage || isCarrouselPage || isBuildingUserPage) {
     return NextResponse.next()
   }
   

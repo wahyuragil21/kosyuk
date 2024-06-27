@@ -21,11 +21,10 @@ export async function GET(request: NextRequest) {
           b.status,
           b.category,
           b.price,
-          b.size,
-          b.number_of_rooms,
           b.description,
           b.provider_id,
           b.slug,
+          b.amount,
           COALESCE((array_agg( i.image_url) FILTER (WHERE i.id IS NOT NULL))[1], '') AS thumbnail,
           COALESCE(
             json_agg(DISTINCT i.image_url) FILTER (
@@ -37,19 +36,25 @@ export async function GET(request: NextRequest) {
           COALESCE(json_agg(DISTINCT f.facility_name) FILTER (WHERE f.id IS NOT NULL), '[]') AS facilities,
           COALESCE(json_agg(DISTINCT bk.status) FILTER (WHERE bk.id IS NOT NULL), '[]') AS bookings,
           COALESCE(json_agg(DISTINCT r.rules_name) FILTER (WHERE r.id IS NOT NULL), '[]') AS rules,
-          COALESCE(json_agg(DISTINCT s.specification) FILTER (WHERE s.id IS NOT NULL), '[]') AS specifications
+          COALESCE(json_agg(DISTINCT s.specification_name) FILTER (WHERE s.id IS NOT NULL), '[]') AS specifications
       FROM 
           "Buildings" b
       LEFT JOIN 
           "Images" i ON b.id = i.building_id
       LEFT JOIN 
-          "Facilities" f ON b.id = f.building_id
+          "Building_facilities" bf ON b.id = bf.building_id
+      LEFT JOIN 
+          "Facilities" f ON bf.facility_id = f.id
       LEFT JOIN 
           "Bookings" bk ON b.id = bk.building_id
       LEFT JOIN 
-          "Rules" r ON b.id = r.building_id
+          "Building_rules" br ON b.id = br.building_id
       LEFT JOIN 
-          "Specifications" s ON b.id = s.building_id
+          "Rules" r ON r.id = br.building_id
+      LEFT JOIN 
+          "Building_specifications" bs ON b.id = bs.building_id
+      LEFT JOIN 
+          "Specifications" s ON s.id = bs.building_id
     `
 
     const values = [];
