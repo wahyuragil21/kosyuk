@@ -16,18 +16,20 @@ export default function FormTambahProperti() {
     deskripsi: "",
     kategori: "",
     type: "",
-    fasilitas: [],
-    peraturan: [],
-    fasilitasPreview: [],
-    peraturanPreview: [],
+    fasilitas: "",
+    peraturan: "",
+    fasilitasPreview : [],
+    peraturanPreview : []
+   
   });
 
+  
   const [imagePreviews, setImagePreviews] = useState([]);
   const [thumbnailPreview, setThumbnailPreview] = useState(null);
 
   const pathname = usePathname();
 
-  const handleChange = (e) => {
+  const handleChange = (e : any) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
@@ -35,7 +37,7 @@ export default function FormTambahProperti() {
     });
   };
 
-  const handleImageChange = (e) => {
+  const handleImageChange = (e : any) => {
     const files = Array.from(e.target.files);
     setFormData({
       ...formData,
@@ -44,7 +46,7 @@ export default function FormTambahProperti() {
     setImagePreviews(files.map((file) => URL.createObjectURL(file)));
   };
 
-  const handleRemoveImages = (index) => {
+  const handleRemoveImages = (index : any) => {
     const newImages = formData.images.filter((_, i) => i !== index);
     const newPreviews = imagePreviews.filter((_, i) => i !== index);
 
@@ -65,7 +67,7 @@ export default function FormTambahProperti() {
     }
   };
 
-  const handleThumbnailChange = (e) => {
+  const handleThumbnailChange = (e : any) => {
     const file = e.target.files[0];
     setFormData({
       ...formData,
@@ -101,7 +103,7 @@ export default function FormTambahProperti() {
     }
   };
 
-  const handleRemoveFasilitas = (index) => {
+  const handleRemoveFasilitas = (index : any) => {
     const newFasilitasPreview = formData.fasilitasPreview.filter(
       (_, i) => i !== index
     );
@@ -121,18 +123,17 @@ export default function FormTambahProperti() {
     }
   };
 
-  const handleRemovePeraturan = (index) => {
+  const handleRemovePeraturan = (index : any) => {
     const newPeraturanPreview = formData.peraturanPreview.filter(
       (_, i) => i !== index
     );
     setFormData({ ...formData, peraturanPreview: newPeraturanPreview });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Logic to handle form submission
+  const handleSubmit = () => {
     console.log(formData);
   };
+
 
   return (
     <>
@@ -360,7 +361,6 @@ export default function FormTambahProperti() {
                 value={formData.fasilitas}
                 onChange={handleChange}
                 className="bg-slate-100 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                required
               >
                 <option value="">Pilih Fasilitas</option>
                 <option value="Wifi">Wifi</option>
@@ -409,7 +409,6 @@ export default function FormTambahProperti() {
                 value={formData.peraturan}
                 onChange={handleChange}
                 className="bg-slate-100 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                required
               />
               <button
                 type="button"

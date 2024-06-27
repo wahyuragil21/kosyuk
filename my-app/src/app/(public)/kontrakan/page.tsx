@@ -3,8 +3,24 @@ import BannerAdsKost from "@/components/bannerAdsKost";
 import CardProperty from "@/components/cardProperty";
 import Footer from "@/components/footer";
 import Skeleton from "@/components/skeleton";
+import { useEffect, useState } from "react";
 
 export default function Kontrakan() {
+
+   // const [kontrakans, setKontrakans] = useState([]);
+
+  // const getKontrakan = async () => {
+  //   const response = await fetch(process.env.NEXT_PUBLIC_URL_SERVER + '/api/carrousels?category=kontrakan', { cache: 'no-store', })
+  //   const data  = await response.json()
+  //   console.log(data)
+  //   setKontrakans(data)
+  // }
+
+  // useEffect(() => {
+  //   getKontrakan();
+  // }, []);
+
+  
     const kontrakans = [
         {
           "nama": "Kontrakan Merpati",
