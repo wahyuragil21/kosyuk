@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { GiRoundStar } from "react-icons/gi";
 
-export default async function CarrouselKost({ kost }) {
+export default async function CarrouselKost({ kost }: { kost : any}) {
   return (
     <div className="pt-10 pb-10">
   <div className="flex justify-between text-black pb-3">
@@ -14,7 +14,7 @@ export default async function CarrouselKost({ kost }) {
     </Link>
   </div>
   <div className="carousel w-full overflow-x-auto space-x-4 bg-white rounded-md flex">
-    {kost?.map((value, index) => {
+    {kost?.map((value: any, index: any) => {
       return (
         <div
           key={index}

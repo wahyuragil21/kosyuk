@@ -5,8 +5,8 @@ import { usePathname } from "next/navigation";
 import ModalTerimaSewa from "./modalTerimaSewa";
 import ModalTolakSewa from "./modalTolakSewa";
 
-export default function CardManajemenProperti({ property }) {
-  const getStatusColor = (status) => {
+export default function CardManajemenProperti({ property } : { property : any}) {
+  const getStatusColor = (status: any) => {
     switch (status) {
       case "Tersedia":
         return "text-green-500";
@@ -18,10 +18,13 @@ export default function CardManajemenProperti({ property }) {
   };
 
   const openModal = () => {
-    document.getElementById("my_modal_2").showModal();
+    const modal = document?.getElementById("my_modal_2") as any
+    modal.showModal()
   };
+  
   const openModalTolak = () => {
-    document.getElementById("my_modal_3").showModal();
+    const modal = document?.getElementById("my_modal_3") as any
+    modal.showModal()
   };
 
   const pathname = usePathname();

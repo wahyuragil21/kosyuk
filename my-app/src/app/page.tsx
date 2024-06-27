@@ -97,7 +97,7 @@ export default async function Home() {
   const isLogin = false
   return (
     <>
-    <NavbarProduct isLogin={isLogin}/>
+    <NavbarProduct isLogin={isLogin as any}/>
       <div className="w-11/12 m-auto">
 
         <Ads />

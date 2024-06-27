@@ -2,7 +2,7 @@ import Link from "next/link";
 import { GoStarFill } from "react-icons/go";
 import { GiRoundStar } from "react-icons/gi";
 
-export default async function CarrouselKost({ kontrakan }) {
+export default async function CarrouselKost({ kontrakan }: { kontrakan : any}) {
   return (
     <div className="pt-10 pb-10">
   <div className="flex justify-between text-black pb-3">
@@ -15,7 +15,7 @@ export default async function CarrouselKost({ kontrakan }) {
     </Link>
   </div>
   <div className="carousel w-full overflow-x-auto space-x-4 bg-white rounded-md flex">
-    {kontrakan?.map((value, index) => {
+    {kontrakan?.map((value: any, index: any) => {
       return (
         <div
           key={index}

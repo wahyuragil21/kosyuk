@@ -1,7 +1,7 @@
 import DetailImage from "./detailImage";
 import { GiRoundStar } from "react-icons/gi";
 
-export default function ContentDetailRiwayatPengajuan({ property }) {
+export default function ContentDetailRiwayatPengajuan({ property }: { property : any}) {
   return (
     <div className="bg-white py-8">
       <div className=" mx-auto px-4 sm:px-6 lg:px-8">

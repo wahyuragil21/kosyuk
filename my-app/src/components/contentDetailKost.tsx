@@ -3,9 +3,10 @@ import { GiRoundStar } from "react-icons/gi";
 import ModalPengajuan from "./modalPengajuan";
 import { FaWhatsapp } from "react-icons/fa";
 
-export default function ContentDetailKost({ kosts }) {
+export default function ContentDetailKost({ kosts }: { kosts : any}) {
   const openModal = () => {
-    document.getElementById("my_modal_1").showModal();
+    let modal = document.getElementById("my_modal_1") as any
+    modal.showModal();
   };
 
   return (

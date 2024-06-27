@@ -10,11 +10,12 @@ import CardManajemenProperti from "@/components/cardManajemenProperti";
 
 export default function PengajuanSewa() {
   const [loading, setLoading] = useState(true);
-  const [dataPengajuan, setDataPengajuan] = useState([]);
+  let data : any = []
+  const [dataPengajuan, setDataPengajuan] = useState(data);
 
   const pathname = usePathname();
 
-  const getMenuItemClass = (path) => {
+  const getMenuItemClass = (path : any) => {
     return pathname === path ? 'bg-blue-600 text-white' : 'text-black hover:bg-blue-600 hover:text-white';
   };
 
@@ -94,7 +95,7 @@ export default function PengajuanSewa() {
       <Menu />
       <div className="flex flex-wrap mb-5 w-11/12 m-auto mt-28">
         {loading ? (
-          Array.from({ length: 4 }).map((_, index) => (
+          Array.from({ length: 4 }).map((_: any, index: any) => (
             <SkeletonPemilik key={index} />
           ))
         ) : dataPengajuan.length === 0 ? (
@@ -109,7 +110,7 @@ export default function PengajuanSewa() {
           </div>
         ) : (
           <>
-            {dataPengajuan.map((riwayat, index) => (
+            {dataPengajuan.map((riwayat : any, index: any) => (
               <CardManajemenProperti key={index} property={riwayat} />
             ))}
           </>
