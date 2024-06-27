@@ -10,7 +10,6 @@ export async function GET(request: NextRequest) {
     const filters : any = {}
     const params = request.nextUrl
     params.search.substring(1).split('&').forEach(e=>{filters[e.split('=')[0]]= e.split('=')[1]})
-    const role = request.headers.get('user_role')
     
     let query = `
       SELECT 
@@ -54,30 +53,24 @@ export async function GET(request: NextRequest) {
 
     const values = [];
     const conditions = [];
-  
+
     if (filters.category) {
-      values.push(filters.category);
-      conditions.push(`b.category = $${values.length}`);
+      values.push(`%${filters.category}%`);
+      conditions.push(`b.category ILIKE $${values.length}`);
     }
   
-    if (filters.priceMin) {
-      values.push(filters.priceMin);
-      conditions.push(`b.price >= $${values.length}`);
+    if (filters.type) {
+      values.push(`%${filters.type}%`);
+      conditions.push(`b.type >= $${values.length}`);
     }
-  
-    if (filters.priceMax) {
-      values.push(filters.priceMax);
-      conditions.push(`b.price <= $${values.length}`);
+
+    if (filters.address) {
+      values.push(`%${filters.address}%`);
+      conditions.push(`b.address ILIKE $${values.length}`);
     }
-  
-    if (filters.numberOfRooms) {
-      values.push(filters.numberOfRooms);
-      conditions.push(`b.number_of_rooms = $${values.length}`);
-    }
-  
     // Tambahkan kondisi filter lainnya di sini sesuai kebutuhan
     if (conditions.length > 0) {
-        query += ` WHERE ${conditions.join(' AND ')}`;
+      query += ` WHERE ${conditions.join(' AND ')}`;
     }
   
     query += `
@@ -85,7 +78,7 @@ export async function GET(request: NextRequest) {
         b.id
       ORDER BY 
         b.id;
-    `;
+    `
     
     const { rows }: {rows: Building[]} = await pool.query(query, values)
     

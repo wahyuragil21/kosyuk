@@ -62,21 +62,6 @@ export async function GET(request: NextRequest) {
       conditions.push(`b.category = $${values.length}`);
     }
   
-    if (filters.priceMin) {
-      values.push(filters.priceMin);
-      conditions.push(`b.price >= $${values.length}`);
-    }
-  
-    if (filters.priceMax) {
-      values.push(filters.priceMax);
-      conditions.push(`b.price <= $${values.length}`);
-    }
-  
-    if (filters.numberOfRooms) {
-      values.push(filters.numberOfRooms);
-      conditions.push(`b.number_of_rooms = $${values.length}`);
-    }
-  
     // Tambahkan kondisi filter lainnya di sini sesuai kebutuhan
     if (role == 'provider') {
       query += ` WHERE b.provider_id = '${id}'`
