@@ -3,12 +3,12 @@ import { pool } from "@/configDB/pg-config";
 
 import { NextResponse } from "next/server";
 import path from "path";
-
+import { readFile } from 'fs/promises'
 import { v2 as cloudinary } from 'cloudinary';
 import multer from 'multer'
 import { NextApiRequest } from "next";
-import { writeFile } from "fs/promises";
-
+import fs from 'fs';
+import { writeFile } from 'fs/promises'
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -16,34 +16,40 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-const upload = multer({
-  storage: multer.memoryStorage(),
-});
+
 
 
 export async function POST(request: Request) {
   try {
-
-    const formData = await request.formData();
+    let formData = await request.formData() as any
     const file: any = formData.get("image");
+    let type = file.type
+    let buffer = Buffer.from(await file.arrayBuffer()).toString('base64')
+    const dataURI = `data:${type};base64,${buffer}`
+
     if (!file) {
       return NextResponse.json({ error: "No files received." }, { status: 400 });
     }
 
-    const buffer = Buffer.from(await file.arrayBuffer());
-    const filename = file.name.replaceAll(" ", "_");
 
-    try {
-      await writeFile(
-        path.join(process.cwd(), "public/assets/" + filename),
-        buffer
-      );
-      return NextResponse.json({ Message: "Success", status: 201 });
-    } catch (error) {
-      console.log("Error occured ", error);
-      return NextResponse.json({ Message: "Failed", status: 500 });
-    }
+    const cloudinaryUploadResponse = cloudinary.uploader.upload(dataURI)
 
+    const secure_url = (await cloudinaryUploadResponse).secure_url
+    return NextResponse.json({ secure_url }, { status: 200 });
+
+  } catch (error) {
+    console.log(error);
+    return NextResponse.json({ message: error }, { status: 500 })
+  }
+}
+
+export async function GET(request: Request) {
+  try {
+
+    const imageList: any = await fs.promises.readdir(path.join(process.cwd(), 'public', 'assets'))
+    console.log(imageList);
+
+    return NextResponse.json({ Message: imageList, status: 201 });
 
 
   } catch (error) {
