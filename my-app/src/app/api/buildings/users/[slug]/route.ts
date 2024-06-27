@@ -12,7 +12,10 @@ export async function GET(request: Request, {params}: {params: {slug:string}}) {
     let query = `SELECT 
           b.id,
           b.building_name,
+          b.thumbnail
           b.address,
+          b.type,
+          b.category,
           b.coordinate,
           b.status,
           b.price,

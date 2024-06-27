@@ -40,6 +40,7 @@ export async function GET(request: Request, {params}: {params: {id:string}}) {
         b.coordinate,
         b.status,
         b.category,
+        b.type,
         b.price,
         b.description,
         b.provider_id,
