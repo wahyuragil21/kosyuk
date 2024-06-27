@@ -12,7 +12,7 @@ export async function GET(request: Request, {params}: {params: {slug:string}}) {
     let query = `SELECT 
           b.id,
           b.building_name,
-          b.thumbnail
+          b.thumbnail,
           b.address,
           b.type,
           b.category,
@@ -52,6 +52,8 @@ export async function GET(request: Request, {params}: {params: {slug:string}}) {
       WHERE b.slug = $1
       GROUP BY b.id, p.telp
     `
+    console.log(slug, 'ini slug');
+    
     const { rows }: {rows: Building[]} = await pool.query(query,[slug])
     
     const buildings : Building = rows[0]
