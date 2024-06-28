@@ -6,6 +6,7 @@ import { FaMinusCircle } from "react-icons/fa";
 import { RxDotFilled } from "react-icons/rx";
 
 export default function FormTambahProperti() {
+
   let obj : any = {
     namaProperti: "",
     alamat: "",
@@ -20,6 +21,7 @@ export default function FormTambahProperti() {
     fasilitasPreview: [],
     peraturanPreview: [],
   }
+  
   const [formData, setFormData] = useState(obj);
   let data : any = []
   const [imagePreviews, setImagePreviews] = useState(data);
@@ -123,8 +125,6 @@ export default function FormTambahProperti() {
     const newPeraturanPreview = formData.peraturanPreview.filter((_: any, i: any) => i !== index);
     setFormData({ ...formData, peraturanPreview: newPeraturanPreview });
   };
-
-  
 
   const handleSubmit = (e: any) => {
     e.preventDefault();

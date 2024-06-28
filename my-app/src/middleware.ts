@@ -25,8 +25,8 @@ export async function middleware(request: NextRequest) {
   if (!payload?.id) {
     return NextResponse.json({ "message": "invalid token" }, { status: 401 })
   }
-  const id: string = payload.id.toString()
-  const role: string = payload.role.toString()
+  const id: string = payload?.id?.toString()
+  const role: string = payload?.role?.toString()
 
   requestHeaders.set('user_id', id)
   requestHeaders.set('user_role', role)

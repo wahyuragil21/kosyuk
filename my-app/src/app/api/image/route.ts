@@ -1,10 +1,7 @@
 export const dynamic = 'force-dynamic' // defaults to auto
-import { pool } from "@/configDB/pg-config";
 
 import { NextResponse } from "next/server";
-import path from "path";
 import { v2 as cloudinary } from 'cloudinary';
-import fs from 'fs';
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -30,21 +27,6 @@ export async function POST(request: Request) {
     });
     const uploadResponses = await Promise.all(uploadPromises);
     return NextResponse.json({ message: "success" }, { status: 201 });
-
-  } catch (error) {
-    console.log(error);
-    return NextResponse.json({ message: error }, { status: 500 })
-  }
-}
-
-export async function GET(request: Request) {
-  try {
-
-    const imageList: any = await fs.promises.readdir(path.join(process.cwd(), 'public', 'assets'))
-    console.log(imageList);
-
-    return NextResponse.json({ Message: imageList, status: 201 });
-
 
   } catch (error) {
     console.log(error);

@@ -1,19 +1,19 @@
 export const dynamic = 'force-dynamic' // defaults to auto
-import {Building} from "../../../types/types"
 
+import { Building } from "../../../../types/types"
 import { NextResponse, NextRequest } from "next/server";
 import { pool } from "@/configDB/pg-config";
 import { mappingBuildings } from "@/helpers/mapping";
 
 export async function GET(request: NextRequest) {
   try {
-    const filters : any = {}
+    const filters: any = {}
     const params = request.nextUrl
-    params.search.substring(1).split('&').forEach(e=>{filters[e.split('=')[0]]= e.split('=')[1]})
+    params.search.substring(1).split('&').forEach(e => { filters[e.split('=')[0]] = e.split('=')[1] })
     const role = request.headers.get('user_role')
-    
+
     const id = request.headers.get('user_id')
-    
+
     let query = `
       SELECT 
           b.id,
@@ -56,17 +56,17 @@ export async function GET(request: NextRequest) {
 
     const values = [];
     const conditions = [];
-  
+
     if (filters.category) {
       values.push(filters.category);
       conditions.push(`b.category = $${values.length}`);
     }
-  
+
     // Tambahkan kondisi filter lainnya di sini sesuai kebutuhan
     if (role == 'provider') {
       query += ` WHERE b.provider_id = '${id}'`
-    } 
-    
+    }
+
     if (conditions.length > 0) {
       if (role == 'provider') {
         query += ` AND ${conditions.join(' AND ')}`;
@@ -74,16 +74,16 @@ export async function GET(request: NextRequest) {
         query += ` WHERE ${conditions.join(' AND ')}`;
       }
     }
-  
+
     query += `
       GROUP BY 
         b.id
       ORDER BY 
         b.id;
     `;
-    
-    const { rows }: {rows: Building[]} = await pool.query(query, values)
-    
+
+    const { rows }: { rows: Building[] } = await pool.query(query, values)
+
     const buildings = rows
 
     return NextResponse.json(mappingBuildings(buildings))
@@ -94,29 +94,66 @@ export async function GET(request: NextRequest) {
   }
 }
 
+import { v2 as cloudinary } from 'cloudinary';
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
-    
     const providerId = request.headers.get('user_id')
-    
-    const data = {
-      ...body,
-      provider_id : providerId,
-      slug : body.building_name.split(" ").join("") + "_" + Math.random().toString().slice(-5)
-    }
-    
-    let column = Object.keys(data).map(e=>`"${e}"`).join(', ')
-    let value = Object.values(data).map(e=>`'${e}'`).join(', ')
-    
-     const insert = await pool.query(`
-      INSERT INTO "Buildings"(${column})
-      VALUES(${value});
-    `)
+
+    let formData = await request.formData() as FormData
+    let key = ['building_name', 'price', 'type', 'thumbnail']
+
+    const mappingData = async () => {
+      const data = {} as any;
+
+      const promises = key.map(async (e: string) => {
+        if (e === 'thumbnail') {
+          const thumbnail = formData.getAll(e)[0] as any;
+          const type = thumbnail.type;
+          const buffer = Buffer.from(await thumbnail.arrayBuffer()).toString('base64');
+          const dataURI = `data:${type};base64,${buffer}`;
+          const res = await cloudinary.uploader.upload(dataURI);
+          data[e] = res.secure_url;
+        } else {
+          data[e] = formData.getAll(e)[0];
+        }
+      });
+
+      await Promise.all(promises);
+
+      data.provider_id = providerId;
+      return data;
+    };
+
+    let data = await mappingData() as any
+    console.log(data);
+
+    // const uploadPromises = files.map(async (file: any) => {
+    //   let type = file.type;
+    //   let buffer = Buffer.from(await file.arrayBuffer()).toString('base64');
+    //   const dataURI = `data:${type};base64,${buffer}`;
+
+    //   return (await cloudinary.uploader.upload(dataURI)).secure_url;
+    // });
+    // const uploadResponses = await Promise.all(uploadPromises);
+    let query = `
+      INSERT INTO "Buildings"(${Object.keys(data).map(e => `"${e}"`).join(', ')})
+      VALUES(${Object.values(data).map(e => `'${e}'`).join(', ')});
+    `
+
+    const insert = await pool.query(query)
     if (insert.rowCount == 1) {
-      return NextResponse.json({message: 'success post building'}, {status: 201})
+      return NextResponse.json({ message: 'success post building' }, { status: 201 })
     }
-      
+    return NextResponse.json({ message: "success" }, { status: 201 });
+
+
   } catch (error) {
     console.log(error);
     return NextResponse.json(error)
