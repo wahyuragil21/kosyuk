@@ -17,7 +17,6 @@ export default function CardProperty({ property} : {property: any}) {
             width={500}
             height={500}
           />
-        </Link>
         <div className="flex-1 relative">
           <div className="flex items-center mt-2">
             <button className="flex items-center justify-center text-black font-semibold py-0 px-1 mt-1 mb-2 rounded-lg border border-gray-300">
@@ -37,6 +36,7 @@ export default function CardProperty({ property} : {property: any}) {
               Rp. {property.harga.toLocaleString("id-ID")}
             </h1>
         </div>
+        </Link>
       </div>
     </>
   );

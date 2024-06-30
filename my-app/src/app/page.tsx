@@ -4,43 +4,40 @@ import Footer from "@/components/footer";
 import Ads from "@/components/bannerAds";
 import HeroProfileWeb from "@/components/heroProfileWeb";
 import NavbarProduct from "@/components/navbar";
-import nookies from 'nookies'
-import { cookies } from "next/headers";
-
-
+import {getCookies } from "next-client-cookies/server";
+import BannerAds from "@/components/bannerAdsKost";
 async function getDataKost() {
-  const response = await fetch(process.env.NEXT_PUBLIC_URL_SERVER + '/api/carrousels?category=kost', { cache: 'no-store', })
-  const data  = await response.json()
+  const response = await fetch(`${process.env.NEXT_PUBLIC_URL_SERVER}/api/carrousels?category=kost`, { cache: 'no-store' });
+  const data = await response.json();
   return data.slice(0, 6); 
 }
 
 async function getDataKontrakan() {
-  const response = await fetch(process.env.NEXT_PUBLIC_URL_SERVER + '/api/carrousels?category=kontrakan', { cache: 'no-store', })
-  const data  = await response.json()
+  const response = await fetch(`${process.env.NEXT_PUBLIC_URL_SERVER}/api/carrousels?category=kontrakan`, { cache: 'no-store' });
+  const data = await response.json();
   return data.slice(0, 6); 
 }
 
-export default async function Home( ) {
-  
-  const kosts = await getDataKost()
-  const kontrakans = await getDataKontrakan()
-  
-  const cookieStore = cookies();
-  const token = cookieStore.get('Authorization')?.value;
-  
+export default async function Home() {
+  const kosts = await getDataKost();
+  const kontrakans = await getDataKontrakan();
+
+  const { get, set } = getCookies();
+  const token = get('Authorization');
+  console.log('Authorization Token:', token);
   const isLogin = token ? true : false;
 
   return (  
     <>
-    <NavbarProduct isLogin={isLogin as any}/>
+      <NavbarProduct isLogin={isLogin} />
       <div className="w-11/12 m-auto">
-
         <Ads />
+        <BannerAds />
         <CarrouselKost kosts={kosts} />
         <CarrouselKontrakan kontrakans={kontrakans} />
       </div>  
-        <HeroProfileWeb />
-        <Footer />
+      <HeroProfileWeb />
+      <Footer />
     </>
-  )
+  );
 }

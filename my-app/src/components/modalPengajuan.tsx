@@ -6,9 +6,9 @@ export default function ModalPengajuan() {
     nama: "",
     durasi: "",
     tanggal: "",
-  })
+  });
 
-  const handleChange = (e : any) => {
+  const handleChange = (e: any) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
@@ -17,10 +17,9 @@ export default function ModalPengajuan() {
   };
 
   const handleSubmit = () => {
-
     console.log(formData);
     closeModal();
-  }
+  };
 
   const closeModal = () => {
     (document.getElementById("my_modal_1") as HTMLDialogElement)?.close();
@@ -52,15 +51,19 @@ export default function ModalPengajuan() {
               />
             </div>
             <div className="mb-4 relative">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="durasi">
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="durasi"
+              >
                 Durasi
               </label>
-              <select 
-                id="durasi" 
+              <select
+                id="durasi"
                 name="durasi"
                 onChange={handleChange}
-                className="select select-bordered shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-slate-100" 
-                defaultValue="">
+                className="select select-bordered shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-slate-100"
+                defaultValue=""
+              >
                 <option value="" disabled hidden>
                   Pilih Durasi
                 </option>
@@ -72,7 +75,8 @@ export default function ModalPengajuan() {
             <div className="mb-4">
               <label
                 className="block text-black text-sm font-bold mb-2"
-                htmlFor="tanggal">
+                htmlFor="tanggal"
+              >
                 Tanggal Masuk<span className="text-red-500">*</span>
               </label>
               <input
@@ -83,44 +87,21 @@ export default function ModalPengajuan() {
                 placeholder="Pilih Tanggal Masuk"
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-slate-100"
                 required
-                />
+              />
             </div>
             <div className="modal-action">
               <button
                 type="submit"
-                style={{
-                  padding: "0.5rem 1rem",
-                  border: "none",
-                  borderRadius: "0.375rem",
-                  backgroundColor: "#f97316",
-                  color: "white",
-                  transition: "background-color 0.3s ease",
-                }}
-                onMouseOver={(e) =>
-                  (e.currentTarget.style.backgroundColor = "#fb923c")
-                }
-                onMouseOut={(e) =>
-                  (e.currentTarget.style.backgroundColor = "#f97316")
-                }>
+                className="p-2 px-4 rounded-md bg-blue-600 text-white transition-colors duration-300 ease-in-out hover:bg-blue-500"
+              >
                 Ajukan
               </button>
+
               <button
-              type="button" 
-              onClick={closeModal}
-                style={{
-                  padding: "0.5rem 1rem",
-                  border: "none",
-                  borderRadius: "0.375rem",
-                  backgroundColor: "#6b7280",
-                  color: "white",
-                  transition: "background-color 0.3s ease",
-                }}
-                onMouseOver={(e) =>
-                  (e.currentTarget.style.backgroundColor = "#9ca3af")
-                }
-                onMouseOut={(e) =>
-                  (e.currentTarget.style.backgroundColor = "#6b7280")
-                }>
+                type="button"
+                onClick={closeModal}
+                className="p-2 px-4 rounded-md bg-orange-600 text-white transition-colors duration-300 ease-in-out hover:bg-orange-500"
+              >
                 Batal
               </button>
             </div>

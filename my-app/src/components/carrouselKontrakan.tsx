@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { GiRoundStar } from "react-icons/gi";
 
@@ -5,9 +6,9 @@ export default async function CarrouselKost({ kontrakans } : {kontrakans : any})
   return (
     <div className="pt-10 pb-10">
   <div className="flex justify-between text-black pb-3">
-    <h1 className="text-xl font-semibold">kontrakan Terlaris</h1>
+    <h1 className="text-xl font-sans font-bold">kontrakan Terlaris :</h1>
     <Link
-      href="/products"
+      href="/kontrakan"
       className="text-sm text-gray-500 mr-2 hover:text-black"
     >
       View all ❯
@@ -19,10 +20,13 @@ export default async function CarrouselKost({ kontrakans } : {kontrakans : any})
         <div
           key={index}
           className="carousel-item flex-shrink-0 flex-col bg-white rounded-md w-72">
-          <img
+          <Link href={`/kontrakan/${value.slug}`}>
+          <Image
             src={value.thumbnail}
             className="rounded-md w-full h-48 object-cover"
             alt="Carousel Item"
+            width={500}
+            height={500}
           />
           <div className="mt-2 mb-5">
           <div className="flex items-center">
@@ -42,6 +46,7 @@ export default async function CarrouselKost({ kontrakans } : {kontrakans : any})
               Rp. {value.harga.toLocaleString("id-ID")}
             </h1>
           </div>
+          </Link>
         </div>
       );
     })}

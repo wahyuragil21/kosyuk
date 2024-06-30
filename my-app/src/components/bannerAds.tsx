@@ -1,6 +1,8 @@
+import Image from "next/image";
+import adsen from "../assets/adsen.png"
 export default function BannerAds() {
   return (
-    <div className="bg-slate-100 h-48 flex justify-center items-center rounded-lg shadow-md mt-5">
+    <div className="bg-white h-56 flex justify-center items-center rounded-lg mt-5 ">
       <div className="flex-1 p-4">
         <h2 className="text-2xl font-bold text-black">
           Daftarkan Kos Anda di SERLOK AJA
@@ -8,11 +10,12 @@ export default function BannerAds() {
         <p className="text-lg text-black">
           Berbagai fitur dan layanan untuk meningkatkan bisnis kos Anda
         </p>
-      </div>
-      <div className="flex justify-center p-4">
-        <button className="bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded">
+        <button className="bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded mt-4">
           Pelajari Lebih Lanjut
         </button>
+      </div>
+      <div className="flex justify-center p-4">
+        <Image src={adsen} alt="adsen" className="object-cover rounded-lg h-56 w-96" />
       </div>
     </div>
   );

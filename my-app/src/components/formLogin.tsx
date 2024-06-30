@@ -1,9 +1,9 @@
+"use client";
 import Link from "next/link";
 import login from "../assets/login.png";
 import Image from "next/image";
 import { redirect, usePathname } from "next/navigation";
 import { useState } from "react";
-import nookies from "nookies";
 
 export default function FormLogin() {
   const pathname = usePathname();
@@ -31,20 +31,15 @@ export default function FormLogin() {
         }
       );
       const result = await response.json();
-      console.log(result);
       
       if (!response.ok) {
         return redirect(`/login/pencari?error=${result.error}`);
       }
 
-      // if (result) {
-      //   nookies.set(null, "Authorization", `Bearer ${result.access_token}`, {
-      //     path: "/",
-      //   });
-      // }
-
       return redirect("/");
+      
     } else {
+      
       const response = await fetch(
         process.env.NEXT_PUBLIC_URL_SERVER + "/api/auth/providers/login",
         {
@@ -64,12 +59,7 @@ export default function FormLogin() {
         return redirect(`/login/pemilik?error=${result.error}`);
       }
 
-      if (result) {
-        nookies.set(null, "Authorization", `Bearer ${result.access_token}`, {
-          path: "/",
-        });
-      }
-
+      
       return redirect("/dashboard-pemilik");
     }
   }
@@ -122,7 +112,7 @@ export default function FormLogin() {
                 />
               </div>
               <button
-                className="text-center mt-10 mb-5 w-full max-w-full font-bold shadow-sm rounded-lg py-3 bg-black text-white flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline"
+                className="text-center mt-10 mb-5 w-full max-w-full font-bold shadow-sm rounded-lg py-3 bg-blue-600 text-white flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline"
                 type="submit"
               >
                 Masuk

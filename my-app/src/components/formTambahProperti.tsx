@@ -380,13 +380,8 @@ export default function FormTambahProperti() {
             </div>
             {formData.fasilitasPreview.length > 0 && (
               <div className="mb-4">
-<<<<<<< HEAD
-                {formData.fasilitasPreview.map((fasilitas, index) => (
-                  <div className="flex justify-between items-center w-full mb-2">
-=======
-                  {formData.fasilitasPreview.map((fasilitas: any, index: any) => (
+                  {formData.fasilitasPreview.map((fasilitas: any, index: number) => (
                     <div key={index} className="flex justify-between items-center w-full mb-2">
->>>>>>> 08e8225a5823ce89e221203b6c7d9aeacfc71a96
                     <p className="text-base text-gray-700 ml-2 font-semibold">
                       {fasilitas}
                     </p>
@@ -428,13 +423,8 @@ export default function FormTambahProperti() {
             </div>
             {formData.peraturanPreview.length > 0 && (
               <div className="mb-4">
-<<<<<<< HEAD
-                {formData.peraturanPreview.map((peraturan, index) => (
-                  <div className="flex justify-between items-center w-full mb-2">
-=======
-                  {formData.peraturanPreview.map((peraturan: any, index: any) => (
+                  {formData.peraturanPreview.map((peraturan: any, index: number) => (
                     <div key={index} className="flex justify-between items-center w-full mb-2">
->>>>>>> 08e8225a5823ce89e221203b6c7d9aeacfc71a96
                     <p className="text-base text-gray-700 ml-2 font-semibold">
                       {peraturan}
                     </p>
