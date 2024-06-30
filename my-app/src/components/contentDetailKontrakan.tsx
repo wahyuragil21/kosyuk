@@ -2,12 +2,18 @@ import DetailImage from "./detailImage";
 import { GiRoundStar } from "react-icons/gi";
 import ModalPengajuan from "./modalPengajuan";
 import { FaWhatsapp } from "react-icons/fa";
+import { useRouter } from "next/navigation";
 
 
-export default function ContentDetailKontrakan({ kontrakan }: { kontrakan : any}) {
+<<<<<<< HEAD
+export default function ContentDetailKontrakan({ kontrakan, isLogin } : {kontrakan: any, isLogin: boolean}) {
+  const router = useRouter();
   const openModal = () => {
-    let modal = document.getElementById("my_modal_1") as any
-    modal.showModal();
+    if (!isLogin) {
+      router.push("/login/pencari");
+      return;
+    }
+    (document.getElementById("my_modal_1") as HTMLDialogElement)?.showModal();
   };
 
   return (

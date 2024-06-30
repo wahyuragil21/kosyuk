@@ -11,7 +11,7 @@ export default function NavbarProduct({
   isLogin,
   placeholder,
 }: {
-  isLogin?: string;
+  isLogin?: boolean;
   placeholder?: string;
 }) {
   const pathname = usePathname();
@@ -19,8 +19,8 @@ export default function NavbarProduct({
   const [dropdownOpenCariApa, setDropdownOpenCariApa] = useState(false);
   const [dropdownOpenMasuk, setDropdownOpenMasuk] = useState(false);
 
-  const dropdownRefCariApa = useRef(null as any);
-  const dropdownRefMasuk = useRef(null as any);
+  const dropdownRefCariApa = useRef<HTMLLIElement>(null);
+  const dropdownRefMasuk = useRef<HTMLLIElement>(null);
 
   const toggleDropdownCariApa = () => {
     setDropdownOpenCariApa(!dropdownOpenCariApa);
@@ -30,7 +30,7 @@ export default function NavbarProduct({
     setDropdownOpenMasuk(!dropdownOpenMasuk);
   };
 
-  const handleClickOutside = (event: any) => {
+  const handleClickOutside = (event : any) => {
     if (
       dropdownRefCariApa.current &&
       !dropdownRefCariApa.current.contains(event.target)

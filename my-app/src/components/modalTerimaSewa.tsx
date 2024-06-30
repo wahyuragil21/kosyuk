@@ -1,4 +1,25 @@
+import { Catamaran } from "next/font/google";
+import { useState } from "react";
+
 export default function ModalTerimaSewa() {
+
+  const [formData, setFormData] = useState({
+    nama : "",
+    noRekening: "",
+    catatan: "",
+  })
+
+  const handleChange = (e : any) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = () => {
+    console.log(formData);
+  }
     
     return (
         <dialog id="my_modal_2" className="modal">
@@ -6,7 +27,7 @@ export default function ModalTerimaSewa() {
           <h3 className=" py-3 font-bold text-lg text-black">
             Terima Pengajuan Sewa
           </h3>
-          <form method="dialog">
+          <form method="dialog" action={handleSubmit}>
           <div className="mb-4">
               <label
                 className="block text-gray-700 text-sm font-bold mb-2"
@@ -15,8 +36,10 @@ export default function ModalTerimaSewa() {
                 Nama Pemilik :
               </label>
               <input
-                id="noRekening"
+                id="nama"
+                name="nama"
                 type="text"
+                onChange={handleChange}
                 placeholder="John Doe"
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-slate-100"
               />
@@ -30,6 +53,8 @@ export default function ModalTerimaSewa() {
               </label>
               <input
                 id="noRekening"
+                name="noRekening"
+                onChange={handleChange}
                 type="text"
                 placeholder="1234567890 - BCA"
                 className="text-base hadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-slate-100"
@@ -41,7 +66,7 @@ export default function ModalTerimaSewa() {
               >
                 Catatan :
               </label>
-            <textarea className="textarea textarea-bordered bg-slate-100 text-gray-700 w-full" placeholder="Contoh : Silahkan melakukan pembayaran sewa paling lambat 3 hari setelah pemesanan"></textarea>
+            <textarea name="catatan" id="catatan" onChange={handleChange} className="textarea textarea-bordered bg-slate-100 text-gray-700 w-full" placeholder="Contoh : Silahkan melakukan pembayaran sewa paling lambat 3 hari setelah pemesanan"></textarea>
            
             <div className="modal-action">
               <button

@@ -45,6 +45,8 @@ export default function CardManajemenProperti({ property } : { property : any}) 
           {property?.nama}
         </h2>
         <p className={`text-black`}>{property?.alamat}</p>
+        <p className={`text-black`}>Penyewa : {property?.penyewa}</p>
+        <p className={`text-black`}>Tanggal Masuk : {property?.tanggalPengajuan}</p>
         <p
           className={`text-black font-bold ${getStatusColor(property?.status)}`}
         >

@@ -14,11 +14,10 @@ export default function RootLayout({
 }) {
   const { get, set } = getCookies();
   const token = get('Authorization');
-  // console.log('Authorization Token:', token);
   const isLogin = token ? true : false;
   return (
     <>
-    <NavbarProduct isLogin={isLogin as any} />
+    <NavbarProduct isLogin={isLogin} />
       <CookiesProvider>
         <div className="bg-white">
           {children}

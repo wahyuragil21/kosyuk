@@ -2,15 +2,18 @@
 import Image from "next/image";
 import React from "react";
 
-export default function DetailImage( {imageBuilding}: {imageBuilding : any} ){
-    const [currentImage, setCurrentImage] = React.useState(imageBuilding?.images[0]);
+export default function DetailImage({imageBuilding} : {imageBuilding: any}) {
+    const [currentImage, setCurrentImage] = React.useState(imageBuilding?.images);
+
     const handleImageClick = (image: string) => {
         setCurrentImage(image);
     };
+
     return (
         <div className="md:flex px-4">
         <div className="flex-mx-2">
-            {imageBuilding.images.map((image: any, index: any) => (
+            {imageBuilding.images?.map((image : any, index : number) => (
+
                 <div key={index} className=" px-2">
                     <Image
                         className={`w-15 h-20 rounded-md object-cover cursor-pointer border-2 ${currentImage === image
@@ -33,7 +36,7 @@ export default function DetailImage( {imageBuilding}: {imageBuilding : any} ){
                 alt="Product Image"
                 width={1000}
                 height={1000}
-                onClick={() => handleImageClick(imageBuilding.images[0])}
+                onClick={() => handleImageClick(imageBuilding?.images[0])}
             />
         </div>
     </div>
