@@ -9,7 +9,7 @@ export default function Map(){
   const [address, setAddress] = useState("Jalan Citarum Raya No. 4, Depok")
   const [coordinates, setCoordinates] = useState({ lat: -6.1751, lon: 106.8650 });
 
-  const handleMapClick = async (e) => {
+  const handleMapClick = async (e: any) => {
     const { lat, lng } = e.latlng;
     setCoordinates({ lat, lon: lng });
       try {

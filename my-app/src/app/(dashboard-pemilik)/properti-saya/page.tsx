@@ -9,7 +9,8 @@ import { BsFillHouseAddFill } from "react-icons/bs";
 
 export default function PropertiSaya() {
   const [loading, setLoading] = useState(true);
-  const [propertiSaya, setDataPropertiSaya] = useState([]);
+  let data : any = []
+  const [propertiSaya, setDataPropertiSaya] = useState(data);
 
   useEffect(() => {
     // Simulate data fetching
@@ -105,7 +106,7 @@ export default function PropertiSaya() {
           </div>
         ) : (
             <>
-            {propertiSaya.map((properti, index) => (
+            {propertiSaya.map((properti : any, index : any) => (
             <CardPropertiPemilik key={index} property={properti} />
           ))}
             </>

@@ -3,8 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 
-export default function CardPropertiPemilik({ property }) {
-  const getStatusColor = (status) => {
+export default function CardPropertiPemilik({ property }: { property : any}) {
+  const getStatusColor = (status: any) => {
     switch (status) {
       case "Tersedia":
         return "text-green-500";

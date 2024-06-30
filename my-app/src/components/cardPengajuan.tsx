@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { GiRoundStar } from "react-icons/gi";
 
-export default function CardPengajuan({ property }) {
+export default function CardPengajuan({ property } : {property: any}) {
   return (
     <>
       <div className="card bg-white px-1 w-1/4 relative overflow-hidden transform transition-transform duration-500 hover:shadow-lg flex flex-col mt-5">

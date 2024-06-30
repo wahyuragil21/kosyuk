@@ -11,11 +11,11 @@ import Image from "next/image";
 export default function Sidebar() { 
   const pathname = usePathname();
 
-  const getMenuItemClass = (path) => {
+  const getMenuItemClass = (path: any) => {
     return path.includes(pathname) ? 'bg-blue-600 text-white' : 'text-black hover:bg-blue-600 hover:text-white';
   };
 
-  const getIconClass = (path) => {
+  const getIconClass = (path: any) => {
     return path.includes(pathname) ? 'text-white' : 'text-black group-hover:text-white';
   };
 

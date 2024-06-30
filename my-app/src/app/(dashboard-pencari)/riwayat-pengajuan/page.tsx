@@ -8,7 +8,8 @@ import Image from "next/image";
 
 export default function RiwayatPengajuan() {
   const [loading, setLoading] = useState(true);
-  const [dataPengajuan, setDataPengajuan] = useState([]);
+  let data : any = []
+  const [dataPengajuan, setDataPengajuan] = useState(data);
 
   useEffect(() => {
     // Simulate data fetching
@@ -98,7 +99,7 @@ export default function RiwayatPengajuan() {
         ) : (
             <>
             {/* <BannerAdsKost /> */}
-            {dataPengajuan.map((riwayat, index) => (
+            {dataPengajuan.map((riwayat: any, index : any) => (
             <CardPengajuan key={index} property={riwayat} />
           ))}
             </>

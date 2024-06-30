@@ -9,7 +9,8 @@ import CardManajemenProperti from "@/components/cardManajemenProperti";
 
 export default function Penyewa() {
   const [loading, setLoading] = useState(true);
-  const [dataPengajuan, setDataPengajuan] = useState([]);
+  let data : any = []
+  const [dataPengajuan, setDataPengajuan] = useState(data);
 
   useEffect(() => {
     // Simulate data fetching
@@ -101,7 +102,7 @@ export default function Penyewa() {
           </div>
         ) : (
           <>
-            {dataPengajuan.map((riwayat, index) => (
+            {dataPengajuan.map((riwayat : any, index: any) => (
               <CardManajemenProperti key={index} property={riwayat} />
             ))}
           </>

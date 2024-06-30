@@ -7,7 +7,8 @@ import { FaMinusCircle } from "react-icons/fa";
 import { usePathname } from "next/navigation";
 
 export default function FormTambahProperti() {
-  const [formData, setFormData] = useState({
+
+  let obj : any = {
     namaProperti: "",
     alamat: "",
     thumbnail: "",
@@ -16,15 +17,18 @@ export default function FormTambahProperti() {
     deskripsi: "",
     kategori: "",
     type: "",
-    fasilitas: "",
-    peraturan: "",
-    fasilitasPreview : [],
-    peraturanPreview : []
-   
-  });
+    fasilitas: [],
+    peraturan: [],
+  };
 
-  
-  const [imagePreviews, setImagePreviews] = useState([]);
+   
+  const [formData, setFormData] = useState(obj);
+
+  let fasilitasPreview : []
+  let peraturanPreview : []
+  let data : any = []
+
+  const [imagePreviews, setImagePreviews] = useState(data);
   const [thumbnailPreview, setThumbnailPreview] = useState(null);
 
   const pathname = usePathname();
@@ -38,17 +42,18 @@ export default function FormTambahProperti() {
   };
 
   const handleImageChange = (e : any) => {
-    const files = Array.from(e.target.files);
+    const files = Array.from(e.target.files) as any
     setFormData({
       ...formData,
-      images: files,
+      images: files as any,
     });
-    setImagePreviews(files.map((file) => URL.createObjectURL(file)));
+    setImagePreviews(files.map((file: any) => URL.createObjectURL(file)));
   };
 
   const handleRemoveImages = (index : any) => {
-    const newImages = formData.images.filter((_, i) => i !== index);
-    const newPreviews = imagePreviews.filter((_, i) => i !== index);
+
+    const newImages = formData.images.filter((_: any, i: any) => i !== index);
+    const newPreviews = imagePreviews.filter((_ : any, i: any) => i !== index);
 
     setFormData({
       ...formData,
@@ -57,15 +62,16 @@ export default function FormTambahProperti() {
     setImagePreviews(newPreviews);
 
     // Reset the file input value and update the label
-    const fileInput = document.getElementById("images");
+    const fileInput = document.getElementById("images") as any
     if (newImages.length === 0) {
       fileInput.value = null;
     } else {
       const dataTransfer = new DataTransfer();
-      newImages.forEach((file) => dataTransfer.items.add(file));
+      newImages.forEach((file: any) => dataTransfer.items.add(file));
       fileInput.files = dataTransfer.files;
     }
   };
+
 
   const handleThumbnailChange = (e : any) => {
     const file = e.target.files[0];
@@ -73,7 +79,7 @@ export default function FormTambahProperti() {
       ...formData,
       thumbnail: file,
     });
-    setThumbnailPreview(URL.createObjectURL(file));
+    setThumbnailPreview(URL.createObjectURL(file) as any);
   };
 
   const handleRemoveThumbnail = () => {
@@ -84,7 +90,7 @@ export default function FormTambahProperti() {
     setThumbnailPreview(null);
 
     // Reset the file input value to null
-    const fileInput = document.getElementById("thumbnail");
+    const fileInput = document.getElementById("thumbnail") as any
     if (fileInput) {
       fileInput.value = null;
     }
@@ -97,16 +103,15 @@ export default function FormTambahProperti() {
     ) {
       setFormData({
         ...formData,
-        fasilitasPreview: [...formData.fasilitasPreview, formData.fasilitas],
-        fasilitas: "", // Reset the input value
+        fasilitasPreview: [...formData.fasilitasPreview, formData.fasilitas] as any,
+        fasilitas: "" as any, // Reset the input value
       });
     }
   };
 
-  const handleRemoveFasilitas = (index : any) => {
-    const newFasilitasPreview = formData.fasilitasPreview.filter(
-      (_, i) => i !== index
-    );
+
+  const handleRemoveFasilitas = (index: any) => {
+    const newFasilitasPreview = formData.fasilitasPreview.filter((_ : any, i: any) => i !== index);
     setFormData({ ...formData, fasilitasPreview: newFasilitasPreview });
   };
 
@@ -123,14 +128,13 @@ export default function FormTambahProperti() {
     }
   };
 
-  const handleRemovePeraturan = (index : any) => {
-    const newPeraturanPreview = formData.peraturanPreview.filter(
-      (_, i) => i !== index
-    );
+  const handleRemovePeraturan = (index: any) => {
+    const newPeraturanPreview = formData.peraturanPreview.filter((_: any, i: any) => i !== index);
     setFormData({ ...formData, peraturanPreview: newPeraturanPreview });
   };
-
+  
   const handleSubmit = () => {
+    // Logic to handle form submission
     console.log(formData);
   };
 
@@ -237,7 +241,7 @@ export default function FormTambahProperti() {
                 required
               />
               <div className="mt-4 space-y-2">
-                {imagePreviews.map((src, index) => (
+                {imagePreviews.map((src: any, index: any) => (
                   <div key={index} className="flex items-center space-x-2">
                     <Image
                       src={src}
@@ -377,8 +381,13 @@ export default function FormTambahProperti() {
             </div>
             {formData.fasilitasPreview.length > 0 && (
               <div className="mb-4">
+<<<<<<< HEAD
                 {formData.fasilitasPreview.map((fasilitas, index) => (
                   <div className="flex justify-between items-center w-full mb-2">
+=======
+                  {formData.fasilitasPreview.map((fasilitas: any, index: any) => (
+                    <div key={index} className="flex justify-between items-center w-full mb-2">
+>>>>>>> 08e8225a5823ce89e221203b6c7d9aeacfc71a96
                     <p className="text-base text-gray-700 ml-2 font-semibold">
                       {fasilitas}
                     </p>
@@ -420,8 +429,13 @@ export default function FormTambahProperti() {
             </div>
             {formData.peraturanPreview.length > 0 && (
               <div className="mb-4">
+<<<<<<< HEAD
                 {formData.peraturanPreview.map((peraturan, index) => (
                   <div className="flex justify-between items-center w-full mb-2">
+=======
+                  {formData.peraturanPreview.map((peraturan: any, index: any) => (
+                    <div key={index} className="flex justify-between items-center w-full mb-2">
+>>>>>>> 08e8225a5823ce89e221203b6c7d9aeacfc71a96
                     <p className="text-base text-gray-700 ml-2 font-semibold">
                       {peraturan}
                     </p>

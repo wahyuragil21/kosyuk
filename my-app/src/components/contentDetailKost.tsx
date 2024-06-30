@@ -5,6 +5,7 @@ import { FaWhatsapp } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 
 export default function ContentDetailKost({ kosts, isLogin } : {kosts: any, isLogin: boolean}) {
+  
   const router = useRouter();
   const openModal = () => {
     if (!isLogin) {

@@ -5,6 +5,7 @@ import { FaWhatsapp } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 
 
+<<<<<<< HEAD
 export default function ContentDetailKontrakan({ kontrakan, isLogin } : {kontrakan: any, isLogin: boolean}) {
   const router = useRouter();
   const openModal = () => {

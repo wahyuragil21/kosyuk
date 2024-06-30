@@ -21,7 +21,7 @@ const DynamicMapComponent = dynamic(() => import('../components/leaflet_componen
   ssr: false
 });
 
-const MapComponent = ({loading, setLoading, address, handleMapClick, coordinates, setCoordinates}) => {
+const MapComponent = ({loading, setLoading, address, handleMapClick, coordinates, setCoordinates} : {loading: any, setLoading: any, address: any, handleMapClick:any, coordinates:any, setCoordinates: any}) => {
   const [debouncedAddress, setDebouncedAddress] = useState(address);
 
   const load = ()=>{
