@@ -109,7 +109,6 @@ export default function FormTambahProperti() {
     }
   };
 
-
   const handleRemoveFasilitas = (index: any) => {
     const newFasilitasPreview = formData.fasilitasPreview.filter((_ : any, i: any) => i !== index);
     setFormData({ ...formData, fasilitasPreview: newFasilitasPreview });
