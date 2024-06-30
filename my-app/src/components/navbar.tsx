@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import kosyuk from "../assets/kosyuk.png";
+import logo from "../assets/logo.png";
 import Link from "next/link";
 
 import { usePathname } from "next/navigation";
@@ -60,7 +60,7 @@ export default function NavbarProduct({
       pathname == "/manajemen-properti/pengajuan-sewa" ||
       pathname == "/manajemen-properti/penyewa" ? (
         <div className="logo flex items-center">
-          <Image src={kosyuk} alt="Kosyuk logo" width={35} height={35} />
+          <Image src={logo} alt="Kosyuk logo" width={35} height={35} />
           <Link href="/dashboard-pemilik">
             <h1 className="text-2xl text-black font-sans font-bold ml-2">
               SERLOK AJA
@@ -70,7 +70,7 @@ export default function NavbarProduct({
       ) : (
         <>
           <div className="logo flex items-center">
-            <Image src={kosyuk} alt="Kosyuk logo" width={35} height={35} />
+            <Image src={logo} alt="Kosyuk logo" width={35} height={35} />
             <Link href="/">
               <h1 className="text-2xl text-black font-sans font-bold ml-2">
                 SERLOK AJA

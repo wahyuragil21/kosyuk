@@ -27,6 +27,7 @@ export async function POST(request: Request) {
     
     const access_token = await signToken({...user, role : "user"})
     
+    
     return NextResponse.json({
       "access_token": access_token
     })

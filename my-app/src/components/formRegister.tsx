@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { redirect, usePathname } from "next/navigation";
 import Image from "next/image";
-import login from "../assets/login.png";
+import register from "../assets/register.png";
 import { useState } from "react";
 
 export default function FormRegister() {
@@ -75,7 +75,7 @@ export default function FormRegister() {
       <div className="bg-white shadow flex justify-center flex-1">
         <div className="hidden mt-5 mb-10 lg:flex lg:w-1/2 items-center justify-center">
           <Image
-            src={login}
+            src={register}
             alt="Registration Image"
             className="object-cover rounded-lg h-[600px]"
           />
@@ -133,7 +133,7 @@ export default function FormRegister() {
                 />
               </div>
               <button
-                className="w-full mt-10 max-w-full font-bold shadow-sm rounded-lg py-3 bg-black text-white flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline"
+                className="w-full mt-10 max-w-full font-bold shadow-sm rounded-lg py-3 bg-blue-600 text-white flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline"
                 type="submit"
               >
                 Daftar
