@@ -8,28 +8,28 @@ import { pool } from "@/configDB/pg-config";
 export async function POST(request: Request) {
   try {
     
-    const {username, telp, password} = await request.json()
+    const {email, telp, password} = await request.json()
     
-    if (!username) {
-      return NextResponse.json({message: 'please input username'},{status: 400})
+    if (!email) {
+      return NextResponse.json({message: 'please input email'},{status: 400})
     }
 
     if (!password) {
       return NextResponse.json({message: 'please input password'},{status: 400})
     }
 
-    const { rows }: {rows: User[]} = await pool.query(`SELECT * from "Providers" where username=${username}`)
+    const { rows }: {rows: User[]} = await pool.query(`SELECT * from "Providers" where email='${email}'`)
     
     if (rows.length != 0) {
-      return NextResponse.json({message: 'username already exist'},{status: 400})
+      return NextResponse.json({message: 'email already exist'},{status: 400})
     }
 
     const hash = bcrypt.hashSync(password, 10)
     
     const insert = await pool.query(`INSERT INTO "Providers" 
-    ("username","telp", "password")
+    ("email","telp", "password")
     VALUES
-    (${username}, ${telp}, ${hash})
+    ('${email}', '${telp}', '${hash}')
     `)
     return NextResponse.json({message: 'success to register provider'})
 

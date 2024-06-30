@@ -1,17 +1,16 @@
 import React from 'react';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 
 // To fix the default icon issue with Webpack
-delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png',
   iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
   shadowUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png'
 });
 
-const LeafletMap = ({ coordinates, address }:{ coordinates: any, address: any }) => {
+const LeafletMap = ({ coordinates, address, onMapClick }:{ coordinates: any, address: any, onMapClick:any }) => {
   return (
     <MapContainer center={[coordinates.lat, coordinates.lon]} zoom={13} style={{ height: "500px", width: "100%" }}>
       <TileLayer
@@ -23,8 +22,16 @@ const LeafletMap = ({ coordinates, address }:{ coordinates: any, address: any })
           {address}
         </Popup>
       </Marker>
+      <MapEventsHandler onMapClick={onMapClick}/>
     </MapContainer>
   );
+};
+
+const MapEventsHandler = ({ onMapClick }:{onMapClick:any}) => {
+  useMapEvents({
+    click: onMapClick,
+  });
+  return null;
 };
 
 export default LeafletMap;

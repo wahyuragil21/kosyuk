@@ -3,6 +3,9 @@
  */
 const nextConfig = {
   /* config options here */
+  images: {
+    domains: ['i.pinimg.com'],
+  },
 }
 
 export default nextConfig

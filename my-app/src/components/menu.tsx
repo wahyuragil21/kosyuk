@@ -5,7 +5,7 @@ export default function Menu(){
 
   const pathname = usePathname();
 
-    const getMenuItemClass = (path) => {
+    const getMenuItemClass = (path: any) => {
         return pathname === path ? 'bg-blue-600 text-white' : 'text-black hover:bg-blue-600 hover:text-white';
       };
 

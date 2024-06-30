@@ -1,12 +1,11 @@
 'use client'
 
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 
 const getCoordinates = async (address: string) => {
   const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`);
   const data = await response.json();
-  console.log(data);
   
   if (data.length > 0) {
     return {
@@ -22,15 +21,14 @@ const DynamicMapComponent = dynamic(() => import('../components/leaflet_componen
   ssr: false
 });
 
-const MapComponent = ({loading, setLoading, address}) => {
-  const [coordinates, setCoordinates] = useState(null);
+const MapComponent = ({loading, setLoading, address, handleMapClick, coordinates, setCoordinates} : {loading: any, setLoading: any, address: any, handleMapClick:any, coordinates:any, setCoordinates: any}) => {
   const [debouncedAddress, setDebouncedAddress] = useState(address);
 
   const load = ()=>{
     setLoading(true);
     setTimeout(()=>{
       setLoading(false);
-    }, 3000);
+    }, 2000);
   };
 
   // Debounce effect
@@ -58,12 +56,12 @@ const MapComponent = ({loading, setLoading, address}) => {
   }, [debouncedAddress]);
 
   if (!coordinates || loading) {
-    return <p>Loading map...</p>;
+    return <p className='text-black'>Loading map...</p>;
   }
 
   return (
     <>
-      <DynamicMapComponent coordinates={coordinates} address={address} />
+      <DynamicMapComponent coordinates={coordinates} address={address} onMapClick={handleMapClick}/>
     </>
   );
 };

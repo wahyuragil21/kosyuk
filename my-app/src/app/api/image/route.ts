@@ -1,31 +1,35 @@
 export const dynamic = 'force-dynamic' // defaults to auto
-import { pool } from "@/configDB/pg-config";
 
 import { NextResponse } from "next/server";
+import { v2 as cloudinary } from 'cloudinary';
 
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 export async function POST(request: Request) {
   try {
-    
-    const {image}: {image: string} = await request.json()
-    
-    if (!image) {
-      return NextResponse.json({message: 'please input image'},{status: 400})
+    let formData = await request.formData() as FormData
+    const files = formData.getAll("images");
+
+    if (files.length === 0) {
+      return NextResponse.json({ error: "No files received." }, { status: 400 });
     }
 
-    let input = {
+    const uploadPromises = files.map(async (file: any) => {
+      let type = file.type;
+      let buffer = Buffer.from(await file.arrayBuffer()).toString('base64');
+      const dataURI = `data:${type};base64,${buffer}`;
 
-    }
-    
-    const insert = await pool.query(`INSERT INTO "image" 
-    ("building_id", "image_url")
-    VALUES
-    (${1}, ${image})
-    `)
-    return NextResponse.json({message: 'success to register user'})
+      return (await cloudinary.uploader.upload(dataURI)).secure_url;
+    });
+    const uploadResponses = await Promise.all(uploadPromises);
+    return NextResponse.json({ message: "success" }, { status: 201 });
 
   } catch (error) {
     console.log(error);
-    return NextResponse.json({message: error}, {status: 500})
+    return NextResponse.json({ message: error }, { status: 500 })
   }
 }

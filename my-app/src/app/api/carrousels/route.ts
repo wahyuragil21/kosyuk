@@ -1,5 +1,5 @@
 export const dynamic = 'force-dynamic' // defaults to auto
-import {Building} from "../../../../types/types"
+import {Building} from "../../../types/types"
 
 import { NextResponse, NextRequest } from "next/server";
 import { pool } from "@/configDB/pg-config";
@@ -53,7 +53,7 @@ export async function GET(request: NextRequest) {
 
     const values = [];
     const conditions = [];
-
+  
     if (filters.category) {
       values.push(`%${filters.category}%`);
       conditions.push(`b.category ILIKE $${values.length}`);
@@ -78,12 +78,12 @@ export async function GET(request: NextRequest) {
         b.id
       ORDER BY 
         b.id;
-    `
+    `;
     
-    const { rows }: {rows: Building[]} = await pool.query(query, values)
+    const { rows }: {rows: Building[]} = await pool.query(query,values)
     
     const buildings = rows
-
+    
     return NextResponse.json(mappingBuildings(buildings))
 
   } catch (error) {
@@ -91,3 +91,4 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(error)
   }
 }
+

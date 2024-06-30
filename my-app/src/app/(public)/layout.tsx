@@ -15,7 +15,7 @@ export default function RootLayout({
   const isLogin = false;
   return (
     <>
-    <NavbarProduct isLogin={isLogin} />
+    <NavbarProduct isLogin={isLogin as any} />
       <CookiesProvider>
         <div className="bg-white">
           {children}
