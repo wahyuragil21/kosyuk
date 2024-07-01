@@ -14,9 +14,10 @@ export async function signToken(payload: any) {
       SECRET_KEY,
     )
     const token = await new jose.SignJWT(payload) // details to  encode in the token
-    .setProtectedHeader({ alg: 'HS256' }) // algorithm
-    .setIssuedAt()
-    .sign(secret); // secretKey generated from previous step
+      .setProtectedHeader({ alg: 'HS256' }) // algorithm
+      .setIssuedAt()
+      .setExpirationTime('1h')
+      .sign(secret); // secretKey generated from previous step
     return token
   } catch (error) {
     console.log(error);
@@ -24,20 +25,20 @@ export async function signToken(payload: any) {
 }
 
 export async function verifyToken(token: string) {
-    // extract token from request
-    try {
-      const secret = new TextEncoder().encode(
-        SECRET_KEY,
-      )
+  // extract token from request
+  try {
+    const secret = new TextEncoder().encode(
+      SECRET_KEY,
+    )
 
-      // verify token
-      const { payload} : {payload: JwtPayload} = await jose.jwtVerify(token, secret, {
-      })
-      
-      return payload
-      // log values to console
-    } catch (e) {
-      // token verification failed
-      console.log("Token is invalid");
-    }
+    // verify token
+    const { payload }: { payload: JwtPayload } = await jose.jwtVerify(token, secret, {
+    })
+
+    return payload
+    // log values to console
+  } catch (e) {
+    // token verification failed
+    console.log("Token is invalid");
+  }
 }

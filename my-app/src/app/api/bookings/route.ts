@@ -1,28 +1,29 @@
 export const dynamic = 'force-dynamic' // defaults to auto
-import {Booking} from "../../../types/types"
+import { Booking } from "../../../types/types"
 
 import { NextResponse } from "next/server";
 import { pool } from "@/configDB/pg-config";
 import { mappingBookings, mappingDetailBook } from "@/helpers/mapping";
 
-export async function GET(request: Request, {params}: {params: {id:string}}) {
+export async function GET(request: Request, { params }: { params: { id: string } }) {
   try {
     const role = request.headers.get('user_role')
+    const id = request.headers.get('user_id')
 
-    let queryGroupBy = '' 
+    let queryGroupBy = ''
     let queryPhone = ''
     if (role == "user") {
+      queryPhone = `u.telp AS provider_telp,`
       queryGroupBy = `  LEFT JOIN 
-      "Providers" p ON b.provider_id = p.id
-      GROUP BY b.id, p.telp`
-      queryPhone = `p.telp AS provider_telp,
-  `
+      "Providers" u ON b.provider_id = u.id
+      WHERE bk.user_id = ${id}
+      GROUP BY b.id, u.id`
     } else {
+      queryPhone = `u.telp AS user_telp,`
       queryGroupBy = `  LEFT JOIN 
       "Users" u ON bk.user_id = u.id
-      GROUP BY b.id, u.telp`
-      queryPhone = `u.telp AS user_telp,
-  `
+      WHERE u.id = ${id}
+      GROUP BY b.id, u.id`
     }
 
     let query = `
@@ -65,15 +66,14 @@ export async function GET(request: Request, {params}: {params: {id:string}}) {
       LEFT JOIN 
           "Specifications" s ON s.id = bs.building_id
     ${queryGroupBy}
-    ORDER BY 
-        b.id;
+      ORDER BY 
+          b.id;
   `
 
-    const { rows }: {rows: Booking[]} = await pool.query(query)
-    
-    const Bookings : Booking[] = rows
-    console.log(Bookings);
-    
+    const { rows }: { rows: Booking[] } = await pool.query(query)
+
+    const Bookings: Booking[] = rows
+
     return NextResponse.json(mappingBookings(Bookings))
 
   } catch (error) {
@@ -87,13 +87,13 @@ export async function PATCH(request: Request) {
 
     const providerId = request.headers.get('user_id')
     const body = await request.json()
-    const {status} = body
+    const { status } = body
     const patch = await pool.query(`
       UPDATE "Bookings"
       SET "status" = '${status}',
       WHERE condition;
     `)
-    
+
     const Bookings = patch
 
     return NextResponse.json(Bookings)

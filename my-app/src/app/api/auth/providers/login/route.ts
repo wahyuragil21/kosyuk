@@ -5,10 +5,10 @@ var bcrypt = require('bcryptjs');
 import { NextResponse } from "next/server";
 import { signToken } from "@/helpers/jwt";
 import { pool } from "@/configDB/pg-config";
+import { cookies } from "next/headers";
 
 export async function POST(request: Request) {
   try {
-
     const { email, password } = await request.json()
 
     const { rows }: { rows: User[] } = await pool.query(`SELECT * from "Providers" where email='${email}'`)
@@ -20,18 +20,18 @@ export async function POST(request: Request) {
     const user = rows[0]
 
     const compare = bcrypt.compareSync(password, user.password)
-    console.log(compare);
 
     if (!compare) {
       return NextResponse.json({ message: 'incorect email / password' }, { status: 403 })
     }
 
-    const access_token = await signToken({ ...user, role: 'provider' })
-    console.log(access_token);
-    return NextResponse.json({
-      "access_token": access_token
-    })
+    const access_token: string | undefined = await signToken({ ...user, role: "provider" })
 
+    if (access_token) {
+      let oneMinute = 60 * 60 * 1000
+      cookies().set('Authorization', access_token, { expires: Date.now() + oneMinute, secure: true, sameSite: true, httpOnly: true })
+      return NextResponse.json({ message: "Login success" })
+    }
   } catch (error) {
     console.log(error);
     return NextResponse.json(error)
