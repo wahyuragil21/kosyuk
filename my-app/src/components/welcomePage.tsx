@@ -14,14 +14,13 @@ export default function WelcomePage() {
         backgroundRepeat: 'no-repeat'
       }}>
         <h1 className="text-4xl font-bold mb-4 text-black">
-          SERLOK AJA : Teman setia pencarianmu!
+        Dapatkan Penyewa Lebih Cepat dengan <span className="font-bold text-blue-600">SERLOK AJA</span>
         </h1>
-        <p className="text-xl text-black mb-3">
-          Ayo perluas jaringan bisnis anda dengan <span className="font-bold text-blue-600">SERLOK AJA</span>
+        <p className="text-base text-black mb-3">
+        Masih mencari cara efektif untuk memasarkan kost Anda? SERLOK AJA solusinya! Daftarkan properti Anda dan temukan penyewa lebih cepat. Proses pendaftaran mudah dan gratis!
         </p>
-        <p className="text-sm text-black">Dengan bergabung di SERLOK AJA, properti anda akan lebih mudah untuk dijangkau oleh calon pengguna kapan saja dan dimana saja.</p> 
-        <p className="text-sm text-black">SERLOK AJA berkomitmen untuk memberikan pelayanan yang terbaik untuk pencari dan pemilik kost</p>
-        <p className="mt-3 text-black">
+        
+        <p className="mt-5 text-black">
           Ayo{" "}
           <a
             href="/tambah-properti"
@@ -31,10 +30,10 @@ export default function WelcomePage() {
           </a>{" "}
           kost anda sekarang
         </p>
-        <div className="flex items-center justify-center mt-5">
-          <Image src={Logo} alt="Kosyuk logo" width={90} height={90} />
+        <div className="flex items-center justify-center mt-10">
+          <Image src={Logo} alt="Kosyuk logo" width={150} height={150} />
         </div>
-        <h1 className="text-2xl text-black font-sans font-bold">SERLOK AJA</h1>
+        <h1 className="text-4xl text-black font-sans font-bold">SERLOK AJA</h1>
       </div>
     </section>
   );

@@ -88,8 +88,8 @@ export default function PropertiSaya() {
               <h3 className="font-semibold text-white mt-3 mb-8 ml-10 ">PROPERTI SAYA</h3>
             </div>
      <div className="flex w-[1090px] border-b border-t border-gray-300 fixed top-16 z-10 ml-2 mb-20 bg-white ">
-            <h3 className="font-semibold text-black mt-3 mb-2 ml-9 ">PROPERTI SAYA</h3>
-            <Link href="/tambah-properti" className="text-blue-600 flex font-semibold ml-auto mt-3 mb-2 mr-5"><BsFillHouseAddFill className="h-5 w-5 mr-1"/>Tambah Properti</Link>
+            <h3 className="font-bold text-black mt-3 mb-2 ml-9 ">PROPERTI SAYA</h3>
+            <Link href="/tambah-properti" className="text-blue-600 flex font-semibold ml-auto mt-3 mb-2 mr-14"><BsFillHouseAddFill className="h-5 w-5 mr-1"/>Tambah Properti</Link>
             </div>
       <div className="flex flex-wrap mb-5 w-11/12 m-auto mt-24">
         {loading ? (
