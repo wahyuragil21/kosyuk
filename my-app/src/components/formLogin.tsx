@@ -4,6 +4,8 @@ import login from "../assets/login.png";
 import Image from "next/image";
 import { redirect, usePathname } from "next/navigation";
 import { useState } from "react";
+import { Login } from "@/app/action";
+// import Cookies from "js-cookie";
 
 export default function FormLogin() {
   const pathname = usePathname();
@@ -36,6 +38,10 @@ export default function FormLogin() {
         return redirect(`/login/pencari?error=${result.error}`);
       }
 
+      if (result) {
+        Login(result.access_token);
+      }
+
       return redirect("/");
       
     } else {
@@ -59,6 +65,9 @@ export default function FormLogin() {
         return redirect(`/login/pemilik?error=${result.error}`);
       }
 
+      if (result) {
+        Login(result.access_token);
+      }
       
       return redirect("/dashboard-pemilik");
     }

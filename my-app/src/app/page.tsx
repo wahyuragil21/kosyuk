@@ -24,7 +24,6 @@ export default async function Home() {
 
   const { get, set } = getCookies();
   const token = get('Authorization');
-  console.log('Authorization Token:', token);
   const isLogin = token ? true : false;
 
   return (  

@@ -4,7 +4,7 @@ import Footer from "@/components/footer";
 import { useEffect, useState } from "react";
 
 export default function KostanDetail({ params }: { params: { slug: string } }) {
-  const [isLoginPage, setIsLoginPage] = useState("");
+  const [isLoginPage, setIsLoginPage] = useState(false);
   const [kosts, setKosts] = useState([]);
 
   const getKosts = async () => {
@@ -21,8 +21,12 @@ export default function KostanDetail({ params }: { params: { slug: string } }) {
 
   useEffect(() => {
     getKosts();
-    const cookies: any = document.cookie.split(";");
-    setIsLoginPage(cookies);
+    const cookies = document.cookie.split(';');
+    const tokenCookie = cookies.find(cookie => cookie.trim().startsWith('Authorization='));
+    if (tokenCookie) {
+      const token = tokenCookie.split('=')[1];
+      setIsLoginPage(!!token);
+    }
   }, [params.slug]);
 
 

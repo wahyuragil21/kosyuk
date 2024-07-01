@@ -2,9 +2,9 @@
 import Image from "next/image";
 import logo from "../assets/logo.png";
 import Link from "next/link";
-
 import { usePathname } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
+import { Logout } from "@/app/action";
 // import path from "node:path/win32";
 
 export default function NavbarProduct({
@@ -130,9 +130,12 @@ export default function NavbarProduct({
                 <a>Syarat dan Ketentuan</a>
               </li>
               {isLogin ? (
-                <li className="hover:text-blue-700 font-bold">
-                  <Link href="/login">Logout</Link>
-                </li>
+
+                <button onClick={() => {
+                  Logout()
+                }} className="hover:text-blue-700 font-bold">
+                 Keluar
+                </button>
               ) : (
                 <li className="relative" ref={dropdownRefMasuk}>
                   <a
