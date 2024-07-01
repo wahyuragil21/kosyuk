@@ -120,6 +120,17 @@ export async function POST(request: Request) {
           const dataURI = `data:${type};base64,${buffer}`;
           const res = await cloudinary.uploader.upload(dataURI);
           data[e] = res.secure_url;
+        } else if (e === 'images') {
+          const images = formData.getAll(e);
+          const uploadPromises = images.map(async (file: any) => {
+            let type = file.type;
+            let buffer = Buffer.from(await file.arrayBuffer()).toString('base64');
+            const dataURI = `data:${type};base64,${buffer}`;
+
+            return (await cloudinary.uploader.upload(dataURI)).secure_url;
+          });
+          data[e] = await Promise.all(uploadPromises);
+
         } else {
           data[e] = formData.getAll(e)[0];
         }
@@ -130,24 +141,37 @@ export async function POST(request: Request) {
       data.provider_id = providerId;
       return data;
     };
-
     let data = await mappingData() as any
-    console.log(data);
 
-    // const uploadPromises = files.map(async (file: any) => {
-    //   let type = file.type;
-    //   let buffer = Buffer.from(await file.arrayBuffer()).toString('base64');
-    //   const dataURI = `data:${type};base64,${buffer}`;
-
-    //   return (await cloudinary.uploader.upload(dataURI)).secure_url;
-    // });
-    // const uploadResponses = await Promise.all(uploadPromises);
     let query = `
-      INSERT INTO "Buildings"(${Object.keys(data).map(e => `"${e}"`).join(', ')})
-      VALUES(${Object.values(data).map(e => `'${e}'`).join(', ')});
-    `
-
+    INSERT INTO "Buildings"(${Object.keys(data).map(e => `"${e}"`).join(', ')})
+    VALUES(${Object.values(data).map(e => `'${e}'`).join(', ')});
+  `
     const insert = await pool.query(query)
+
+    const mappingDataAttributes = async () => {
+      const data = {} as any;
+      const promises = key.map(async (e: string) => {
+        if (e === 'facilities' || e === 'rules' || e === 'specifications') {
+          const attributes = formData.getAll(e);
+          const table_name = 'Builiding_' + e
+          await pool.query(`INSERT INTO ${table_name} (building_id, column_list)
+          VALUES
+              (value_list_1),
+              (value_list_2),
+              ...
+              (value_list_n);`)
+        }
+
+        await Promise.all(promises);
+
+
+        data.provider_id = providerId;
+        return data;
+      });
+    }
+
+
     if (insert.rowCount == 1) {
       return NextResponse.json({ message: 'success post building' }, { status: 201 })
     }
