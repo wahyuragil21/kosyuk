@@ -107,7 +107,7 @@ export async function POST(request: Request) {
     const providerId = request.headers.get('user_id')
 
     let formData = await request.formData() as FormData
-    let key = ['building_name', 'price', 'type', 'thumbnail', 'specifications', 'rules', 'images', 'address', 'coordinate', 'price', 'description']
+    let key = ['building_name', 'price', 'type', 'thumbnail', 'specification', 'facility', 'rule', 'images', 'address', 'coordinate', 'price', 'description']
 
     const mappingData = async () => {
       const data = {} as any;
@@ -121,6 +121,7 @@ export async function POST(request: Request) {
           const res = await cloudinary.uploader.upload(dataURI);
           data[e] = res.secure_url;
         } else if (e === 'images') {
+
           const images = formData.getAll(e);
           const uploadPromises = images.map(async (file: any) => {
             let type = file.type;
@@ -129,9 +130,8 @@ export async function POST(request: Request) {
 
             return (await cloudinary.uploader.upload(dataURI)).secure_url;
           });
-          data[e] = await Promise.all(uploadPromises);
 
-        } else {
+        } else if (e != 'specification' && e != 'facility' && e !== 'rule') {
           data[e] = formData.getAll(e)[0];
         }
       });
@@ -142,25 +142,35 @@ export async function POST(request: Request) {
       return data;
     };
     let data = await mappingData() as any
+    console.log(data, 'ini dataaaaaaaaaaaaaaaaaa');
 
     let query = `
     INSERT INTO "Buildings"(${Object.keys(data).map(e => `"${e}"`).join(', ')})
-    VALUES(${Object.values(data).map(e => `'${e}'`).join(', ')});
-  `
+    VALUES(${Object.values(data).map(e => `'${e}'`).join(', ')})
+    RETURNING id;
+    `
     const insert = await pool.query(query)
+    console.log(providerId, '<<<<<<<<<<<<,');
+    console.log(insert);
 
     const insertAttribute = async () => {
       const data = {} as any;
       const promises = key.map(async (e: string) => {
-        if (e === 'facilities' || e === 'rules' || e === 'specifications') {
-          const attributes = formData.getAll(e);
-          const table_name = 'Builiding_' + e
-          await pool.query(`INSERT INTO ${table_name} (building_id, ${e}.id)
-          VALUES
-             ('${insert.oid}', ${attributes.map(e => { return `'${e}'` })})`)
+        if (e === 'facility' || e === 'rule' || e === 'specification') {
+
+          let attributes = formData.getAll(e) as any
+          if (attributes) {
+            attributes = JSON.parse(attributes as any)
+          }
+
+          const tableName = e.endsWith('y') ? `Building_${e.slice(0, -1)}ies` : `Building_${e}s`
+          const values = attributes.map((attr: any) => `('${insert.rows[0].id}', '${attr}')`).join(", ");
+
+          const query = `INSERT INTO "${tableName}" (building_id, ${e}_id)
+          VALUES ${values};`
+
+          await pool.query(query)
         }
-
-
 
       });
       await Promise.all(promises);
@@ -176,6 +186,6 @@ export async function POST(request: Request) {
 
   } catch (error) {
     console.log(error);
-    return NextResponse.json(error)
+    return NextResponse.json({ error }, { status: 500 })
   }
 }
