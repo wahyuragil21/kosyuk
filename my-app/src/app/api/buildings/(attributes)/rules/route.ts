@@ -6,14 +6,14 @@ export async function GET(request: Request) {
     let query = `
       SELECT 
       *
-      FROM Rules
+      FROM "Rules"
     `
 
     const { rows } = await pool.query(query)
 
-    const buildings = rows
+    const rules = rows
 
-    return NextResponse.json(rows)
+    return NextResponse.json(rules)
 
   } catch (error) {
     console.log(error);

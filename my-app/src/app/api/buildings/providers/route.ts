@@ -157,10 +157,7 @@ export async function POST(request: Request) {
           const table_name = 'Builiding_' + e
           await pool.query(`INSERT INTO ${table_name} (building_id, column_list)
           VALUES
-              (value_list_1),
-              (value_list_2),
-              ...
-              (value_list_n);`)
+              ${}`)
         }
 
         await Promise.all(promises);
