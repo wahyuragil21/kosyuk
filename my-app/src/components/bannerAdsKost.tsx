@@ -12,9 +12,9 @@ export default function BannerAdsKost() {
         className="absolute top-0 left-0 right-0 bottom-0 bg-cover bg-center"
         style={{
           backgroundImage: `url(${adsImageTwo.src})`,
-          opacity: 0.5,
+          opacity: 0.8,
           zIndex: 1,
-          boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)', // Bayangan hanya di bawah
+          boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)', 
         }}
       />
       <div className="relative flex-1 p-4 text-center z-10 bg-opacity-0 bg-white ">

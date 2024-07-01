@@ -14,7 +14,7 @@ export default function BannerAds() {
           Pelajari Lebih Lanjut
         </button>
       </div>
-      <div className="flex justify-center p-4">
+      <div className="flex justify-center -mr-5">
         <Image src={adsen} alt="adsen" className="object-cover rounded-lg h-56 w-96" />
       </div>
     </div>

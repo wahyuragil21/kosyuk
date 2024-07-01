@@ -4,7 +4,7 @@ import { FaSwatchbook } from "react-icons/fa6";
 import { FaUser } from "react-icons/fa";
 import { IoLogOut } from "react-icons/io5";
 import { usePathname } from "next/navigation";
-import kosyuk from "../assets/kosyuk.png";
+import logo from "../assets/logo.png";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -39,7 +39,7 @@ export default function Sidebar() {
         ></label>
         <ul className="menu p-4 w-64 h-screen bg-white text-base-content">
         <div className="logo flex items-center mb-4 border-b w-full">
-          <Image src={kosyuk} alt="Kosyuk logo" width={35} height={35} className="mb-4" />
+          <Image src={logo} alt="Kosyuk logo" width={35} height={35} className="mb-4" />
           <Link href="/dashboard-pemilik">
             <h1 className="text-2xl text-black font-sans font-bold ml-2 mb-4">
               SERLOK AJA
