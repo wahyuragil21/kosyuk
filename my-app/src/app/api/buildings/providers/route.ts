@@ -107,7 +107,7 @@ export async function POST(request: Request) {
     const providerId = request.headers.get('user_id')
 
     let formData = await request.formData() as FormData
-    let key = ['building_name', 'price', 'type', 'thumbnail']
+    let key = ['building_name', 'price', 'type', 'thumbnail', 'specifications', 'rules', 'images', 'address', 'coordinate', 'price', 'description']
 
     const mappingData = async () => {
       const data = {} as any;
@@ -149,25 +149,24 @@ export async function POST(request: Request) {
   `
     const insert = await pool.query(query)
 
-    const mappingDataAttributes = async () => {
+    const insertAttribute = async () => {
       const data = {} as any;
       const promises = key.map(async (e: string) => {
         if (e === 'facilities' || e === 'rules' || e === 'specifications') {
           const attributes = formData.getAll(e);
           const table_name = 'Builiding_' + e
-          await pool.query(`INSERT INTO ${table_name} (building_id, column_list)
+          await pool.query(`INSERT INTO ${table_name} (building_id, ${e}.id)
           VALUES
-              ${}`)
+             ('${insert.oid}', ${attributes.map(e => { return `'${e}'` })})`)
         }
 
-        await Promise.all(promises);
 
 
-        data.provider_id = providerId;
-        return data;
       });
+      await Promise.all(promises);
+      return data;
     }
-
+    await insertAttribute()
 
     if (insert.rowCount == 1) {
       return NextResponse.json({ message: 'success post building' }, { status: 201 })
