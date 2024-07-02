@@ -11,6 +11,12 @@ export default function RiwayatPengajuan() {
   let data : any = []
   const [dataPengajuan, setDataPengajuan] = useState(data);
 
+  const getKosts = async () => {
+    const response = await fetch(process.env.NEXT_PUBLIC_URL_SERVER + '/api/carrousels?category=kost', { cache: 'no-store', })
+    const data  = await response.json()
+    setDataPengajuan(data)
+  }
+
   useEffect(() => {
     // Simulate data fetching
     setTimeout(() => {
