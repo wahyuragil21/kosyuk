@@ -27,10 +27,12 @@ export async function middleware(request: NextRequest) {
   }
   const id: string = payload?.id?.toString()
   const role: string = payload?.role?.toString()
+  const email: string = payload?.email?.toString()
 
   const requestHeaders = new Headers(request.headers)
   requestHeaders.set('user_id', id)
   requestHeaders.set('user_role', role)
+  requestHeaders.set('user_email', email)
   const response = NextResponse.next({
     request: {
       headers: requestHeaders,
