@@ -167,7 +167,7 @@ export async function POST(request: Request) {
 
             return (await cloudinary.uploader.upload(dataURI)).secure_url;
           });
-          const values = images.map((url: any) => `('${insert.rows[0].id}', '${url}')`).join(", ");
+          const values = uploadPromises.map((url: any) => `('${insert.rows[0].id}', '${url}')`).join(", ");
           const query = `INSERT INTO "Images" (building_id, image_url)
           VALUES ${values};`
 
