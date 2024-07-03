@@ -5,6 +5,7 @@ const nodemailer = require("nodemailer");
 import { NextResponse } from "next/server";
 import { pool } from "@/configDB/pg-config";
 import { mappingBookings, mappingDetailBook } from "@/helpers/mapping";
+import { makeSlug } from "@/helpers/addSlug";
 
 export async function GET(request: Request, { params }: { params: { id: string } }) {
   try {
@@ -105,7 +106,7 @@ export async function POST(request: Request) {
   const provider_email = rows[0].email
   const building_name = rows[0].building_name
   const provider_id = rows[0].provider_id
-  const insert = await pool.query(query, [user_id, provider_id, building_id, duration, 'PENDING', 'book' + Math.random().toString().slice(10)])
+  const insert = await pool.query(query, [user_id, provider_id, building_id, duration, 'PENDING', 'book-' + makeSlug(5)])
 
   const transporter = nodemailer.createTransport({
     service: "gmail",
@@ -161,7 +162,6 @@ export async function PATCH(request: Request) {
     const { slug, status } = await request.json();
     const { rows: [{ building_id, status: statusBook }] } = await client.query('SELECT * FROM "Bookings" WHERE slug = $1', [slug]);
 
-    console.log(statusBook, status);
 
     const queryAmount = `
       SELECT b.amount

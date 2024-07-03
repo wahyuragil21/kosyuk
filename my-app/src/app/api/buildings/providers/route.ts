@@ -79,7 +79,7 @@ export async function GET(request: NextRequest) {
       GROUP BY 
         b.id
       ORDER BY 
-        b.id;
+        b.id desc;
     `;
 
     const { rows }: { rows: Building[] } = await pool.query(query, values)
@@ -187,5 +187,38 @@ export async function POST(request: Request) {
   } catch (error) {
     console.log(error);
     return NextResponse.json({ error }, { status: 500 })
+  }
+}
+
+export async function DELETE(request: Request) {
+
+  try {
+    const userId = request.headers.get('user_id');
+    const role = request.headers.get('user_role');
+
+    if (!userId || role !== 'provider') {
+      return NextResponse.json({ message: 'Unauthorized' }, { status: 403 });
+    }
+
+    const { slug } = await request.json();
+
+    const query = `
+      DELETE FROM "Buildings"
+      WHERE slug = $1 AND provider_id = $2
+      RETURNING building_name;
+    `;
+    const { rows } = await pool.query(query, [slug, userId]);
+
+    if (rows.length === 0) {
+      return NextResponse.json({ message: 'tidak ada kost/ kontrakan yang dihapus' }, { status: 404 });
+    }
+
+    const building_name = rows[0].building_name;
+
+    return NextResponse.json({ message: `Kost/ kontrakan ${building_name} berhasil dihapus` });
+
+  } catch (error) {
+    console.log(error);
+    return NextResponse.json({ message: 'Internal server error', error }, { status: 500 });
   }
 }
