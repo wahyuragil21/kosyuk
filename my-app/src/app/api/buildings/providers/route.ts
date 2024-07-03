@@ -140,6 +140,7 @@ export async function POST(request: Request) {
 
       data.provider_id = providerId;
       data.slug = data?.building_name?.split(" ").join("_") + Math.random().toString().slice(5)
+      data.status = "Tersedia"
       return data;
     };
     let data = await mappingData() as any
