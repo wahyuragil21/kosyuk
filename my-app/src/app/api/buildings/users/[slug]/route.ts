@@ -42,7 +42,7 @@ export async function GET(request: Request, { params }: { params: { slug: string
       LEFT JOIN 
           "Building_rules" br ON b.id = br.building_id
       LEFT JOIN 
-          "Rules" r ON r.id = br.building_id
+          "Rules" r ON r.id = br.rule_id
       LEFT JOIN 
           "Building_specifications" bs ON b.id = bs.building_id
       LEFT JOIN 
