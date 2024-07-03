@@ -121,17 +121,6 @@ export async function POST(request: Request) {
           const dataURI = `data:${type};base64,${buffer}`;
           const res = await cloudinary.uploader.upload(dataURI);
           data[e] = res.secure_url;
-        } else if (e === 'images') {
-
-          const images = formData.getAll(e);
-          const uploadPromises = images.map(async (file: any) => {
-            let type = file.type;
-            let buffer = Buffer.from(await file.arrayBuffer()).toString('base64');
-            const dataURI = `data:${type};base64,${buffer}`;
-
-            return (await cloudinary.uploader.upload(dataURI)).secure_url;
-          });
-
         } else if (e != 'specification' && e != 'facility' && e !== 'rule') {
           data[e] = formData.getAll(e)[0];
         }
@@ -153,8 +142,6 @@ export async function POST(request: Request) {
     RETURNING id;
     `
     const insert = await pool.query(query)
-    console.log(providerId, '<<<<<<<<<<<<,');
-    console.log(insert);
 
     const insertAttribute = async () => {
       const data = {} as any;
@@ -170,6 +157,23 @@ export async function POST(request: Request) {
           VALUES ${values};`
 
           await pool.query(query)
+        } else if (e === 'images') {
+
+          const images = formData.getAll(e);
+          const uploadPromises = images.map(async (file: any) => {
+            let type = file.type;
+            let buffer = Buffer.from(await file.arrayBuffer()).toString('base64');
+            const dataURI = `data:${type};base64,${buffer}`;
+
+            return (await cloudinary.uploader.upload(dataURI)).secure_url;
+          });
+          const values = images.map((url: any) => `('${insert.rows[0].id}', '${url}')`).join(", ");
+          const query = `INSERT INTO "Images" (building_id, image_url)
+          VALUES ${values};`
+
+          await pool.query(query)
+          data[e] = images;
+
         }
 
       });

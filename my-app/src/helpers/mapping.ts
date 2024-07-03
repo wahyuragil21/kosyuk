@@ -10,6 +10,7 @@ export const mappingBuildings = (data: any) => {
       fasilitas: e.facilities,
       type: e.type,
       kategori: e.category,
+      status: e.status,
       harga: e.price
     }
   })

@@ -1,15 +1,15 @@
 export const dynamic = 'force-dynamic' // defaults to auto
-import {Building} from "../../../../../types/types"
+import { Building } from "../../../../../types/types"
 
 import { NextResponse } from "next/server";
 import { pool } from "@/configDB/pg-config";
 import { mappingDetail } from "@/helpers/mapping";
 
-export async function GET(request: Request, {params}: {params: {slug:string}}) {
-  try {
-    let queryGroupBy = ``
-    const {slug} = params
-    let query = `SELECT 
+export async function GET(request: Request, { params }: { params: { slug: string } }) {
+    try {
+        let queryGroupBy = ``
+        const { slug } = params
+        let query = `SELECT 
           b.id,
           b.building_name,
           b.thumbnail,
@@ -52,17 +52,16 @@ export async function GET(request: Request, {params}: {params: {slug:string}}) {
       WHERE b.slug = $1
       GROUP BY b.id, p.telp
     `
-    console.log(slug, 'ini slug');
-    
-    const { rows }: {rows: Building[]} = await pool.query(query,[slug])
-    
-    const buildings : Building = rows[0]
 
-    return NextResponse.json(mappingDetail(buildings))
+        const { rows }: { rows: Building[] } = await pool.query(query, [slug])
 
-  } catch (error) {
-    console.log(error);
-    return NextResponse.json(error)
-  }
+        const buildings: Building = rows[0]
+
+        return NextResponse.json(mappingDetail(buildings))
+
+    } catch (error) {
+        console.log(error);
+        return NextResponse.json(error)
+    }
 }
 
