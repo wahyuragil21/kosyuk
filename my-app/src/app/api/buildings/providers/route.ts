@@ -95,6 +95,7 @@ export async function GET(request: NextRequest) {
 }
 
 import { v2 as cloudinary } from 'cloudinary';
+import { makeSlug } from "@/helpers/addSlug";
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -139,7 +140,7 @@ export async function POST(request: Request) {
       await Promise.all(promises);
 
       data.provider_id = providerId;
-      data.slug = data?.building_name?.split(" ").join("_") + Math.random().toString().slice(5)
+      data.slug = data?.building_name?.split(" ").join("_") + "_" + makeSlug(5)
       data.status = "Tersedia"
       return data;
     };
