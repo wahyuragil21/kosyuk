@@ -175,11 +175,11 @@ export async function PATCH(request: Request) {
     `;
     const { rows: [{ amount }] } = await client.query(queryAmount, [building_id]);
 
-    if (amount < 1 && status === "ACCEPTED") {
+    if (amount < 1 && status === "Disetujui") {
       return NextResponse.json({ message: 'tidak dapat menerima karena sudah penuh' }, { status: 400 });
     }
 
-    if (statusBook === "ACCEPTED") {
+    if (statusBook === "Disetujui") {
       return NextResponse.json({ message: 'pesanan telah diterima' }, { status: 400 });
     }
 
@@ -201,7 +201,7 @@ export async function PATCH(request: Request) {
       SET amount = ${amount} - 1
       WHERE id = $1 AND provider_id = $2
     `;
-    if (status == "ACCEPTED") {
+    if (status == "Disetujui") {
       const resultBuildingUpdate = await client.query(queryBuildingUpdate, [building_id, providerId]);
       if (resultBuildingUpdate.rowCount === 0) {
         await client.query('ROLLBACK');
@@ -213,11 +213,11 @@ export async function PATCH(request: Request) {
     let message = `Pesanan ${slug} `;
 
     switch (status) {
-      case "ACCEPTED":
-        message += 'diterima';
+      case "Disetujui":
+        message += 'disetujui';
         break;
-      case "REJECTED":
-        message += 'ditolak';
+      case "Tidak disetujui":
+        message += 'Tidak disetujui';
         break;
     }
 
