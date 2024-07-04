@@ -55,7 +55,7 @@ export default function CardManajemenProperti({ property } : { property : any}) 
         <div className="card-actions justify-end">
           {pathname == "/manajemen-properti/pengajuan-sewa" ? (
             <>
-              <button className="bg-green-500 text-white py-1 px-3 rounded-lg font-bold hover:bg-green-400" onClick={openModal}>
+              <button className="bg-blue-600 text-white py-1 px-3 rounded-lg font-bold hover:bg-blue-400" onClick={openModal}>
                 Terima
               </button>
               <button className="bg-red-600 text-white py-1 px-3 rounded-lg font-bold hover:bg-red-500" onClick={openModalTolak}>
@@ -71,8 +71,8 @@ export default function CardManajemenProperti({ property } : { property : any}) 
           )}
         </div>
       </div>
-      <ModalTerimaSewa />
-      <ModalTolakSewa />
+      <ModalTerimaSewa slug={property.slug} />
+      <ModalTolakSewa slug={property.slug}/>
     </div>
   );
 }

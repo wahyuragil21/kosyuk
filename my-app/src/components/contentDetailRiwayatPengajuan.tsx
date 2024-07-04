@@ -1,12 +1,12 @@
 import DetailImage from "./detailImage";
 import { GiRoundStar } from "react-icons/gi";
 
-export default function ContentDetailRiwayatPengajuan({ property }: { property : any}) {
+export default function ContentDetailRiwayatPengajuan({ property, isLogin, images, currentImage, setCurrentImage }: { property : any, isLogin : any, images : any, currentImage : any, setCurrentImage : any }) {
   return (
     <div className="bg-white py-8">
       <div className=" mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row -mx-4">
-          <DetailImage imageBuilding={property} />
+          <DetailImage imageBuilding={images} currentImage={currentImage} setCurrentImage={setCurrentImage} />
           <div className="md:flex-1 px-4 flex flex-col justify-between relative text-black">
             <div>
               <h2 className="text-2xl font-bold text-black">{property.nama}</h2>
@@ -28,23 +28,23 @@ export default function ContentDetailRiwayatPengajuan({ property }: { property :
 
               <span className="font-bold">Spesifikasi :</span>
               <p className="text-sm mt-2 mb-2 text-justify">
-                {property.spesifikasi.length > 0
+                {/* {property.spesifikasi.length > 0
                   ? property.spesifikasi.join(", ")
-                  : "-"}
+                  : "-"} */}
               </p>
 
               <span className="font-bold">Fasilitas :</span>
               <p className="text-sm mt-2 mb-2 text-justify">
-                {property.fasilitas.length > 0
+                {/* {property.fasilitas.length > 0
                   ? property.fasilitas.join(", ")
-                  : "-"}
+                  : "-"} */}
               </p>
 
               <span className="font-bold">Peraturan :</span>
               <p className="text-sm mt-2 mb-2 text-justify">
-                {property.peraturan.length > 0
+                {/* {property.peraturan.length > 0
                   ? property.peraturan.join(", ")
-                  : "-"}
+                  : "-"} */}
               </p>
               <div>
                 <span className="font-bold">Deskripsi Kost:</span>
