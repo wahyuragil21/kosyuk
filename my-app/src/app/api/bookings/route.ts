@@ -24,7 +24,7 @@ export async function GET(request: Request, { params }: { params: { id: string }
       queryPhone = `u.telp AS user_telp,`
       queryGroupBy = `  LEFT JOIN 
       "Users" u ON bk.user_id = u.id
-      WHERE u.id = ${id}
+      WHERE bk.provider_id = ${id}
       GROUP BY b.id, bk.slug, u.id`
     }
 
