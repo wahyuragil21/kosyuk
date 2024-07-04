@@ -1,41 +1,38 @@
 export const dynamic = 'force-dynamic' // defaults to auto
-import {Booking} from "../../../../types/types"
+import { Booking } from "../../../../types/types"
 
 import { NextResponse } from "next/server";
 import { pool } from "@/configDB/pg-config";
 import { mappingDetailBook } from "@/helpers/mapping";
 
-export async function GET(request: Request, {params}: {params: {id:string}}) {
+export async function GET(request: Request, { params }: { params: { slug: string } }) {
   try {
-
+    const { slug } = params
     const role = request.headers.get('user_role')
+    const id = request.headers.get('user_id')
 
-    let queryGroupBy = '' 
+
+    let queryGroupBy = ''
     let queryPhone = ''
     if (role == "user") {
+      queryPhone = `u.telp AS provider_telp,`
       queryGroupBy = `  LEFT JOIN 
-        "Providers" p ON b.provider_id = p.id
-    WHERE bk.id = $1
-    GROUP BY 
-        b.id, p.telp`
-      queryPhone = `p.telp AS provider_telp,
-  `
+      "Providers" u ON b.provider_id = u.id
+      WHERE bk.user_id = ${id} AND bk.slug = '${slug}'
+      GROUP BY b.id, u.id, bk.slug`
     } else {
+      queryPhone = `u.telp AS user_telp,`
       queryGroupBy = `  LEFT JOIN 
-        "Users" u ON bk.user_id = u.id
-    WHERE bk.id = $1
-    GROUP BY 
-        b.id, u.telp`
-      queryPhone = `u.telp AS user_telp,
-  `
+      "Users" u ON bk.user_id = u.id
+      WHERE u.id = ${id} AND bk.slug = '${slug}'
+      GROUP BY b.id, u.id, bk.slug`
     }
-    
-    const {id} = params
 
     let query = `
     SELECT 
         b.id,
         b.building_name,
+        b.thumbnail,
         b.address,
         b.coordinate,
         b.status,
@@ -45,23 +42,17 @@ export async function GET(request: Request, {params}: {params: {id:string}}) {
         b.description,
         b.provider_id,
         b.slug,
+        bk.slug as bk_slug,
         b.amount,
         ${queryPhone}
-        COALESCE((array_agg( i.image_url) FILTER (WHERE i.id IS NOT NULL))[1], '') AS thumbnail,
-        COALESCE(
-          json_agg(DISTINCT i.image_url) FILTER (
-          WHERE i.id IS NOT NULL 
-          AND i.image_url != (SELECT (array_agg(i2.image_url) FILTER (WHERE i2.id IS NOT NULL))[1] FROM "Images" i2 WHERE i2.building_id = b.id)
-          ), 
-          '[]'
-        ) AS images,
+        COALESCE(json_agg(DISTINCT i.image_url) FILTER (WHERE i.id IS NOT NULL), '[]') AS images,
         COALESCE(json_agg(DISTINCT f.facility_name) FILTER (WHERE f.id IS NOT NULL), '[]') AS facilities,
         COALESCE(json_agg(DISTINCT bk.status) FILTER (WHERE bk.id IS NOT NULL), '[]') AS bookings,
         COALESCE(json_agg(DISTINCT r.rules_name) FILTER (WHERE r.id IS NOT NULL), '[]') AS rules,
         COALESCE(json_agg(DISTINCT s.specification_name) FILTER (WHERE s.id IS NOT NULL), '[]') AS specifications
-    FROM 
+      FROM 
         "Buildings" b
-    LEFT JOIN 
+      LEFT JOIN 
           "Images" i ON b.id = i.building_id
       LEFT JOIN 
           "Building_facilities" bf ON b.id = bf.building_id
@@ -78,15 +69,16 @@ export async function GET(request: Request, {params}: {params: {id:string}}) {
       LEFT JOIN 
           "Specifications" s ON s.id = bs.building_id
     ${queryGroupBy}
-    ORDER BY 
-        b.id;
+      ORDER BY 
+          b.id;
   `
 
-    const { rows }: {rows: Booking[]} = await pool.query(query,[id])
-    
-    const Bookings : Booking = rows[0]
+    const { rows }: { rows: Booking[] } = await pool.query(query)
+    console.log(rows);
 
-    return NextResponse.json(mappingDetailBook(Bookings))
+    const Bookings: Booking[] = rows
+
+    return NextResponse.json(mappingDetailBook(Bookings[0]))
 
   } catch (error) {
     console.log(error);
@@ -99,13 +91,13 @@ export async function PATCH(request: Request) {
 
     const providerId = request.headers.get('user_id')
     const body = await request.json()
-    const {status} = body
+    const { status } = body
     const patch = await pool.query(`
       UPDATE "Bookings"
       SET "status" = '${status}',
       WHERE condition;
     `)
-    
+
     const Bookings = patch
 
     return NextResponse.json(Bookings)
