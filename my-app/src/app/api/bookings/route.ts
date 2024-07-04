@@ -175,13 +175,14 @@ export async function PATCH(request: Request) {
     `;
     const { rows: [{ amount }] } = await client.query(queryAmount, [building_id]);
 
+    if (statusBook === "Disetujui" && status === "Disetujui") {
+      return NextResponse.json({ message: 'pesanan telah diterima' }, { status: 400 });
+    }
+
     if (amount < 1 && status === "Disetujui") {
       return NextResponse.json({ message: 'tidak dapat menerima karena sudah penuh' }, { status: 400 });
     }
 
-    if (statusBook === "Disetujui") {
-      return NextResponse.json({ message: 'pesanan telah diterima' }, { status: 400 });
-    }
 
     await client.query('BEGIN');
 
