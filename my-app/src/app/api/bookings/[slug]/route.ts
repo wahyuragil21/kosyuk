@@ -8,8 +8,11 @@ import { mappingDetailBook } from "@/helpers/mapping";
 export async function GET(request: Request, { params }: { params: { slug: string } }) {
   try {
     const { slug } = params
+    console.log(slug);
+
     const role = request.headers.get('user_role')
     const id = request.headers.get('user_id')
+    console.log(id);
 
 
     let queryGroupBy = ''
@@ -18,13 +21,13 @@ export async function GET(request: Request, { params }: { params: { slug: string
       queryPhone = `u.telp AS provider_telp,`
       queryGroupBy = `  LEFT JOIN 
       "Providers" u ON b.provider_id = u.id
-      WHERE bk.user_id = ${id} AND bk.slug = '${slug}'
+      WHERE bk.slug = '${slug}'
       GROUP BY b.id, u.id, bk.slug`
     } else {
       queryPhone = `u.telp AS user_telp,`
       queryGroupBy = `  LEFT JOIN 
       "Users" u ON bk.user_id = u.id
-      WHERE u.id = ${id} AND bk.slug = '${slug}'
+      WHERE bk.slug = '${slug}'
       GROUP BY b.id, u.id, bk.slug`
     }
 
@@ -74,7 +77,6 @@ export async function GET(request: Request, { params }: { params: { slug: string
   `
 
     const { rows }: { rows: Booking[] } = await pool.query(query)
-    console.log(rows);
 
     const Bookings: Booking[] = rows
 
