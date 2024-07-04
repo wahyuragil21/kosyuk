@@ -88,8 +88,10 @@ export async function POST(request: Request) {
   const user_id = request.headers.get('user_id')
   const user_email = request.headers.get('user_email')
   const { building_id, duration, date } = await request.json()
+  console.log(date);
+
   const query = `INSERT INTO "Bookings"(user_id, provider_id, building_id, duration, status, slug, date)
-    VALUES ($1,$2,$3,$4,$5,$6)
+    VALUES ($1,$2,$3,$4,$5,$6,$7)
     RETURNING slug  ;`
 
   const querySelect = `
@@ -107,7 +109,7 @@ export async function POST(request: Request) {
   const provider_email = rows[0].email
   const building_name = rows[0].building_name
   const provider_id = rows[0].provider_id
-  const insert = await pool.query(query, [user_id, provider_id, building_id, duration, 'PENDING', 'book-' + makeSlug(5), new Date(date)])
+  const insert = await pool.query(query, [user_id, provider_id, building_id, duration, 'PENDING', 'book-' + makeSlug(5), date])
 
   const transporter = nodemailer.createTransport({
     service: "gmail",
