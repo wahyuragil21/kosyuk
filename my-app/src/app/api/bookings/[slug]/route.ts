@@ -92,12 +92,11 @@ export async function PATCH(request: Request) {
   try {
 
     const providerId = request.headers.get('user_id')
-    const body = await request.json()
-    const { status } = body
+    const { slug, status, catatan, rekening } = await request.json()
     const patch = await pool.query(`
       UPDATE "Bookings"
       SET "status" = '${status}',
-      WHERE condition;
+      WHERE slug = '${slug}';
     `)
 
     const Bookings = patch

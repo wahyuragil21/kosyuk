@@ -162,8 +162,9 @@ export async function PATCH(request: Request) {
       return NextResponse.json({ message: 'Unauthorized' }, { status: 403 });
     }
 
-    const { slug, status } = await request.json();
+    const { slug, status, nama, rekening, catatan } = await request.json();
     const { rows: [{ building_id, status: statusBook }] } = await client.query('SELECT * FROM "Bookings" WHERE slug = $1', [slug]);
+    console.log(building_id);
 
 
     const queryAmount = `
@@ -197,14 +198,15 @@ export async function PATCH(request: Request) {
 
     const queryBuildingUpdate = `
       UPDATE "Buildings"
-      SET amount = amount - 1
+      SET amount = ${amount} - 1
       WHERE id = $1 AND provider_id = $2
     `;
-    await client.query(queryBuildingUpdate, [building_id, providerId]);
-    const resultBuildingUpdate = await client.query(queryBuildingUpdate, [building_id, providerId]);
-    if (resultBuildingUpdate.rowCount === 0) {
-      await client.query('ROLLBACK');
-      return NextResponse.json({ message: 'No building found to update' }, { status: 404 });
+    if (status == "ACCEPTED") {
+      const resultBuildingUpdate = await client.query(queryBuildingUpdate, [building_id, providerId]);
+      if (resultBuildingUpdate.rowCount === 0) {
+        await client.query('ROLLBACK');
+        return NextResponse.json({ message: 'No building found to update' }, { status: 404 });
+      }
     }
     await client.query('COMMIT');
 

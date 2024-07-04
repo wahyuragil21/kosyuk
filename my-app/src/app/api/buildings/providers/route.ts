@@ -108,7 +108,7 @@ export async function POST(request: Request) {
     const providerId = request.headers.get('user_id')
 
     let formData = await request.formData() as FormData
-    let key = ['building_name', 'price', 'type', 'category', 'thumbnail', 'specification', 'facility', 'rule', 'images', 'address', 'coordinate', 'price', 'description']
+    let key = ['building_name', 'price', 'type', 'category', 'thumbnail', 'specification', 'facility', 'rule', 'images', 'address', 'coordinate', 'price', 'description', 'amount']
 
     const mappingData = async () => {
       const data = {} as any;
