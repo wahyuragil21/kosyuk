@@ -4,7 +4,7 @@ import ModalPengajuan from "./modalPengajuan";
 import { FaWhatsapp } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 
-export default function ContentDetailKost({ kosts, isLogin } : {kosts: any, isLogin: boolean}) {
+export default function ContentDetailKost({ kosts, isLogin, images, currentImage, setCurrentImage } : {kosts: any, isLogin: boolean, images: any, currentImage: any, setCurrentImage: any}) {
   
   const router = useRouter();
   const openModal = () => {
@@ -19,7 +19,7 @@ export default function ContentDetailKost({ kosts, isLogin } : {kosts: any, isLo
     <div className="bg-white py-8">
       <div className=" mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row -mx-4">
-          <DetailImage imageBuilding={kosts} />
+          <DetailImage imageBuilding={images} currentImage={currentImage} setCurrentImage={setCurrentImage} />
           <div className="md:flex-1 px-4 flex flex-col justify-between relative text-black">
             <div>
               <h2 className="text-2xl font-bold text-black">{kosts?.nama}</h2>
@@ -81,7 +81,7 @@ export default function ContentDetailKost({ kosts, isLogin } : {kosts: any, isLo
           </div>
         </div>
       </div>
-      <ModalPengajuan />
+      <ModalPengajuan id={kosts?.id}/>
     </div>
   );
 }

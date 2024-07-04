@@ -1,24 +1,54 @@
-import { Tangerine } from "next/font/google";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-export default function ModalPengajuan() {
-  const [formData, setFormData] = useState({
-    nama: "",
-    durasi: "",
-    tanggal: "",
+export default function ModalPengajuan({ id }: { id: any }) {
+  const [form, setForm] = useState({
+    duration: "",
+    date: "",
+    building_id: "",
   });
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
+    setForm({
+      ...form,
       [name]: value,
     });
   };
 
-  const handleSubmit = () => {
-    console.log(formData);
-    closeModal();
+  useEffect(() => {
+    setForm((prevForm) => ({
+      ...prevForm,
+      building_id: id,
+    }));
+  }, [id]);
+
+  const handleSubmit = async () => {
+    const response = await fetch(
+      process.env.NEXT_PUBLIC_URL_SERVER + "/api/bookings",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify( form ),
+      }
+    );
+    // const result = await response.json();
+    console.log(form);
+    console.log(response);
+    
+
+    if (response.ok) {
+      setForm({
+        duration: "",
+        date: "",
+        building_id: "",
+      });
+
+      closeModal();
+    } else {
+      // alert(result.error);
+    }
   };
 
   const closeModal = () => {
@@ -33,7 +63,7 @@ export default function ModalPengajuan() {
             Form Pengajuan Sewa
           </h3>
           <form method="dialog" action={handleSubmit}>
-            <div className="mb-4">
+            {/* <div className="mb-4">
               <label
                 className="block text-gray-700 text-sm font-bold mb-2"
                 htmlFor="nama"
@@ -49,41 +79,44 @@ export default function ModalPengajuan() {
                 placeholder="Masukkan Nama"
                 required
               />
-            </div>
+            </div> */}
             <div className="mb-4 relative">
               <label
                 className="block text-gray-700 text-sm font-bold mb-2"
-                htmlFor="durasi"
+                htmlFor="duration"
               >
                 Durasi
               </label>
               <select
-                id="durasi"
-                name="durasi"
+                id="duration"
+                name="duration"
                 onChange={handleChange}
+                value={form.duration}
                 className="select select-bordered shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-slate-100"
                 defaultValue=""
               >
                 <option value="" disabled hidden>
                   Pilih Durasi
                 </option>
-                <option value="3 bulan">3 Bulan</option>
-                <option value="6 bulan">6 Bulan</option>
-                <option value="1 tahun">1 Tahun</option>
+                <option value="1">1 Bulan</option>
+                <option value="3">3 Bulan</option>
+                <option value="6">6 Bulan</option>
+                <option value="12">12 bulan</option>
               </select>
             </div>
             <div className="mb-4">
               <label
                 className="block text-black text-sm font-bold mb-2"
-                htmlFor="tanggal"
+                htmlFor="date"
               >
-                Tanggal Masuk<span className="text-red-500">*</span>
+                Tanggal Masuk <span className="text-red-500">*</span>
               </label>
               <input
-                id="tanggal"
-                name="tanggal"
+                id="date"
+                name="date"
                 onChange={handleChange}
                 type="date"
+                value={form.date}
                 placeholder="Pilih Tanggal Masuk"
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-slate-100"
                 required
