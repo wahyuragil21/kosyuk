@@ -1,25 +1,60 @@
-import { Catamaran } from "next/font/google";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-export default function ModalTerimaSewa() {
-
-  const [formData, setFormData] = useState({
+export default function ModalTerimaSewa({slug} : {slug : any}) {
+  const [form, setForm] = useState({
     nama : "",
-    noRekening: "",
+    rekening: "",
     catatan: "",
+    status : "Disetujui",
+    slug : ""
   })
 
   const handleChange = (e : any) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
+    setForm({
+      ...form,
       [name]: value,
     });
   };
 
-  const handleSubmit = () => {
-    console.log(formData);
+  useEffect(() => {
+    setForm((prevForm) => ({
+      ...prevForm,
+      slug: slug,
+    }));
+  }, [slug]);
+
+  const handleSubmit = async () => {
+    const response = await fetch(
+      process.env.NEXT_PUBLIC_URL_SERVER + "/api/bookings",
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify( form ),
+      }
+    );
+    console.log(form);
+    console.log(response);
+
+    if (response.ok) {
+      setForm({
+        nama : "",
+        rekening: "",
+        catatan: "",
+        status : "",
+        slug : ""
+      })
+      closeModal();
+    } else {
+      // alert(result.error);
+    }
   }
+
+  const closeModal = () => {
+    (document.getElementById("my_modal_2") as HTMLDialogElement)?.close();
+  };
     
     return (
         <dialog id="my_modal_2" className="modal">
@@ -41,6 +76,7 @@ export default function ModalTerimaSewa() {
                 type="text"
                 onChange={handleChange}
                 placeholder="John Doe"
+                value={form.nama}
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-slate-100"
               />
             </div>
@@ -52,8 +88,9 @@ export default function ModalTerimaSewa() {
                 No Rekening - Bank :
               </label>
               <input
-                id="noRekening"
-                name="noRekening"
+                id="rekening"
+                name="rekening"
+                value={form.rekening}
                 onChange={handleChange}
                 type="text"
                 placeholder="1234567890 - BCA"
@@ -66,42 +103,20 @@ export default function ModalTerimaSewa() {
               >
                 Catatan :
               </label>
-            <textarea name="catatan" id="catatan" onChange={handleChange} className="textarea textarea-bordered bg-slate-100 text-gray-700 w-full" placeholder="Contoh : Silahkan melakukan pembayaran sewa paling lambat 3 hari setelah pemesanan"></textarea>
+            <textarea name="catatan" id="catatan" onChange={handleChange} value={form.catatan} className="textarea textarea-bordered bg-slate-100 text-gray-700 w-full" placeholder="Contoh : Silahkan melakukan pembayaran sewa paling lambat 3 hari setelah pemesanan"></textarea>
            
             <div className="modal-action">
-              <button
+            <button
                 type="submit"
-                style={{
-                  padding: "0.5rem 1rem",
-                  border: "none",
-                  borderRadius: "0.375rem",
-                  backgroundColor: "#22C55E",
-                  color: "white",
-                  transition: "background-color 0.3s ease",
-                }}
-                onMouseOver={(e) =>
-                  (e.currentTarget.style.backgroundColor = "#4ADE80")
-                }
-                onMouseOut={(e) =>
-                  (e.currentTarget.style.backgroundColor = "#22C55E")
-                }>
+                className="p-2 px-4 rounded-md bg-blue-600 text-white transition-colors duration-300 ease-in-out hover:bg-blue-500"
+              >
                 Kirim
               </button>
               <button
-                style={{
-                  padding: "0.5rem 1rem",
-                  border: "none",
-                  borderRadius: "0.375rem",
-                  backgroundColor: "#6b7280",
-                  color: "white",
-                  transition: "background-color 0.3s ease",
-                }}
-                onMouseOver={(e) =>
-                  (e.currentTarget.style.backgroundColor = "#9ca3af")
-                }
-                onMouseOut={(e) =>
-                  (e.currentTarget.style.backgroundColor = "#6b7280")
-                }>
+                type="button"
+                onClick={closeModal}
+                className="p-2 px-4 rounded-md bg-orange-600 text-white transition-colors duration-300 ease-in-out hover:bg-orange-500"
+              >
                 Batal
               </button>
             </div>

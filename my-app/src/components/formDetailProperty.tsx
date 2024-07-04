@@ -6,9 +6,8 @@ import { FaTrash } from "react-icons/fa";
 import { FaMinusCircle } from "react-icons/fa";
 import { usePathname, useRouter } from "next/navigation";
 
-export default function FormTambahProperti() {
-
-
+export default function FormDetailProperti() {
+  
   
   const router = useRouter();
   let obj: any = {
@@ -39,8 +38,6 @@ export default function FormTambahProperti() {
   const [thumbnailPreview, setThumbnailPreview] = useState(null);
 
   const pathname = usePathname();
-
-
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
@@ -183,20 +180,11 @@ export default function FormTambahProperti() {
     setSelectPeraturan(data);
   };
 
-  const fetchDetailProperty = async () => {
-    console.log("fetchDetailProperty")
-  }
-
-
   useEffect(() => {
     fetchSpecification();
     fetchFasilitas();
     fetchPeraturan();
-
-    if (pathname !== "/tambah-properti") {
-      fetchDetailProperty();
-    }
-  }, [pathname]);
+  }, []);
 
   const handleSubmit = async () => {
     const formData = new FormData();

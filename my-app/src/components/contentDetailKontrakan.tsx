@@ -5,7 +5,7 @@ import { FaWhatsapp } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 
 
-export default function ContentDetailKontrakan({ kontrakan, isLogin } : {kontrakan: any, isLogin: boolean}) {
+export default function ContentDetailKontrakan({ kontrakan, isLogin, images, currentImage, setCurrentImage } : {kontrakan: any, isLogin: boolean, images: any, currentImage: any, setCurrentImage: any}) {
   const router = useRouter();
   const openModal = () => {
     if (!isLogin) {
@@ -19,7 +19,7 @@ export default function ContentDetailKontrakan({ kontrakan, isLogin } : {kontrak
     <div className="bg-white py-8">
       <div className=" mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row -mx-4">
-          <DetailImage imageBuilding={kontrakan} />
+          <DetailImage imageBuilding={images} currentImage={currentImage} setCurrentImage={setCurrentImage} />
           <div className="md:flex-1 px-4 flex flex-col justify-between relative text-black">
             <div>
               <h2 className="text-2xl font-bold text-black">
@@ -43,7 +43,7 @@ export default function ContentDetailKontrakan({ kontrakan, isLogin } : {kontrak
 
               <span className="font-bold">Spesifikasi :</span>
               <p className="text-sm mt-2 mb-2 text-justify">
-                {kontrakan.spesifikasi.length > 0
+                {kontrakan.spesifikasi?.length > 0
                   ? kontrakan.spesifikasi.join(", ")
                   : "-"}
               </p>

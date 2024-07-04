@@ -1,4 +1,5 @@
 'use server'
+import { getCookies } from "next-client-cookies/server";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
@@ -7,6 +8,9 @@ export async function Logout() {
     redirect('/')
 }
 
-export async function Login(access_token: string) {
-    cookies().set('Authorization', access_token)
+export async function isLoginCek() {
+    const { get, set } = getCookies();
+    const token = get('Authorization');
+    const isLogin = token ? true : false;
+    return isLogin
 }

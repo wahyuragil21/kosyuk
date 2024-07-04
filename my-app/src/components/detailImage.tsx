@@ -1,9 +1,11 @@
 'use client'
 import Image from "next/image";
-import React from "react";
+import React, { useEffect } from "react";
 
-export default function DetailImage({imageBuilding} : {imageBuilding: any}) {
-    const [currentImage, setCurrentImage] = React.useState(imageBuilding?.images);
+export default function DetailImage({imageBuilding, currentImage , setCurrentImage} : {imageBuilding: any, currentImage : any, setCurrentImage : any}) {
+    console.log(imageBuilding);
+    
+    // const [currentImage, setCurrentImage] = React.useState(imageBuilding[0]);
 
     const handleImageClick = (image: string) => {
         setCurrentImage(image);
@@ -12,7 +14,7 @@ export default function DetailImage({imageBuilding} : {imageBuilding: any}) {
     return (
         <div className="md:flex px-4">
         <div className="flex-mx-2">
-            {imageBuilding.images?.map((image : any, index : number) => (
+            {imageBuilding?.map((image : any, index : number) => (
 
                 <div key={index} className=" px-2">
                     <Image
