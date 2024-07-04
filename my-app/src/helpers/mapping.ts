@@ -2,6 +2,7 @@ export const mappingBuildings = (data: any) => {
 
   let map = data.map((e: any) => {
     return {
+      id: e.id,
       nama: e.building_name,
       alamat: e.address,
       slug: e.slug,
@@ -19,6 +20,7 @@ export const mappingBuildings = (data: any) => {
 
 export const mappingDetail = (data: any) => {
   return {
+    id: data.id,
     nama: data.building_name,
     slug: data.slug,
     status: data.status,
@@ -40,6 +42,7 @@ export const mappingBookings = (data: any) => {
 
   return data.map((e: any) => {
     return {
+      id: e.id,
       nama: e.building_name,
       slug: e.slug,
       alamat: e.address,
@@ -58,6 +61,7 @@ export const mappingBookings = (data: any) => {
 
 export const mappingDetailBook = (data: any) => {
   return {
+    id: data.id,
     nama: data.building_name,
     slug: data.slug,
     status: data.status,
