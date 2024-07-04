@@ -44,7 +44,7 @@ export const mappingBookings = (data: any) => {
     return {
       id: e.id,
       nama: e.building_name,
-      slug: e.slug,
+      slug: e.bk_slug,
       alamat: e.address,
       thumbnail: e.thumbnail,
       fasilitas: e.facilities,
@@ -63,7 +63,7 @@ export const mappingDetailBook = (data: any) => {
   return {
     id: data.id,
     nama: data.building_name,
-    slug: data.slug,
+    slug: data.bk_slug,
     status: data.status,
     description: data.description,
     alamat: data.address,

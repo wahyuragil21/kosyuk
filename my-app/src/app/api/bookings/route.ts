@@ -19,13 +19,13 @@ export async function GET(request: Request, { params }: { params: { id: string }
       queryGroupBy = `  LEFT JOIN 
       "Providers" u ON b.provider_id = u.id
       WHERE bk.user_id = ${id}
-      GROUP BY b.id, u.id`
+      GROUP BY b.id, bk.slug, u.id`
     } else {
       queryPhone = `u.telp AS user_telp,`
       queryGroupBy = `  LEFT JOIN 
       "Users" u ON bk.user_id = u.id
       WHERE u.id = ${id}
-      GROUP BY b.id, u.id`
+      GROUP BY b.id, bk.slug, u.id`
     }
 
     let query = `
@@ -41,7 +41,7 @@ export async function GET(request: Request, { params }: { params: { id: string }
         b.price,
         b.description,
         b.provider_id,
-        b.slug,
+        bk.slug as bk_slug,
         b.amount,
         ${queryPhone}
         COALESCE(json_agg(DISTINCT i.image_url) FILTER (WHERE i.id IS NOT NULL), '[]') AS images,
