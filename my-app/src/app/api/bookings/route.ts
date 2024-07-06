@@ -12,9 +12,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
     const role = request.headers.get('user_role')
     const id = request.headers.get('user_id')
 
-    const filters: any = {}
-    const params = request.nextUrl.search.substring(1).split('=')[1].split('-').join(" ")
-    console.log(params);
+    const status = request.nextUrl.search.substring(1).split('=')[1].split('-').join(" ")
 
     // params.search.substring(1).split('&').forEach(e => { filters[e.split('=')[0]] = e.split('=')[1] })
 
@@ -30,7 +28,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
       queryPhone = `u.telp AS user_telp,`
       queryGroupBy = `  LEFT JOIN 
       "Users" u ON bk.user_id = u.id
-      WHERE bk.provider_id = ${id} AND bk.status = '${params}'
+      WHERE bk.provider_id = ${id} AND bk.status = '${status}'
       GROUP BY b.id, bk.slug, u.id, bk.status`
     }
 
