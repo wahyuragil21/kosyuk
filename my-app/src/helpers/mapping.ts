@@ -52,7 +52,7 @@ export const mappingBookings = (data: any) => {
       images: e.images,
       type: e.type,
       kategori: e.category,
-      statusPengajuan: e.bookings[0],
+      statusPengajuan: e.bk_status,
       harga: e.price,
       kontak: e.provider_telp ?? e.user_telp,
     }

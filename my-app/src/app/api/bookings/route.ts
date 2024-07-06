@@ -2,15 +2,21 @@ export const dynamic = 'force-dynamic' // defaults to auto
 import { Booking } from "../../../types/types"
 const nodemailer = require("nodemailer");
 
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { pool } from "@/configDB/pg-config";
 import { mappingBookings, mappingDetailBook } from "@/helpers/mapping";
 import { makeSlug } from "@/helpers/addSlug";
 
-export async function GET(request: Request, { params }: { params: { id: string } }) {
+export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
   try {
     const role = request.headers.get('user_role')
     const id = request.headers.get('user_id')
+
+    const filters: any = {}
+    const params = request.nextUrl.search.substring(1).split('=')[1].split('-').join(" ")
+    console.log(params);
+
+    // params.search.substring(1).split('&').forEach(e => { filters[e.split('=')[0]] = e.split('=')[1] })
 
     let queryGroupBy = ''
     let queryPhone = ''
@@ -19,13 +25,13 @@ export async function GET(request: Request, { params }: { params: { id: string }
       queryGroupBy = `  LEFT JOIN 
       "Providers" u ON b.provider_id = u.id
       WHERE bk.user_id = ${id}
-      GROUP BY b.id, bk.slug, u.id`
+      GROUP BY b.id, bk.slug, u.id, bk.status`
     } else {
       queryPhone = `u.telp AS user_telp,`
       queryGroupBy = `  LEFT JOIN 
       "Users" u ON bk.user_id = u.id
-      WHERE bk.provider_id = ${id}
-      GROUP BY b.id, bk.slug, u.id`
+      WHERE bk.provider_id = ${id} AND bk.status = '${params}'
+      GROUP BY b.id, bk.slug, u.id, bk.status`
     }
 
     let query = `
@@ -42,6 +48,7 @@ export async function GET(request: Request, { params }: { params: { id: string }
         b.description,
         b.provider_id,
         bk.slug as bk_slug,
+        bk.status as bk_status,
         b.amount,
         ${queryPhone}
         COALESCE(json_agg(DISTINCT i.image_url) FILTER (WHERE i.id IS NOT NULL), '[]') AS images,
@@ -197,18 +204,6 @@ export async function PATCH(request: Request) {
       return NextResponse.json({ message: 'No booking found to update' }, { status: 404 });
     }
 
-    const queryBuildingUpdate = `
-      UPDATE "Buildings"
-      SET amount = ${amount} - 1
-      WHERE id = $1 AND provider_id = $2
-    `;
-    if (status == "Disetujui") {
-      const resultBuildingUpdate = await client.query(queryBuildingUpdate, [building_id, providerId]);
-      if (resultBuildingUpdate.rowCount === 0) {
-        await client.query('ROLLBACK');
-        return NextResponse.json({ message: 'No building found to update' }, { status: 404 });
-      }
-    }
     await client.query('COMMIT');
 
     let message = `Pesanan ${slug} `;
