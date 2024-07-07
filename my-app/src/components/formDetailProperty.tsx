@@ -32,7 +32,6 @@ export default function FormDetailProperti({ slug }: { slug: any }) {
   let data: any = [];
 
   const [fasilitas, setFasilitas] = useState<string>("");
-  const [kecamatan, setKecamatan] = useState<string>("");
   const [peraturan, setPeraturan] = useState<string>("");
   const [spesifikasi, setSpesifikasi] = useState<string>("");
   const [fasilitasPreview, setFasilitasPreview] = useState<string[]>([]);
@@ -190,11 +189,11 @@ export default function FormDetailProperti({ slug }: { slug: any }) {
 
   const fetchDetailProperty = async () => {
     const response = await fetch(
-      process.env.NEXT_PUBLIC_URL_SERVER + `/api/buildings/users/${slug}`,
+      process.env.NEXT_PUBLIC_URL_SERVER + `/api/buildings/providers/${slug}`,
       { cache: "no-store" }
     );
     const data = await response.json();
-
+    
     if (data.message == "Unauthorzied / Auth timeout") {
       return router.push("/login/pemilik");
     }
@@ -252,7 +251,7 @@ export default function FormDetailProperti({ slug }: { slug: any }) {
         if (form[key] == null || form[key] == undefined || form[key] == "")
           flagIsNotEmpty = true;
         if (key === "address") {
-          formData.append(key, form[key] + ", " + kecamatan + ", Pekanbaru");
+          formData.append(key, form[key]);
         } else {
           formData.append(key, form[key]);
         }
@@ -274,12 +273,9 @@ export default function FormDetailProperti({ slug }: { slug: any }) {
       return;
     }
   
-    // formData.forEach((value, key) => {
-    //   console.log(key, value);
-    // });
 
     const response = await fetch(
-      process.env.NEXT_PUBLIC_URL_SERVER + `/api/buildings/users/${slug}`,
+      process.env.NEXT_PUBLIC_URL_SERVER + `/api/buildings/providers/${slug}`,
       {
         method: "PATCH",
         body: formData,

@@ -104,16 +104,16 @@ export default function NavbarProduct({
                 {dropdownOpenCariApa && (
                   <ul className="dropdown-menu absolute top-10 bg-white shadow-md py-2 w-56 rounded-md">
                     <li className="hover:bg-gray-100">
-                      <a href="/kost" className="block px-4 py-2 font-bold">
-                        Kost
-                      </a>
-                    </li>
-                    <li className="hover:bg-gray-100">
                       <a
                         href="/kontrakan"
                         className="block px-4 py-2 font-bold"
                       >
                         Kontrakan
+                      </a>
+                    </li>
+                    <li className="hover:bg-gray-100">
+                      <a href="/tempat-usaha" className="block px-4 py-2 font-bold">
+                        Tempat Usaha
                       </a>
                     </li>
                   </ul>

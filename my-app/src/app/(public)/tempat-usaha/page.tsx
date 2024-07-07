@@ -34,6 +34,8 @@ export default function Kostan() {
       );
     }
     const data = await response.json();
+    console.log(data);
+    
     setKosts(data);
     setLoading(false);
   };
