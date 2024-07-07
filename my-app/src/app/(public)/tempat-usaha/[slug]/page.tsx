@@ -37,9 +37,6 @@ export default function KostanDetail({ params }: { params: { slug: string } }) {
   return (
     <>
       <div className="flex flex-wrap mb-3 mt-5 w-11/12 m-auto">
-        {isLoading ? (
-          <SkeletonDetail />
-        ):(
           <ContentDetailKost
             kosts={kosts}
             isLogin={isLogin}
@@ -47,7 +44,6 @@ export default function KostanDetail({ params }: { params: { slug: string } }) {
             currentImage={currentImage}
             setCurrentImage={setCurrentImage}
           />
-        )}
       </div>
       <Footer />
     </>

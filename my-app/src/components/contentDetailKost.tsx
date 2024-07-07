@@ -4,8 +4,19 @@ import ModalPengajuan from "./modalPengajuan";
 import { FaWhatsapp } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 
-export default function ContentDetailKost({ kosts, isLogin, images, currentImage, setCurrentImage } : {kosts: any, isLogin: boolean, images: any, currentImage: any, setCurrentImage: any}) {
-  
+export default function ContentDetailKost({
+  kosts,
+  isLogin,
+  images,
+  currentImage,
+  setCurrentImage,
+}: {
+  kosts: any;
+  isLogin: boolean;
+  images: any;
+  currentImage: any;
+  setCurrentImage: any;
+}) {
   const router = useRouter();
   const openModal = () => {
     if (!isLogin) {
@@ -13,13 +24,17 @@ export default function ContentDetailKost({ kosts, isLogin, images, currentImage
       return;
     }
     (document.getElementById("my_modal_1") as HTMLDialogElement)?.showModal();
-    };
-  
+  };
+
   return (
     <div className="bg-white py-8">
       <div className=" mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row -mx-4">
-          <DetailImage imageBuilding={images} currentImage={currentImage} setCurrentImage={setCurrentImage} />
+          <DetailImage
+            imageBuilding={images}
+            currentImage={currentImage}
+            setCurrentImage={setCurrentImage}
+          />
           <div className="md:flex-1 px-4 flex flex-col justify-between relative text-black w-full">
             <div>
               <h2 className="text-2xl font-bold text-black">{kosts?.nama}</h2>
@@ -41,12 +56,20 @@ export default function ContentDetailKost({ kosts, isLogin, images, currentImage
 
               <span className="font-bold">Fasilitas :</span>
               <p className="text-sm mt-2 mb-2 text-justify">
-              {kosts.fasilitas?.length > 0 ? kosts.fasilitas?.join(", ") : "-"}
+                {kosts.fasilitas?.length > 0
+                  ? kosts.fasilitas
+                      .map((fasilitas: any) => fasilitas.facility_name)
+                      .join(", ")
+                  : "-"}
               </p>
 
               <span className="font-bold">Peraturan :</span>
               <p className="text-sm mt-2 mb-2 text-justify">
-              {kosts.peraturan?.length > 0 ? kosts.peraturan?.join(", ") : "-"}
+                {kosts.peraturan?.length > 0
+                  ? kosts.peraturan
+                      .map((peraturan: any) => peraturan.rules_name)
+                      .join(", ")
+                  : "-"}
               </p>
               <div>
                 <span className="font-bold">Deskripsi Kost:</span>
@@ -81,7 +104,7 @@ export default function ContentDetailKost({ kosts, isLogin, images, currentImage
           </div>
         </div>
       </div>
-      <ModalPengajuan id={kosts?.id}/>
+      <ModalPengajuan id={kosts?.id} />
     </div>
   );
 }

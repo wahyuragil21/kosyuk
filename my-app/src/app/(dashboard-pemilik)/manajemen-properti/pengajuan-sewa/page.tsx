@@ -35,7 +35,6 @@ export default function PengajuanSewa() {
     const response = await fetch(process.env.NEXT_PUBLIC_URL_SERVER + '/api/bookings?status=Disetujui', { cache: 'no-store', })
     const data  = await response.json()
 
-    console.log(data);
     
     if (data.message == "Unauthorzied / Auth timeout") {
       return router.push("/login/pemilik");
