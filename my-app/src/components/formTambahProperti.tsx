@@ -5,12 +5,14 @@ import { useEffect, useState } from "react";
 import { FaTrash } from "react-icons/fa";
 import { FaMinusCircle } from "react-icons/fa";
 import { usePathname, useRouter } from "next/navigation";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useFormStatus } from "react-dom";
 
 export default function FormTambahProperti() {
-
-
-  
   const router = useRouter();
+  const { pending } = useFormStatus();
+
   let obj: any = {
     building_name: "",
     address: "",
@@ -39,8 +41,6 @@ export default function FormTambahProperti() {
   const [thumbnailPreview, setThumbnailPreview] = useState(null);
 
   const pathname = usePathname();
-
-
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
@@ -184,9 +184,8 @@ export default function FormTambahProperti() {
   };
 
   const fetchDetailProperty = async () => {
-    console.log("fetchDetailProperty")
-  }
-
+    console.log("fetchDetailProperty");
+  };
 
   useEffect(() => {
     fetchSpecification();
@@ -202,7 +201,12 @@ export default function FormTambahProperti() {
     const formData = new FormData();
     // Logic to handle form
     for (const key in form) {
-      if (key === "images" || key === "facility" || key === "rule" || key === "specification") {
+      if (
+        key === "images" ||
+        key === "facility" ||
+        key === "rule" ||
+        key === "specification"
+      ) {
         for (const keys of form[key]) {
           formData.append(key, keys);
         }
@@ -215,16 +219,37 @@ export default function FormTambahProperti() {
       process.env.NEXT_PUBLIC_URL_SERVER + "/api/buildings/providers",
       {
         method: "POST",
-        body: formData
+        body: formData,
       }
     );
 
     const result = await response.json();
     
+
     if (response.ok) {
+      toast.success("Property berhasil ditamabahkan!", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
       router.push("/properti-saya");
     } else {
-      console.error(result.error);
+      toast.error("Property gagal ditambahkan!", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      router.push("/tambah-properti");
     }
   };
 
@@ -390,29 +415,10 @@ export default function FormTambahProperti() {
                 // required
               ></textarea>
             </div>
-
           </div>
 
           <div className="col-span-1 mt-12">
-
-          <div className="mb-4">
-              <label
-                className="block text-gray-700 text-sm font-bold mb-2"
-                htmlFor="price"
-              >
-                Jumlah Kamar (Kost)
-              </label>
-              <input
-                type="number"
-                name="amount"
-                id="amount"
-                value={form.amount}
-                onChange={handleChange}
-                className="bg-slate-100 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                // required
-              />
-            </div>
-
+    
             <div className="mb-4">
               <label
                 htmlFor="kategori"
@@ -435,6 +441,44 @@ export default function FormTambahProperti() {
                 <option value="Kontrakan">Kontrakan</option>
               </select>
             </div>
+
+           
+              <div className="mb-4">
+                <label
+                  className="block text-gray-700 text-sm font-bold mb-2"
+                  htmlFor="amount"
+                >
+                  Jumlah Kamar
+                </label>
+                <input
+                  type="number"
+                  name="amount"
+                  id="amount"
+                  value={form.amount}
+                  onChange={handleChange}
+                  className="bg-slate-100 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                />
+              </div>
+
+
+            {/* {form.category === "Kost" && (
+              <div className="mb-4">
+                <label
+                  className="block text-gray-700 text-sm font-bold mb-2"
+                  htmlFor="amount"
+                >
+                  Jumlah Kamar (Kost)
+                </label>
+                <input
+                  type="number"
+                  name="amount"
+                  id="amount"
+                  value={form.amount}
+                  onChange={handleChange}
+                  className="bg-slate-100 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                />
+              </div>
+            )} */}
 
             <div className="mb-4">
               <label
@@ -596,13 +640,23 @@ export default function FormTambahProperti() {
                   <option value={peraturan.id}>{peraturan.rules_name}</option>
                 ))}
               </select>
-              <button
-                type="button"
-                onClick={handleAddPeraturan}
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ml-2"
-              >
-                Tambah
-              </button>
+              {pending ? (
+                <button
+                  type="button"
+                  aria-disabled={pending}
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ml-2"
+                >
+                  <span className="ml-1 text-white">Loading...</span>
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={handleAddPeraturan}
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ml-2"
+                >
+                  Tambah
+                </button>
+              )}
             </div>
             {peraturanPreview.length > 0 && (
               <div className="mb-4">
@@ -647,6 +701,7 @@ export default function FormTambahProperti() {
           </div>
         </div>
       </form>
+      <ToastContainer />
     </>
   );
 }

@@ -1,4 +1,7 @@
 import { useEffect, useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+
 
 export default function ModalPengajuan({ id }: { id: any }) {
   const [form, setForm] = useState({
@@ -33,10 +36,6 @@ export default function ModalPengajuan({ id }: { id: any }) {
         body: JSON.stringify( form ),
       }
     );
-    // const result = await response.json();
-    console.log(form);
-    console.log(response);
-    
 
     if (response.ok) {
       setForm({
@@ -45,9 +44,29 @@ export default function ModalPengajuan({ id }: { id: any }) {
         building_id: "",
       });
 
+      toast.success('Pengajuan sewa berhasil!', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
       closeModal();
     } else {
-      // alert(result.error);
+      toast.error('Pengajuan sewa gagal!', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
 
@@ -141,6 +160,7 @@ export default function ModalPengajuan({ id }: { id: any }) {
           </form>
         </div>
       </dialog>
+      <ToastContainer />
     </>
   );
 }

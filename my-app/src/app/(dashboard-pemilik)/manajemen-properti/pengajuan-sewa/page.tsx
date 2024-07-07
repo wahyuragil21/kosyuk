@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import ImageNoData from "../../../../assets/noData.png";
 import Image from "next/image";
 import SkeletonPemilik from "@/components/skeletonPemilik";
-import { usePathname } from "next/navigation";
 import Menu from "@/components/menu";
 import CardManajemenProperti from "@/components/cardManajemenProperti";
 
@@ -14,7 +13,7 @@ export default function PengajuanSewa() {
   const [dataPengajuan, setDataPengajuan] = useState(data);
 
   const fetchRiwayatPengajuan = async () => {
-    const response = await fetch(process.env.NEXT_PUBLIC_URL_SERVER + '/api/bookings', { cache: 'no-store', })
+    const response = await fetch(process.env.NEXT_PUBLIC_URL_SERVER + '/api/bookings?status=Menunggu', { cache: 'no-store', })
     const data  = await response.json()
 
     if(data) {
@@ -23,15 +22,26 @@ export default function PengajuanSewa() {
     setDataPengajuan(data)
   }
 
-  console.log(dataPengajuan)
+  const [penyewa, setPenyewa] = useState(data);
+
+  const fetchPenyewa = async () => {
+    const response = await fetch(process.env.NEXT_PUBLIC_URL_SERVER + '/api/bookings?status=Disetujui', { cache: 'no-store', })
+    const data  = await response.json()
+
+    if(data) {
+      setLoading(false)
+    }
+    setPenyewa(data)
+  }
 
   useEffect(() => {
     fetchRiwayatPengajuan();
+    fetchPenyewa();
   }, []);
 
   return (
     <>
-      <Menu />
+      <Menu pengajuan={dataPengajuan} penyewa={penyewa}/>
       <div className="flex flex-wrap mb-5 w-11/12 m-auto mt-28">
         {loading ? (
           Array.from({ length: 4 }).map((_: any, index: any) => (

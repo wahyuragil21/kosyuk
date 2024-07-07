@@ -18,16 +18,12 @@ export default function KostanDetail({ params }: { params: { slug: string } }) {
       { cache: "no-store" }
     );
     const data = await response.json();
-    console.log(data);
-    
     setCurrentImage(data.images[0]);
     setImages(data.images);
     setKosts(data)
 
   };
   
-
-
   useEffect(() => {
     getKosts();
     const isLogin = async () => {

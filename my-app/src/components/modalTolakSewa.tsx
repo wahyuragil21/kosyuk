@@ -1,4 +1,6 @@
+import { redirect } from "next/navigation";
 import { useEffect, useState } from "react"
+import { ToastContainer, toast } from "react-toastify";
 
 export default function ModalTolakSewa({slug} : {slug : any}) {
 
@@ -34,18 +36,37 @@ export default function ModalTolakSewa({slug} : {slug : any}) {
         body: JSON.stringify( form ),
       }
     );
-    console.log(form);
-    console.log(response);
-
     if (response.ok) {
       setForm({
         catatan: "",
         status : "",
         slug : ""
       })
+      toast.success('Respon anda telah dikirim', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
       closeModal();
+      return redirect("/manajemen-properti/pengajuan-sewa");
+
     } else {
-      // alert(result.error);
+      toast.error('Gagal Menyelesaikan Respon!', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   }
 
@@ -54,6 +75,7 @@ export default function ModalTolakSewa({slug} : {slug : any}) {
   };
 
     return (
+      <>
         <dialog id="my_modal_3" className="modal">
         <div className="modal-box bg-white">
           <h3 className=" py-3 font-bold text-lg text-black">
@@ -66,7 +88,7 @@ export default function ModalTolakSewa({slug} : {slug : any}) {
               >
                 Catatan :
               </label>
-            <textarea className="textarea textarea-bordered bg-slate-100 text-gray-700 w-full" onChange={handleChange} value={form.catatan} placeholder="Contoh : Maaf sewa anda kami tolak karena sudah penuh"></textarea>
+            <textarea name="catatan" id="catatan" className="textarea textarea-bordered bg-slate-100 text-gray-700 w-full" onChange={handleChange} value={form.catatan} placeholder="Contoh : Maaf sewa anda kami tolak karena sudah penuh"></textarea>
            
             <div className="modal-action">
             <button
@@ -86,5 +108,7 @@ export default function ModalTolakSewa({slug} : {slug : any}) {
           </form>
         </div>
       </dialog>
+      <ToastContainer />
+      </>
     )
 }

@@ -5,6 +5,17 @@ import Image from "next/image";
 import { GiRoundStar } from "react-icons/gi";
 
 export default function CardKost({ kosts } : { kosts : any}) {
+
+  const kecStartIndex = kosts.alamat.indexOf("Kec.");
+
+  let kecText = "";
+
+  if (kecStartIndex !== -1) {
+    kecText = kosts.alamat
+      .slice(kecStartIndex)
+      .split(",")[0]
+      .replace("Kec. ", "");
+  }
   return (
     <>
       <div className="card bg-white px-1 w-1/4 relative overflow-hidden transform transition-transform duration-500 hover:shadow-lg flex flex-col mt-5">
@@ -27,7 +38,7 @@ export default function CardKost({ kosts } : { kosts : any}) {
           </div>
           <h1 className="font-sans text-black">{kosts.nama}</h1>
             <h1 className="font-sans text-black font-semibold text-justify overflow-hidden whitespace-nowrap overflow-ellipsis max-w-[300px]">
-              {kosts.alamat.split(" ").slice(-1).join(" ")}
+              {kecText}
             </h1>
             <h1 className="font-sans text-gray-400 text-xs text-justify overflow-hidden whitespace-nowrap overflow-ellipsis max-w-[300px]">
               {kosts.fasilitas.join(", ")}

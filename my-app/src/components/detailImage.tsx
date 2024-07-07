@@ -3,10 +3,6 @@ import Image from "next/image";
 import React, { useEffect } from "react";
 
 export default function DetailImage({imageBuilding, currentImage , setCurrentImage} : {imageBuilding: any, currentImage : any, setCurrentImage : any}) {
-    console.log(imageBuilding);
-    
-    // const [currentImage, setCurrentImage] = React.useState(imageBuilding[0]);
-
     const handleImageClick = (image: string) => {
         setCurrentImage(image);
     };

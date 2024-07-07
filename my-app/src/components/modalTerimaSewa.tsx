@@ -1,4 +1,8 @@
+import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+
 
 export default function ModalTerimaSewa({slug} : {slug : any}) {
   const [form, setForm] = useState({
@@ -35,8 +39,6 @@ export default function ModalTerimaSewa({slug} : {slug : any}) {
         body: JSON.stringify( form ),
       }
     );
-    console.log(form);
-    console.log(response);
 
     if (response.ok) {
       setForm({
@@ -46,9 +48,30 @@ export default function ModalTerimaSewa({slug} : {slug : any}) {
         status : "",
         slug : ""
       })
+      toast.success('Selamat, Penyewa Baru Diterima!', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
       closeModal();
+      return redirect("/manajemen-properti/pengajuan-sewa");
     } else {
-      // alert(result.error);
+      toast.error('Respon anda telah dikirim', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   }
 
@@ -57,6 +80,7 @@ export default function ModalTerimaSewa({slug} : {slug : any}) {
   };
     
     return (
+      <>
         <dialog id="my_modal_2" className="modal">
         <div className="modal-box bg-white">
           <h3 className=" py-3 font-bold text-lg text-black">
@@ -123,5 +147,7 @@ export default function ModalTerimaSewa({slug} : {slug : any}) {
           </form>
         </div>
       </dialog>
+      <ToastContainer/>
+      </>
     )
 }

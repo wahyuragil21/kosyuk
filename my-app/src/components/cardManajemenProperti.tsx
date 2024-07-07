@@ -31,7 +31,7 @@ export default function CardManajemenProperti({ property } : { property : any}) 
 
   return (
     <div className="card card-side bg-slate-100 shadow-xl w-full mt-5">
-      <figure className="w-48 h-48 overflow-hidden">
+      <figure className="w-48 h-auto overflow-hidden">
         <Image
           src={property?.thumbnail}
           alt="Property Image"
@@ -45,7 +45,7 @@ export default function CardManajemenProperti({ property } : { property : any}) 
           {property?.nama}
         </h2>
         <p className={`text-black`}>{property?.alamat}</p>
-        <p className={`text-black`}>Penyewa : {property?.penyewa}</p>
+        <p className={`text-black`}>Kontak Penyewa : {property?.kontak}</p>
         <p className={`text-black`}>Tanggal Masuk : {property?.tanggalPengajuan}</p>
         <p
           className={`text-black font-bold ${getStatusColor(property?.status)}`}
@@ -53,19 +53,13 @@ export default function CardManajemenProperti({ property } : { property : any}) 
           {property?.status}
         </p>
         <div className="card-actions justify-end">
-          {pathname == "/manajemen-properti/pengajuan-sewa" ? (
+          {pathname == "/manajemen-properti/pengajuan-sewa" && (
             <>
               <button className="bg-blue-600 text-white py-1 px-3 rounded-lg font-bold hover:bg-blue-400" onClick={openModal}>
                 Terima
               </button>
               <button className="bg-red-600 text-white py-1 px-3 rounded-lg font-bold hover:bg-red-500" onClick={openModalTolak}>
                 Tolak
-              </button>
-            </>
-          ) : (
-            <>
-              <button className="bg-red-600 text-white py-1 px-3 rounded-lg font-bold hover:bg-red-500">
-                Hapus
               </button>
             </>
           )}

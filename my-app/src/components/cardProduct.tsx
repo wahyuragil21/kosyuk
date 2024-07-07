@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-export default function CardProduct({ product }) {
+export default function CardProduct({ product } : { product : any}) {
 
   return (
     <>
