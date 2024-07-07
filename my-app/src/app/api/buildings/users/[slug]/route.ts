@@ -145,7 +145,7 @@ export async function PATCH(request: Request, { params }: { params: { slug: stri
         let query = `
         UPDATE "Buildings"
         SET 
-        ${Object.keys(data).map(e => `${e},'${cleanData[e]}'`).join(', ')}
+        ${Object.keys(data).map(e => `${e} = '${cleanData[e]}'`).join(', ')}
         WHERE slug = '${slug}'
         `
         const update = await client.query(query)
