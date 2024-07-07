@@ -23,14 +23,14 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
       queryGroupBy = `  LEFT JOIN 
       "Providers" u ON b.provider_id = u.id
       WHERE bk.user_id = ${id}
-      GROUP BY b.id, bk.slug, u.id, bk.status`
+      GROUP BY b.id, bk.slug, u.id, bk.status, bk.date`
     } else {
       queryPhone = `u.telp AS user_telp,
       u.email,`
       queryGroupBy = `  LEFT JOIN 
       "Users" u ON bk.user_id = u.id
       WHERE bk.provider_id = ${id} AND bk.status = '${status}'
-      GROUP BY b.id, bk.slug, u.id, bk.status`
+      GROUP BY b.id, bk.slug, u.id, bk.status, bk.date`
     }
 
     let query = `
@@ -41,6 +41,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
         b.address,
         b.coordinate,
         b.status,
+        bk.date,
         b.category,
         b.type,
         b.price,
