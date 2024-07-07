@@ -95,7 +95,6 @@ export async function POST(request: Request) {
   const user_id = request.headers.get('user_id')
   const user_email = request.headers.get('user_email')
   const { building_id, duration, date } = await request.json()
-  console.log(date);
 
   const query = `INSERT INTO "Bookings"(user_id, provider_id, building_id, duration, status, slug, date)
     VALUES ($1,$2,$3,$4,$5,$6,$7)

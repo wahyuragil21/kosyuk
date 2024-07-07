@@ -8,7 +8,6 @@ import { mappingDetailBook } from "@/helpers/mapping";
 export async function GET(request: Request, { params }: { params: { slug: string } }) {
   try {
     const { slug } = params
-    console.log(slug);
 
     const role = request.headers.get('user_role')
     const id = request.headers.get('user_id')
