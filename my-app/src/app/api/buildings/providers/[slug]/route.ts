@@ -105,7 +105,7 @@ export async function PATCH(request: Request, { params }: { params: { slug: stri
     const { rows: [{ id }] } = await client.query(querySelect);
 
     let formData = await request.formData() as FormData
-    let key = ['building_name', 'price', 'type', 'category', 'thumbnail', 'address', 'coordinate', 'price', 'description', 'amount']
+    let key = ['building_name', 'price', 'category', 'thumbnail', 'address', 'coordinate', 'price', 'description', 'amount']
     let keyArr = ['specification', 'facility', 'rule']
     const mappingData = async () => {
       const data = {} as any;
