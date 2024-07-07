@@ -226,3 +226,93 @@ export async function DELETE(request: Request) {
     return NextResponse.json({ message: 'Internal server error', error }, { status: 500 });
   }
 }
+
+export async function PATCH(request: Request) {
+  try {
+    const providerId = request.headers.get('user_id')
+
+    let formData = await request.formData() as FormData
+    let key = ['building_name', 'price', 'type', 'category', 'thumbnail', 'specification', 'facility', 'rule', 'images', 'address', 'coordinate', 'price', 'description', 'amount']
+
+    const mappingData = async () => {
+      const data = {} as any;
+
+      const promises = key.map(async (e: string) => {
+        if (e === 'thumbnail') {
+          const thumbnail = formData.getAll(e)[0] as any;
+          const type = thumbnail.type;
+          const buffer = Buffer.from(await thumbnail.arrayBuffer()).toString('base64');
+          const dataURI = `data:${type};base64,${buffer}`;
+          const res = await cloudinary.uploader.upload(dataURI);
+          data[e] = res.secure_url;
+        } else if (e != 'specification' && e != 'facility' && e !== 'rule' && e !== 'images') {
+          data[e] = formData.getAll(e)[0] ?? 'tes';
+        }
+      });
+
+      await Promise.all(promises);
+
+      data.provider_id = providerId;
+      data.slug = data?.building_name?.split(" ").join("_") + "_" + makeSlug(5)
+      data.status = "Tersedia"
+      return data;
+    };
+    let data = await mappingData() as any
+
+    let query = `
+    INSERT INTO "Buildings"(${Object.keys(data).map(e => `"${e}"`).join(', ')})
+    VALUES(${Object.values(data).map(e => `'${e}'`).join(', ')})
+    RETURNING id;
+    `
+
+    const insert = await pool.query(query)
+
+    const insertAttribute = async () => {
+      const data = {} as any;
+      const promises = key.map(async (e: string) => {
+        if (e === 'facility' || e === 'rule' || e === 'specification') {
+
+          let attributes = formData.getAll(e) as any
+
+          const tableName = e.endsWith('y') ? `Building_${e.slice(0, -1)}ies` : `Building_${e}s`
+          const values = attributes.map((attr: any) => `('${insert.rows[0].id}', '${attr}')`).join(", ");
+
+          const query = `INSERT INTO "${tableName}" (building_id, ${e}_id)
+          VALUES ${values};`
+
+          await pool.query(query)
+        }
+        if (e === 'images') {
+          const images = formData.getAll(e) as any
+          const urls = await Promise.all(images.map(async (file: any) => {
+            let type = file.type;
+            let buffer = Buffer.from(await file.arrayBuffer()).toString('base64');
+            const dataURI = `data:${type};base64,${buffer}`;
+
+            return (await cloudinary.uploader.upload(dataURI)).secure_url;
+          }));
+
+          const values = urls.map((url: any) => `('${insert.rows[0].id}', '${url}')`).join(", ");
+          const query = `INSERT INTO "Images" (building_id, image_url)
+          VALUES ${values};`;
+
+          await pool.query(query);
+        }
+
+      });
+      await Promise.all(promises);
+      return data;
+    }
+    await insertAttribute()
+
+    if (insert.rowCount == 1) {
+      return NextResponse.json({ message: 'success post building' }, { status: 201 })
+    }
+    return NextResponse.json({ message: "success" }, { status: 201 });
+
+
+  } catch (error) {
+    console.log(error);
+    return NextResponse.json({ error }, { status: 500 })
+  }
+}
