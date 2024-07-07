@@ -66,9 +66,10 @@ export async function GET(request: NextRequest) {
     }
 
     if (filters.address) {
-      values.push(`%${filters.address}%`);
+      values.push(`%${filters.address.split('%20').join(" ")}%`);
       conditions.push(`b.address ILIKE $${values.length}`);
     }
+    console.log(values);
     // Tambahkan kondisi filter lainnya di sini sesuai kebutuhan
     if (conditions.length > 0) {
       query += ` WHERE ${conditions.join(' AND ')}`;

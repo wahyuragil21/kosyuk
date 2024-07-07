@@ -66,6 +66,7 @@ export const mappingDetailBook = (data: any) => {
     nama: data.building_name,
     slug: data.bk_slug,
     status: data.status,
+    email: data.email ?? "",
     description: data.description,
     alamat: data.address,
     thumbnail: data.thumbnail,

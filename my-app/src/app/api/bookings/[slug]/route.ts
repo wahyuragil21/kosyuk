@@ -24,7 +24,8 @@ export async function GET(request: Request, { params }: { params: { slug: string
       WHERE bk.slug = '${slug}'
       GROUP BY b.id, u.id, bk.slug`
     } else {
-      queryPhone = `u.telp AS user_telp,`
+      queryPhone = `u.telp AS user_telp,
+      u.email,`
       queryGroupBy = `  LEFT JOIN 
       "Users" u ON bk.user_id = u.id
       WHERE bk.slug = '${slug}'
