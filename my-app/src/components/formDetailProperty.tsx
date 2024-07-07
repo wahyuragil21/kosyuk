@@ -472,7 +472,7 @@ export default function FormDetailProperti({dataProperty} : {dataProperty: any})
                   Pilih Spesifikasi
                 </option>
                 {selectSpesifikasi.map((spesifikasi: any) => (
-                  <option value={spesifikasi.id}>
+                  <option key={spesifikasi.id} value={spesifikasi.id}>
                     {spesifikasi.specification_name}
                   </option>
                 ))}
@@ -529,7 +529,7 @@ export default function FormDetailProperti({dataProperty} : {dataProperty: any})
                   Pilih Fasilitas
                 </option>
                 {selectFasilitas.map((fasilitas: any) => (
-                  <option value={fasilitas.id}>
+                  <option key={fasilitas.id} value={fasilitas.id}>
                     {fasilitas.facility_name}
                   </option>
                 ))}
@@ -586,7 +586,7 @@ export default function FormDetailProperti({dataProperty} : {dataProperty: any})
                   Pilih Peraturan
                 </option>
                 {selectPeraturan.map((peraturan: any) => (
-                  <option value={peraturan.id}>{peraturan.rules_name}</option>
+                  <option key={peraturan.id} value={peraturan.id}>{peraturan.rules_name}</option>
                 ))}
               </select>
               <button

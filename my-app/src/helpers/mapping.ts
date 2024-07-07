@@ -47,6 +47,7 @@ export const mappingBookings = (data: any) => {
       slug: e.bk_slug,
       alamat: e.address,
       thumbnail: e.thumbnail,
+      email: e.email ?? "",
       fasilitas: e.facilities,
       status: e.status,
       images: e.images,

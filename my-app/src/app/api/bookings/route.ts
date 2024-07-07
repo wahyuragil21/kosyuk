@@ -25,7 +25,8 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
       WHERE bk.user_id = ${id}
       GROUP BY b.id, bk.slug, u.id, bk.status`
     } else {
-      queryPhone = `u.telp AS user_telp,`
+      queryPhone = `u.telp AS user_telp,
+      u.email,`
       queryGroupBy = `  LEFT JOIN 
       "Users" u ON bk.user_id = u.id
       WHERE bk.provider_id = ${id} AND bk.status = '${status}'
