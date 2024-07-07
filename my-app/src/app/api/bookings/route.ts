@@ -12,7 +12,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
     const role = request.headers.get('user_role')
     const id = request.headers.get('user_id')
 
-    const status = request.nextUrl.search.substring(1).split('=')[1].split('-').join(" ")
+    const status = request?.nextUrl?.search?.substring(1)?.split('=')[1]?.split('-').join(" ")
 
     // params.search.substring(1).split('&').forEach(e => { filters[e.split('=')[0]] = e.split('=')[1] })
 

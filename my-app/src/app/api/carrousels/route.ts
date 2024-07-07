@@ -1,5 +1,5 @@
 export const dynamic = 'force-dynamic' // defaults to auto
-import {Building} from "../../../types/types"
+import { Building } from "../../../types/types"
 
 import { NextResponse, NextRequest } from "next/server";
 import { pool } from "@/configDB/pg-config";
@@ -7,10 +7,10 @@ import { mappingBuildings } from "@/helpers/mapping";
 
 export async function GET(request: NextRequest) {
   try {
-    const filters : any = {}
+    const filters: any = {}
     const params = request.nextUrl
-    params.search.substring(1).split('&').forEach(e=>{filters[e.split('=')[0]]= e.split('=')[1]})
-    
+    params?.search?.substring(1)?.split('&')?.forEach(e => { filters[e.split('=')[0]] = e.split('=')[1] })
+
     let query = `
       SELECT 
           b.id,
@@ -53,12 +53,12 @@ export async function GET(request: NextRequest) {
 
     const values = [];
     const conditions = [];
-  
+
     if (filters.category) {
       values.push(`%${filters.category}%`);
       conditions.push(`b.category ILIKE $${values.length}`);
     }
-  
+
     if (filters.type) {
       values.push(`%${filters.type}%`);
       conditions.push(`b.type >= $${values.length}`);
@@ -72,18 +72,18 @@ export async function GET(request: NextRequest) {
     if (conditions.length > 0) {
       query += ` WHERE ${conditions.join(' AND ')}`;
     }
-  
+
     query += `
       GROUP BY 
         b.id
       ORDER BY 
         b.id;
     `;
-    
-    const { rows }: {rows: Building[]} = await pool.query(query,values)
-    
+
+    const { rows }: { rows: Building[] } = await pool.query(query, values)
+
     const buildings = rows
-    
+
     return NextResponse.json(mappingBuildings(buildings))
 
   } catch (error) {

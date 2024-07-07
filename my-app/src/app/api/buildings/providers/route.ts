@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
   try {
     const filters: any = {}
     const params = request.nextUrl
-    params.search.substring(1).split('&').forEach(e => { filters[e.split('=')[0]] = e.split('=')[1] })
+    params?.search?.substring(1)?.split('&')?.forEach(e => { filters[e.split('=')[0]] = e.split('=')[1] })
     const role = request.headers.get('user_role')
 
     const id = request.headers.get('user_id')
