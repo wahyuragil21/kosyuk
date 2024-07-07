@@ -216,9 +216,9 @@ export default function FormDetailProperti({ slug }: { slug: any }) {
       category: data.kategori,
       type: data.type,
       amount: data.type ? data.amount : 1,
-      facility: [],
-      rule: [],
-      specification: [],
+      facility: data.fasilitas.map((e: any) => e.id),
+      rule: data.peraturan.map((e: any) => e.id),
+      specification: data.spesifikasi.map((e: any) => e.id),
     });
   };
 

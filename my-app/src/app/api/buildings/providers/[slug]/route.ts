@@ -155,7 +155,7 @@ export async function PATCH(request: Request, { params }: { params: { slug: stri
     // }
     const hapus = async () => {
 
-      keyArr.map(async (e) => {
+      let a = keyArr.map(async (e) => {
         const tableName = e.endsWith('y') ? `Building_${e.slice(0, -1)}ies` : `Building_${e}s`
 
         let queryDelete = `
@@ -168,12 +168,13 @@ export async function PATCH(request: Request, { params }: { params: { slug: stri
         //   await client.query("ROLLBACK")
         // }
       })
+      await Promise.all(a)
 
     }
     await hapus()
 
     const insert = async () => {
-      keyArr.map(async (e) => {
+      const a = keyArr.map(async (e) => {
         let attributes = formData.getAll(e) as any
 
         const tableName = e.endsWith('y') ? `Building_${e.slice(0, -1)}ies` : `Building_${e}s`
@@ -193,6 +194,7 @@ export async function PATCH(request: Request, { params }: { params: { slug: stri
         //   await client.query("ROLLBACK")
         // }
       })
+      await Promise.all(a)
     }
     await insert()
 
