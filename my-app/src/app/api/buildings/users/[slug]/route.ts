@@ -142,7 +142,7 @@ export async function PATCH(request: Request, { params }: { params: { slug: stri
         UPDATE "Buildings"
         SET 
         ${Object.keys(data).map(e => `${e},'${cleanData[e]}'`).join(', ')}
-        WHERE "Buildings".slug = '${slug}'
+        WHERE slug = '${slug}'
         `
         const update = await client.query(query)
         if (update.rowCount == 0) {
