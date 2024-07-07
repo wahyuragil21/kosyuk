@@ -99,6 +99,7 @@ export async function PATCH(request: Request, { params }: { params: { slug: stri
     try {
         const providerId = request.headers.get('user_id')
         const { slug } = params
+
         const querySelect = `
         SELECT * FROM "Buildings"
         WHERE slug = '${slug}'`
@@ -114,7 +115,9 @@ export async function PATCH(request: Request, { params }: { params: { slug: stri
                 if (e === 'thumbnail') {
                     const thumbnail = formData.getAll(e)[0] as any;
                     if (typeof thumbnail == "string") {
-                        data[e] = e;
+                        console.log(e);
+
+                        data[e] = thumbnail;
                     } else {
                         const type = thumbnail.type;
                         const buffer = Buffer.from(await thumbnail.arrayBuffer()).toString('base64');
@@ -132,6 +135,7 @@ export async function PATCH(request: Request, { params }: { params: { slug: stri
             return data;
         };
         let data = await mappingData() as any
+
         const cleanData = Object.entries(data)
             .filter(([key, value]) => value !== undefined)
             .reduce((obj: any, [key, value]) => {
@@ -139,15 +143,15 @@ export async function PATCH(request: Request, { params }: { params: { slug: stri
                 return obj;
             }, {});
 
-
         await client.query('BEGIN');
 
         let query = `
         UPDATE "Buildings"
         SET 
-        ${Object.keys(data).map(e => `${e} = '${cleanData[e]}'`).join(', ')}
+        ${Object.keys(cleanData).map(e => `${e} = '${cleanData[e]}'`).join(', ')}
         WHERE slug = '${slug}'
         `
+
         const update = await client.query(query)
         if (update.rowCount == 0) {
             await client.query("ROLLBACK")
@@ -157,7 +161,7 @@ export async function PATCH(request: Request, { params }: { params: { slug: stri
             const tableName = e.endsWith('y') ? `Building_${e.slice(0, -1)}ies` : `Building_${e}s`
 
             let queryDelete = `
-            DELETE FROM ${tableName}
+            DELETE FROM "${tableName}"
             WHERE building_id = '${id}';
             `
 
@@ -171,13 +175,13 @@ export async function PATCH(request: Request, { params }: { params: { slug: stri
             let attributes = formData.getAll(e) as any
 
             const tableName = e.endsWith('y') ? `Building_${e.slice(0, -1)}ies` : `Building_${e}s`
-            const values = attributes.map((attr: any) => `('${id}', '${attr}')`).join(", ");
+            const values = attributes.map((attr: any) => `('${id}', '${attr}')`).join(", ")
 
             const query = `INSERT INTO "${tableName}" (building_id, ${e}_id)
             VALUES ${values};`
 
             let insert = await pool.query(query)
-            if (insert.rowCount) {
+            if (insert.rowCount == 0) {
                 await client.query("ROLLBACK")
             }
         })
@@ -190,7 +194,7 @@ export async function PATCH(request: Request, { params }: { params: { slug: stri
         return NextResponse.json({ message: "success" }, { status: 201 });
 
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         await client.query('ROLLBACK');
         return NextResponse.json({ error }, { status: 500 })
     } finally {
