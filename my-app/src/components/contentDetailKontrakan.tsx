@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 
 export default function ContentDetailKontrakan({ kontrakan, isLogin, images, currentImage, setCurrentImage } : {kontrakan: any, isLogin: boolean, images: any, currentImage: any, setCurrentImage: any}) {
   const router = useRouter();
+  
   const openModal = () => {
     if (!isLogin) {
       router.push("/login/pencari");
@@ -31,9 +32,6 @@ export default function ContentDetailKontrakan({ kontrakan, isLogin, images, cur
                     <button className="flex items-center justify-center text-black font-semibold py-0 px-1 mt-1 mb-2 mr-2 rounded-lg border border-gray-300">
                       {kontrakan?.status}
                     </button>
-                    <button className="flex items-center justify-center text-black font-semibold py-0 px-1 mt-1 mb-2 rounded-lg border border-gray-300">
-                      {kontrakan?.type}
-                    </button>
                     <GiRoundStar className={`m-2 w-4 h-4 text-blue-600`} />{" "}
                     <span className="text-blue-600 mr-2">0</span>{" "}
                     <span>{kontrakan?.alamat}</span>
@@ -43,22 +41,28 @@ export default function ContentDetailKontrakan({ kontrakan, isLogin, images, cur
 
               <span className="font-bold">Spesifikasi :</span>
               <p className="text-sm mt-2 mb-2 text-justify">
-                {kontrakan?.spesifikasi?.length > 0
-                  ? kontrakan?.spesifikasi?.join(", ")
+              {kontrakan.spesifikasi?.length > 0
+                  ? kontrakan.spesifikasi
+                      .map((fasilitas: any) => fasilitas.specification_name)
+                      .join(", ")
                   : "-"}
               </p>
 
               <span className="font-bold">Fasilitas :</span>
               <p className="text-sm mt-2 mb-2 text-justify">
-                {kontrakan?.fasilitas?.length > 0
-                  ? kontrakan?.fasilitas?.join(", ")
+              {kontrakan.fasilitas?.length > 0
+                  ? kontrakan.fasilitas
+                      .map((fasilitas: any) => fasilitas.facility_name)
+                      .join(", ")
                   : "-"}
               </p>
 
               <span className="font-bold">Peraturan :</span>
               <p className="text-sm mt-2 mb-2 text-justify">
-                {kontrakan?.peraturan?.length > 0
-                  ? kontrakan?.peraturan?.join(", ")
+              {kontrakan.peraturan?.length > 0
+                  ? kontrakan.peraturan
+                      .map((peraturan: any) => peraturan.rules_name)
+                      .join(", ")
                   : "-"}
               </p>
               <div>

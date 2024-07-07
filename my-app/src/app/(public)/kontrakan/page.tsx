@@ -25,13 +25,13 @@ export default function Kontrakan() {
     if (search) {
       response = await fetch(
         process.env.NEXT_PUBLIC_URL_SERVER +
-          `/api/buildings/users?address=${search}&category=kontrakan`,
+          `/api/buildings/users?address=${search}&category=Kontrakan`,
         { cache: "no-store" }
       );
     } else {
       response = await fetch(
         process.env.NEXT_PUBLIC_URL_SERVER +
-          "/api/carrousels?category=kontrakan",
+          "/api/carrousels?category=Kontrakan",
         { cache: "no-store" }
       );
     }

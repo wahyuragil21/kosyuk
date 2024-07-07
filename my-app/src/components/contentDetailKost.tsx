@@ -44,9 +44,7 @@ export default function ContentDetailKost({
                     <button className="flex items-center justify-center text-black font-semibold py-0 px-1 mt-1 mb-2 mr-2 rounded-lg border border-gray-300">
                       {kosts?.status}
                     </button>
-                    <button className="flex items-center justify-center text-black font-semibold py-0 px-1 mt-1 mb-2 rounded-lg border border-gray-300">
-                      {kosts?.type}
-                    </button>
+                   
                     <GiRoundStar className={`m-2 w-4 h-4 text-blue-600`} />{" "}
                     <span className="text-blue-600 mr-2">0</span>{" "}
                     <span>{kosts?.alamat}</span>

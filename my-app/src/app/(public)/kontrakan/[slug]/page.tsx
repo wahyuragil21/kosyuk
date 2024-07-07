@@ -18,7 +18,7 @@ export default function KontrakanDetail({ params }: { params: { slug: string } }
       { cache: "no-store" }
     );
     const data = await response.json();
-    setCurrentImage(data.images[0]);
+    setCurrentImage(data.images[0].image_url);
     setImages(data.images);
     setKontrakan(data)
   };

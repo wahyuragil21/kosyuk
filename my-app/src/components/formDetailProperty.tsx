@@ -21,7 +21,6 @@ export default function FormDetailProperti({ slug }: { slug: any }) {
     price: "",
     description: "",
     category: "",
-    type: "",
     amount: 1,
     facility: [],
     rule: [],
@@ -214,8 +213,7 @@ export default function FormDetailProperti({ slug }: { slug: any }) {
       price: data.harga,
       description: data.description,
       category: data.kategori,
-      type: data.type,
-      amount: data.type ? data.amount : 1,
+      amount: 1,
       facility: data.fasilitas.map((e: any) => e.id),
       rule: data.peraturan.map((e: any) => e.id),
       specification: data.spesifikasi.map((e: any) => e.id),
@@ -363,41 +361,6 @@ export default function FormDetailProperti({ slug }: { slug: any }) {
               />
             </div>
 
-            {/* <div className="mb-4">
-              <label
-                htmlFor="type"
-                className="block text-sm font-bold text-gray-700 mb-2"
-              >
-                Kecamatan<span className="text-red-500">*</span>
-              </label>
-              <select
-                name="kecamatan"
-                id="kecamatan"
-                value={kecamatan}
-                onChange={(e : any) => setKecamatan(e.target.value)}
-                className="bg-slate-100 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                required
-              >
-                <option value="" disabled>
-                  Pilih Kecamatan
-                </option>
-                <option value="Kec. Bina Widya">Bina Widya</option>
-                <option value="Kec. Sail">Sail</option>
-                <option value="Kec. Tenayan raya">Tenayan raya</option>
-                <option value="Kec. Pekanbaru Kota">Pekanbaru Kota</option>
-                <option value="Kec. Marpoyan Damai">Marpoyan Damai</option>
-                <option value="Kec. Bukit Raya">Bukit Raya</option>
-                <option value="Kec. Kulim">Kulim</option>
-                <option value="Kec. Lima Puluh">Lima Puluh</option>
-                <option value="Kec. Payung Sekaki">Payung Sekaki</option>
-                <option value="Kec. Rumbai Barat">Rumbai Barat</option>
-                <option value="Kec. Rumbai">Rumbai</option>
-                <option value="Kec. Rumbai Timur">Rumbai Timur</option>
-                <option value="Kec. Senapelan">Senapelan</option>
-                <option value="Kec. Suka Jadi">Suka Jadi</option>
-                <option value="Kec. Tuah Madani">Tuah Madani</option>
-              </select>
-            </div> */}
 
             <div className="mb-4">
               <label
@@ -438,47 +401,6 @@ export default function FormDetailProperti({ slug }: { slug: any }) {
                 </div>
               )}
             </div>
-            {/* 
-            <div className="mb-4">
-              <label
-                className="block text-gray-700 text-sm font-bold mb-2"
-                htmlFor="images"
-              >
-                Gambar Fasilitas<span className="text-red-500">*</span>
-              </label>
-              <input
-                type="file"
-                name="images"
-                id="images"
-                multiple
-                onChange={handleImageChange}
-                className="bg-slate-100 shadow appearance-none border rounded w-full py-1.5 px-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                required
-              />
-              <div className="mt-4 space-y-2">
-                {imagePreviews.map((src: any, index: any) => (
-                  <div key={index} className="flex items-center space-x-2">
-                    <Image
-                      src={src.image_url}
-                      alt={`Preview ${index}`}
-                      className="h-10 w-10 object-cover rounded-md mr-2"
-                      width={40}
-                      height={40}
-                    />
-                    <div className="flex-grow flex justify-between items-center w-40">
-                      <p className="text-sm text-gray-700">{src.name}</p>
-                      <button
-                        type="button"
-                        onClick={() => handleRemoveImages(index)}
-                        className="text-red-500 hover:text-red-700 mr-20"
-                      >
-                        <FaTrash />
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div> */}
 
             <div className="mb-4">
               <label
@@ -515,53 +437,11 @@ export default function FormDetailProperti({ slug }: { slug: any }) {
                 <option value="" disabled>
                   Pilih Kategori
                 </option>
-                <option value="Kost">Kost</option>
+                <option value="Ruko">Ruko</option>
                 <option value="Kontrakan">Kontrakan</option>
               </select>
             </div>
 
-            {form.category === "Kost" && (
-              <div className="mb-4">
-                <label
-                  className="block text-gray-700 text-sm font-bold mb-2"
-                  htmlFor="amount"
-                >
-                  Jumlah Kamar (Kost)<span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="number"
-                  name="amount"
-                  id="amount"
-                  value={form.amount}
-                  onChange={handleChange}
-                  className="bg-slate-100 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                />
-              </div>
-            )}
-
-            <div className="mb-4">
-              <label
-                htmlFor="type"
-                className="block text-sm font-bold text-gray-700 mb-2"
-              >
-                Type<span className="text-red-500">*</span>
-              </label>
-              <select
-                name="type"
-                id="type"
-                value={form.type}
-                onChange={handleChange}
-                className="bg-slate-100 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                required
-              >
-                <option value="" disabled>
-                  Pilih Type
-                </option>
-                <option value="Putra">Putra</option>
-                <option value="Putri">Putri</option>
-                <option value="Campur">Campur</option>
-              </select>
-            </div>
           </div>
 
           <div className="col-span-1 mt-12">

@@ -19,6 +19,10 @@ export default function FormLogin() {
     password: "",
   });
 
+  const urlLocalStorage = localStorage.getItem('pathname');
+  console.log(urlLocalStorage);
+  
+
   const handleLogin = async (e : any) => {
     e.preventDefault();
     setIsLoading(true);
@@ -61,7 +65,14 @@ export default function FormLogin() {
       return router.push(pathname === "/login/pencari" ? `/login/pencari?error=${result.message}` : `/login/pemilik?error=${result.message}`);
     }
 
-    router.push(pathname === "/login/pencari" ? "/" : "/dashboard-pemilik");
+    if (urlLocalStorage){
+      router.push(urlLocalStorage);
+      localStorage.removeItem('pathname');
+      return;
+    }else{
+      router.push(pathname === "/login/pencari" ? "/" : "/dashboard-pemilik");
+    }
+
   };
 
   const handleChange = (e: any) => {
