@@ -1,17 +1,17 @@
 export const dynamic = 'force-dynamic' // defaults to auto
-import {Building} from "../../../../types/types"
+import { Building } from "../../../../types/types"
 
 import { NextResponse } from "next/server";
 import { pool } from "@/configDB/pg-config";
 
-export async function GET(request: Request, {params}: {params: {slug:string}}) {
-  try {
-    console.log(request.headers.get('user_id'));
-    
-    const {slug} = params
-    console.log(slug);
-    
-    const { rows }: {rows: Building[]} = await pool.query(`SELECT 
+export async function GET(request: Request, { params }: { params: { slug: string } }) {
+    try {
+        console.log(request.headers.get('user_id'));
+
+        const { slug } = params
+        console.log(slug);
+
+        const { rows }: { rows: Building[] } = await pool.query(`SELECT 
           b.id,
           b.building_name,
           b.address,
@@ -45,14 +45,14 @@ export async function GET(request: Request, {params}: {params: {slug:string}}) {
       GROUP BY 
           b.id
     `)
-    
-    const buildings : Building = rows[0]
 
-    return NextResponse.json(buildings)
+        const buildings: Building = rows[0]
 
-  } catch (error) {
-    console.log(error);
-    return NextResponse.json(error)
-  }
+        return NextResponse.json(buildings)
+
+    } catch (error) {
+        console.log(error);
+        return NextResponse.json(error)
+    }
 }
 
