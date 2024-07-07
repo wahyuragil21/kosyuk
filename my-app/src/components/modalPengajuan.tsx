@@ -1,3 +1,4 @@
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
@@ -9,7 +10,11 @@ export default function ModalPengajuan({ id }: { id: any }) {
     date: "",
     building_id: "",
   });
+const [isLoading, setIsLoading] = useState(false);
 
+  const pathname = usePathname();
+  localStorage.setItem('pathname', pathname);
+  
   const handleChange = (e: any) => {
     const { name, value } = e.target;
     setForm({
@@ -26,6 +31,7 @@ export default function ModalPengajuan({ id }: { id: any }) {
   }, [id]);
 
   const handleSubmit = async () => {
+    setIsLoading(true);
     const response = await fetch(
       process.env.NEXT_PUBLIC_URL_SERVER + "/api/bookings",
       {
@@ -56,6 +62,7 @@ export default function ModalPengajuan({ id }: { id: any }) {
       });
 
       closeModal();
+      setIsLoading(false);
     } else {
       toast.error('Pengajuan sewa gagal!', {
         position: "top-center",
@@ -67,6 +74,7 @@ export default function ModalPengajuan({ id }: { id: any }) {
         progress: undefined,
         theme: "light",
       });
+      setIsLoading(false);
     }
   };
 
@@ -142,12 +150,21 @@ export default function ModalPengajuan({ id }: { id: any }) {
               />
             </div>
             <div className="modal-action">
+              {isLoading ? (
               <button
                 type="submit"
                 className="p-2 px-4 rounded-md bg-blue-600 text-white transition-colors duration-300 ease-in-out hover:bg-blue-500"
               >
+                Loading...
+              </button>
+              ) : (
+              <button
+                type="submit"
+                className="p-2 px-4 rounded-md bg-blue-600 text-white transition-colors duration-300 ease-in-out hover:bg-blue-500 w-28"
+              >
                 Ajukan
               </button>
+              )}
 
               <button
                 type="button"

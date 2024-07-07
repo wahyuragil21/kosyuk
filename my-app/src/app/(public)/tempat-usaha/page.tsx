@@ -24,12 +24,12 @@ export default function Kostan() {
     if (search) {
       response = await fetch(
         process.env.NEXT_PUBLIC_URL_SERVER +
-          `/api/buildings/users?address=${search}&category=kost`,
+          `/api/buildings/users?address=${search}&category=Ruko`,
         { cache: "no-store" }
       );
     } else {
       response = await fetch(
-        process.env.NEXT_PUBLIC_URL_SERVER + "/api/carrousels?category=kost",
+        process.env.NEXT_PUBLIC_URL_SERVER + "/api/carrousels?category=Ruko",
         { cache: "no-store" }
       );
     }
@@ -65,7 +65,7 @@ export default function Kostan() {
             <CardProperty
               key={index}
               property={kosts}
-              Linkslug={`/kost/${kosts?.slug}`}
+              Linkslug={`/tempat-usaha/${kosts?.slug}`}
             />
           ))
         )}
