@@ -28,7 +28,7 @@ export const mappingDetail = (data: any) => {
     alamat: data.address,
     thumbnail: data.thumbnail,
     fasilitas: data.facilities,
-    spesifikasi: data.specification,
+    spesifikasi: data.specifications,
     peraturan: data.rules,
     images: data.images,
     type: data.type,
