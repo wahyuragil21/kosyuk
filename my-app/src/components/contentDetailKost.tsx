@@ -20,7 +20,7 @@ export default function ContentDetailKost({ kosts, isLogin, images, currentImage
       <div className=" mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row -mx-4">
           <DetailImage imageBuilding={images} currentImage={currentImage} setCurrentImage={setCurrentImage} />
-          <div className="md:flex-1 px-4 flex flex-col justify-between relative text-black">
+          <div className="md:flex-1 px-4 flex flex-col justify-between relative text-black w-full">
             <div>
               <h2 className="text-2xl font-bold text-black">{kosts?.nama}</h2>
               <div className="flex mb-2">

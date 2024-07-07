@@ -6,7 +6,7 @@ import CardPropertiPemilik from "@/components/cardPropertiPemilik";
 import SkeletonPemilik from "@/components/skeletonPemilik";
 import Link from "next/link";
 import { BsFillHouseAddFill } from "react-icons/bs";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function PropertiSaya() {
   const [loading, setLoading] = useState(true);
@@ -27,6 +27,7 @@ export default function PropertiSaya() {
     if (data.message == "Unauthorzied / Auth timeout") {
       return router.push("/login/pemilik");
     }
+
     setDataPropertiSaya(data);
   };
 

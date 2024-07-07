@@ -5,16 +5,23 @@ import Image from "next/image";
 import SkeletonPemilik from "@/components/skeletonPemilik";
 import Menu from "@/components/menu";
 import CardManajemenProperti from "@/components/cardManajemenProperti";
+import { useRouter } from "next/navigation";
 
 
 export default function Penyewa() {
   const [loading, setLoading] = useState(true);
   let data : any = []
   const [penyewa, setPenyewa] = useState(data);
+  const router = useRouter();
 
   const fetchPenyewa = async () => {
     const response = await fetch(process.env.NEXT_PUBLIC_URL_SERVER + '/api/bookings?status=Disetujui', { cache: 'no-store', })
     const data  = await response.json()
+    console.log(data);
+    
+    if (data.message == "Unauthorzied / Auth timeout") {
+      return router.push("/login/pemilik");
+    }
 
     if(data) {
       setLoading(false)
@@ -27,6 +34,11 @@ export default function Penyewa() {
   const fetchRiwayatPengajuan = async () => {
     const response = await fetch(process.env.NEXT_PUBLIC_URL_SERVER + '/api/bookings?status=Menunggu', { cache: 'no-store', })
     const data  = await response.json()
+
+    
+    if (data.message == "Unauthorzied / Auth timeout") {
+      return router.push("/login/pemilik");
+    }
 
     if(data) {
       setLoading(false)

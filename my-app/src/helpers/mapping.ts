@@ -34,7 +34,8 @@ export const mappingDetail = (data: any) => {
     type: data.type,
     kategori: data.category,
     kontak: data.provider_telp,
-    harga: data.price
+    harga: data.price,
+    amount: data.amount
   }
 }
 

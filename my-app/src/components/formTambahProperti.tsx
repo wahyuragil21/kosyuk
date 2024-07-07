@@ -22,7 +22,7 @@ export default function FormTambahProperti() {
     description: "",
     category: "",
     type: "",
-    amount: "",
+    amount: 1,
     facility: [],
     rule: [],
     specification: [],
@@ -32,6 +32,7 @@ export default function FormTambahProperti() {
   let data: any = [];
 
   const [fasilitas, setFasilitas] = useState<string>("");
+  const [kecamatan, setKecamatan] = useState<string>("");
   const [peraturan, setPeraturan] = useState<string>("");
   const [spesifikasi, setSpesifikasi] = useState<string>("");
   const [fasilitasPreview, setFasilitasPreview] = useState<string[]>([]);
@@ -197,8 +198,11 @@ export default function FormTambahProperti() {
     }
   }, [pathname]);
 
+  const [isLoading, setIsLoading] = useState(false);
   const handleSubmit = async () => {
+    setIsLoading(true);
     const formData = new FormData();
+    let flagIsNotEmpty = false;
     // Logic to handle form
     for (const key in form) {
       if (
@@ -208,11 +212,34 @@ export default function FormTambahProperti() {
         key === "specification"
       ) {
         for (const keys of form[key]) {
+          if (keys == null || keys == undefined || keys == "")
+            flagIsNotEmpty = true;
           formData.append(key, keys);
         }
       } else {
-        formData.append(key, form[key]);
+        if (form[key] == null || form[key] == undefined || form[key] == "")
+          flagIsNotEmpty = true;
+        if(key === "address"){
+          formData.append(key, form[key] + ", " + kecamatan + ", Pekanbaru");
+        }else{
+          formData.append(key, form[key]);
+        }
       }
+    }
+
+    if (flagIsNotEmpty) {
+      toast.error("Semua kolom harus diisi!", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      setIsLoading(false)
+      return;
     }
 
     const response = await fetch(
@@ -224,7 +251,6 @@ export default function FormTambahProperti() {
     );
 
     const result = await response.json();
-    
 
     if (response.ok) {
       toast.success("Property berhasil ditamabahkan!", {
@@ -249,6 +275,7 @@ export default function FormTambahProperti() {
         progress: undefined,
         theme: "light",
       });
+      setIsLoading(false)
       router.push("/tambah-properti");
     }
   };
@@ -269,7 +296,7 @@ export default function FormTambahProperti() {
                 className="block text-gray-700 text-sm font-bold mb-2"
                 htmlFor="namaProperti"
               >
-                Nama Properti
+                Nama Properti<span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
@@ -278,7 +305,7 @@ export default function FormTambahProperti() {
                 value={form.namaProperti}
                 onChange={handleChange}
                 className="bg-slate-100 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                // required
+                required
               />
             </div>
 
@@ -287,17 +314,53 @@ export default function FormTambahProperti() {
                 className="block text-gray-700 text-sm font-bold mb-2"
                 htmlFor="alamat"
               >
-                Alamat
+                Alamat<span className="text-red-500">*</span> <span className="text-gray-500 font-semibold">(Jln Bahagia No.14)</span>
               </label>
               <input
                 type="text"
                 name="address"
                 id="address"
-                value={form.alamat}
+                value={form.address}
                 onChange={handleChange}
                 className="bg-slate-100 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                // required
+                required
               />
+            </div>
+
+            <div className="mb-4">
+              <label
+                htmlFor="type"
+                className="block text-sm font-bold text-gray-700 mb-2"
+              >
+                Kecamatan<span className="text-red-500">*</span>
+              </label>
+              <select
+                name="kecamatan"
+                id="kecamatan"
+                value={kecamatan}
+                onChange={(e : any) => setKecamatan(e.target.value)}
+                className="bg-slate-100 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                required
+              >
+                <option value="" disabled>
+                  Pilih Kecamatan
+                </option>
+                <option value="Kec. Bina Widya">Bina Widya</option>
+                <option value="Kec. Sail">Sail</option>
+                <option value="Kec. Tenayan raya">Tenayan raya</option>
+                <option value="Kec. Pekanbaru Kota">Pekanbaru Kota</option>
+                <option value="Kec. Marpoyan Damai">Marpoyan Damai</option>
+                <option value="Kec. Bukit Raya">Bukit Raya</option>
+                <option value="Kec. Kulim">Kulim</option>
+                <option value="Kec. Lima Puluh">Lima Puluh</option>
+                <option value="Kec. Payung Sekaki">Payung Sekaki</option>
+                <option value="Kec. Rumbai Barat">Rumbai Barat</option>
+                <option value="Kec. Rumbai">Rumbai</option>
+                <option value="Kec. Rumbai Timur">Rumbai Timur</option>
+                <option value="Kec. Senapelan">Senapelan</option>
+                <option value="Kec. Suka Jadi">Suka Jadi</option>
+                <option value="Kec. Tuah Madani">Tuah Madani</option>
+              </select>
             </div>
 
             <div className="mb-4">
@@ -305,7 +368,7 @@ export default function FormTambahProperti() {
                 className="block text-gray-700 text-sm font-bold mb-2"
                 htmlFor="thumbnail"
               >
-                Gambar Cover
+                Gambar Cover<span className="text-red-500">*</span>
               </label>
               <input
                 type="file"
@@ -313,7 +376,7 @@ export default function FormTambahProperti() {
                 id="thumbnail"
                 onChange={handleThumbnailChange}
                 className="bg-slate-100 shadow appearance-none border rounded w-full py-1.5 px-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                // required
+                required
               />
               {thumbnailPreview && (
                 <div className="flex items-center space-x-2 mt-2">
@@ -345,7 +408,7 @@ export default function FormTambahProperti() {
                 className="block text-gray-700 text-sm font-bold mb-2"
                 htmlFor="images"
               >
-                Gambar Fasilitas
+                Gambar Fasilitas<span className="text-red-500">*</span>
               </label>
               <input
                 type="file"
@@ -354,7 +417,7 @@ export default function FormTambahProperti() {
                 multiple
                 onChange={handleImageChange}
                 className="bg-slate-100 shadow appearance-none border rounded w-full py-1.5 px-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                // required
+                required
               />
               <div className="mt-4 space-y-2">
                 {imagePreviews.map((src: any, index: any) => (
@@ -384,27 +447,9 @@ export default function FormTambahProperti() {
             <div className="mb-4">
               <label
                 className="block text-gray-700 text-sm font-bold mb-2"
-                htmlFor="price"
-              >
-                Harga
-              </label>
-              <input
-                type="number"
-                name="price"
-                id="price"
-                value={form.price}
-                onChange={handleChange}
-                className="bg-slate-100 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                // required
-              />
-            </div>
-
-            <div className="mb-4">
-              <label
-                className="block text-gray-700 text-sm font-bold mb-2"
                 htmlFor="deskripsi"
               >
-                Deskripsi
+                Deskripsi<span className="text-red-500">*</span>
               </label>
               <textarea
                 name="description"
@@ -412,19 +457,18 @@ export default function FormTambahProperti() {
                 value={form.deskripsi}
                 onChange={handleChange}
                 className="bg-slate-100 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline h-[120px]"
-                // required
+                required
               ></textarea>
             </div>
           </div>
 
           <div className="col-span-1 mt-12">
-    
             <div className="mb-4">
               <label
                 htmlFor="kategori"
                 className="block text-sm font-bold text-gray-700 mb-2"
               >
-                Kategori
+                Kategori<span className="text-red-500">*</span>
               </label>
               <select
                 name="category"
@@ -442,13 +486,13 @@ export default function FormTambahProperti() {
               </select>
             </div>
 
-           
+            {form.category === "Kost" && (
               <div className="mb-4">
                 <label
                   className="block text-gray-700 text-sm font-bold mb-2"
                   htmlFor="amount"
                 >
-                  Jumlah Kamar
+                  Jumlah Kamar (Kost)<span className="text-red-500">*</span>
                 </label>
                 <input
                   type="number"
@@ -459,33 +503,32 @@ export default function FormTambahProperti() {
                   className="bg-slate-100 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 />
               </div>
+            )}
 
-
-            {/* {form.category === "Kost" && (
-              <div className="mb-4">
-                <label
-                  className="block text-gray-700 text-sm font-bold mb-2"
-                  htmlFor="amount"
-                >
-                  Jumlah Kamar (Kost)
-                </label>
-                <input
-                  type="number"
-                  name="amount"
-                  id="amount"
-                  value={form.amount}
-                  onChange={handleChange}
-                  className="bg-slate-100 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                />
-              </div>
-            )} */}
+            <div className="mb-4">
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="price"
+              >
+                Harga<span className="text-red-500">*</span>
+              </label>
+              <input
+                type="number"
+                name="price"
+                id="price"
+                value={form.price}
+                onChange={handleChange}
+                className="bg-slate-100 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                required
+              />
+            </div>
 
             <div className="mb-4">
               <label
                 htmlFor="type"
                 className="block text-sm font-bold text-gray-700 mb-2"
               >
-                Type
+                Type<span className="text-red-500">*</span>
               </label>
               <select
                 name="type"
@@ -493,7 +536,7 @@ export default function FormTambahProperti() {
                 value={form.type}
                 onChange={handleChange}
                 className="bg-slate-100 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                // required
+                required
               >
                 <option value="" disabled>
                   Pilih Type
@@ -508,7 +551,7 @@ export default function FormTambahProperti() {
               htmlFor="peraturan"
               className="block text-sm font-bold text-gray-700 mb-2"
             >
-              Spesifikasi
+              Spesifikasi<span className="text-red-500">*</span>
             </label>
 
             <div className="mb-4 flex items-center">
@@ -518,6 +561,7 @@ export default function FormTambahProperti() {
                 value={spesifikasi}
                 onChange={(e) => setSpesifikasi(e.target.value)}
                 className="bg-slate-100 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                required
               >
                 <option value="" disabled>
                   Pilih Spesifikasi
@@ -565,7 +609,7 @@ export default function FormTambahProperti() {
               htmlFor="fasilitas"
               className="block text-sm font-bold text-gray-700 mb-2"
             >
-              Fasilitas
+              Fasilitas<span className="text-red-500">*</span>
             </label>
 
             <div className="mb-4 flex items-center">
@@ -575,6 +619,7 @@ export default function FormTambahProperti() {
                 value={fasilitas}
                 onChange={(e) => setFasilitas(e.target.value)}
                 className="bg-slate-100 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                required
               >
                 <option value="" disabled>
                   Pilih Fasilitas
@@ -622,7 +667,7 @@ export default function FormTambahProperti() {
               htmlFor="peraturan"
               className="block text-sm font-bold text-gray-700 mb-2"
             >
-              Peraturan
+              Peraturan<span className="text-red-500">*</span>
             </label>
 
             <div className="mb-4 flex items-center">
@@ -632,12 +677,15 @@ export default function FormTambahProperti() {
                 value={peraturan}
                 onChange={(e) => setPeraturan(e.target.value)}
                 className="bg-slate-100 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                required
               >
                 <option value="" disabled>
                   Pilih Peraturan
                 </option>
                 {selectPeraturan.map((peraturan: any) => (
-                  <option key={peraturan.id} value={peraturan.id}>{peraturan.rules_name}</option>
+                  <option key={peraturan.id} value={peraturan.id}>
+                    {peraturan.rules_name}
+                  </option>
                 ))}
               </select>
               {pending ? (
@@ -684,13 +732,26 @@ export default function FormTambahProperti() {
             )}
           </div>
           <div className="fixed bottom-0 w-full max-w-screen-lg p-4 bg-white flex justify-end gap-2">
+            {isLoading ? (
             <button
               type="button"
               onClick={handleSubmit}
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-56"
+              disabled
+            >
+              Loading.....
+            </button>
+
+            ):(
+            <button
+              type="button"
+              onClick={handleSubmit}
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-56"
             >
               Tambah Properti
             </button>
+
+            )}
 
             <Link
               className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-28"
