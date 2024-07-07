@@ -113,11 +113,15 @@ export async function PATCH(request: Request, { params }: { params: { slug: stri
             const promises = key.map(async (e: string) => {
                 if (e === 'thumbnail') {
                     const thumbnail = formData.getAll(e)[0] as any;
-                    const type = thumbnail.type;
-                    const buffer = Buffer.from(await thumbnail.arrayBuffer()).toString('base64');
-                    const dataURI = `data:${type};base64,${buffer}`;
-                    const res = await cloudinary.uploader.upload(dataURI);
-                    data[e] = res.secure_url;
+                    if (typeof thumbnail == "string") {
+                        data[e] = e;
+                    } else {
+                        const type = thumbnail.type;
+                        const buffer = Buffer.from(await thumbnail.arrayBuffer()).toString('base64');
+                        const dataURI = `data:${type};base64,${buffer}`;
+                        const res = await cloudinary.uploader.upload(dataURI);
+                        data[e] = res.secure_url;
+                    }
                 } else {
                     data[e] = formData.getAll(e)[0];
                 }
