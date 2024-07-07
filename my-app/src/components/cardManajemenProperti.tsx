@@ -44,9 +44,9 @@ export default function CardManajemenProperti({ property } : { property : any}) 
         <h2 className="card-title text-2xl text-black font-bold">
           {property?.nama}
         </h2>
-        <p className={`text-black`}>{property?.alamat}</p>
+        <p className={`text-black`}>Email Penyewa : {property?.email}</p>
         <p className={`text-black`}>Kontak Penyewa : {property?.kontak}</p>
-        <p className={`text-black`}>Tanggal Masuk : {property?.tanggalPengajuan}</p>
+        <p className={`text-black`}>Tanggal Masuk : {property?.date.slice(0, 10).split('-').reverse().join('-')}</p>
         <p
           className={`text-black font-bold ${getStatusColor(property?.status)}`}
         >

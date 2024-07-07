@@ -18,11 +18,11 @@ export default function DetailImage({imageBuilding, currentImage , setCurrentIma
                             ? "border-gray-300 dark:border-gray-600"
                             : "border-transparent"
                             }`}
-                        src={image}
+                        src={image.image_url}
                         width={100}
                         height={100}
                         alt={`Product Image ${index + 1}`}
-                        onClick={() => handleImageClick(image)}
+                        onClick={() => handleImageClick(image.image_url)}
                     />
                 </div>
             ))}
@@ -34,7 +34,7 @@ export default function DetailImage({imageBuilding, currentImage , setCurrentIma
                 alt="Product Image"
                 width={1000}
                 height={1000}
-                onClick={() => handleImageClick(imageBuilding?.images[0])}
+                onClick={() => handleImageClick(imageBuilding[0]?.image_url)}
             />
         </div>
     </div>

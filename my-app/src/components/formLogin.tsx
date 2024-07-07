@@ -7,7 +7,6 @@ import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-// import Cookies from "js-cookie";
 
 export default function FormLogin() {
   const pathname = usePathname();
@@ -20,7 +19,8 @@ export default function FormLogin() {
     password: "",
   });
 
-  const handleLogin = async () => {
+  const handleLogin = async (e : any) => {
+    e.preventDefault();
     setIsLoading(true);
     
     const email = formData.email;
@@ -45,7 +45,6 @@ export default function FormLogin() {
     );
     const result = await response.json();
 
-    setIsLoading(false);
 
     if (!response.ok) {
       toast.error("Email / Password salah!", {
@@ -59,7 +58,7 @@ export default function FormLogin() {
         theme: "light",
       });
 
-      return router.push(`/login/pencari?error=${result.message}`);
+      return router.push(pathname === "/login/pencari" ? `/login/pencari?error=${result.message}` : `/login/pemilik?error=${result.message}`);
     }
 
     router.push(pathname === "/login/pencari" ? "/" : "/dashboard-pemilik");
@@ -84,7 +83,7 @@ export default function FormLogin() {
                 : "Login Sebagai Pemilik Kost : "}{" "}
             </h2>
             <div className="flex flex-col items-center">
-              <form action={handleLogin} className="w-full flex-1 mt-8">
+              <form onSubmit={handleLogin} className="w-full flex-1 mt-8">
                 <div className="flex flex-col mb-4">
                   <label className="text-sm text-gray-600" htmlFor="email">
                     Email

@@ -2,6 +2,7 @@
 import { isLoginCek } from "@/app/action";
 import ContentDetailRiwayatPengajuan from "@/components/contentDetailRiwayatPengajuan";
 import Footer from "@/components/footer";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 export default function DetailRiwayatPengajuan({ params }: { params: { slug: string } }) {
@@ -9,6 +10,7 @@ export default function DetailRiwayatPengajuan({ params }: { params: { slug: str
   const [currentImage, setCurrentImage] = useState([]);
   const [images, setImages] = useState([]);
   const [isLogin, setIsLogin] = useState(false);
+  const router = useRouter();
 
   const fetchBookingBuilding = async () => {
     const slug = params.slug;
@@ -17,6 +19,11 @@ export default function DetailRiwayatPengajuan({ params }: { params: { slug: str
       { cache: "no-store" }
     );
     const data = await response.json();
+
+    if(data.message == 'Unauthorzied / Auth timeout') {
+      return router.push('/login/pencari')
+    }
+
     setCurrentImage(data.images[0]);
     setImages(data.images);
     setRiwayatPengajuan(data)

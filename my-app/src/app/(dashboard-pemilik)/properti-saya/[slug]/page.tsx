@@ -1,5 +1,6 @@
 "use client";
 import FormDetailProperti from "@/components/formDetailProperty";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function DetailPropertiPemilik({
@@ -8,25 +9,13 @@ export default function DetailPropertiPemilik({
   params: { slug: string };
 }) {
 
-  const [dataProperty, setDataProperty] = useState({});
 
-  const fetchProperty = async () => {
-    const slug = params.slug;
-    const response = await fetch(
-      process.env.NEXT_PUBLIC_URL_SERVER + `/api/buildings/users/${slug}`,
-      { cache: "no-store" }
-    );
-    const data = await response.json();
-    setDataProperty(data);
-  };
   
-  useEffect(() => {
-    fetchProperty();
-  }, [params.slug]);
+  const { slug } = params
   
   return (
     <>
-      <FormDetailProperti dataProperty={dataProperty}/>
+      <FormDetailProperti slug={slug}/>
     </>
   );
 }

@@ -17,98 +17,54 @@ export default function FormRegister() {
     password: "",
   });
 
+  const [isLoading, setIsloading] = useState(false);
+
   async function handleRegister() {
+    setIsloading(true);
     const { email, telp, password } = formData;
-
-    if (pathname === "/register/pencari") {
-      const response = await fetch(process.env.NEXT_PUBLIC_URL_SERVER + "/api/auth/users/register",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email,
-            telp,
-            password,
-          }),
-        }
-      );
-      const status = await response.json()
-      
-      if(!response.ok){
-        toast.error("User sudah terdaftar!", {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-        return router.push(`/register/pencari?error=${status.message}`);
-      }
-
-      if(response.ok){
-        toast.success('Pendaftaran Berhasil!', {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-      }
-
-      return router.push("/login/pencari");
-    } else {
-      const response = await fetch(process.env.NEXT_PUBLIC_URL_SERVER + "/api/auth/providers/register",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email,
-            telp,
-            password,
-          }),
-        }
-      );
-      const status = await response.json()
-      
-      if(!response.ok){
-        toast.error("User sudah terdaftar!", {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-        return router.push(`/register/pemilik?error=${status.message}`);
-      }
-
-      if(response.ok){
-        toast.success('Pendaftaran Berhasil!', {
-          position: "top-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-      }
-
-      return router.push("/login/pemilik");
+    const isPencari = pathname === "/register/pencari";
+    const registerUrl = process.env.NEXT_PUBLIC_URL_SERVER + (isPencari ? "/api/auth/users/register" : "/api/auth/providers/register");
+    const loginPath = isPencari ? "/login/pencari" : "/login/pemilik";
+    const registerPath = isPencari ? "/register/pencari" : "/register/pemilik";
+  
+    const response = await fetch(registerUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, telp, password }),
+    });
+    
+    const status = await response.json();
+  
+    if (!response.ok) {
+      toast.error("User sudah terdaftar!", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      return router.push(`${registerPath}?error=${status.message}`);
     }
+  
+    if (response.ok) {
+      toast.success("Pendaftaran Berhasil!", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  
+    return router.push(loginPath);
   }
 
   const handleChange = (e: any) => {
@@ -182,12 +138,21 @@ export default function FormRegister() {
                   placeholder="Password Anda"
                 />
               </div>
-              <button
-                className="w-full mt-10 max-w-full font-bold shadow-sm rounded-lg py-3 bg-blue-600 text-white flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline"
-                type="submit"
-              >
-                Daftar
-              </button>
+              {isLoading ? (
+                  <button
+                    type="submit"
+                    className="text-center mt-10 mb-5 w-full max-w-full font-bold shadow-sm rounded-lg py-3 bg-blue-600 text-white flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline"
+                  >
+                    <span className="ml-1 text-white">Loading...</span>
+                  </button>
+                ) : (
+                  <button
+                    className="text-center mt-10 mb-5 w-full max-w-full font-bold shadow-sm rounded-lg py-3 bg-blue-600 text-white flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline"
+                    type="submit"
+                  >
+                    Daftar
+                  </button>
+                )}
             </form>
             <p className="mt-6 text-xs text-gray-600 text-center">
               Sudah Punya Akun?{" "}
