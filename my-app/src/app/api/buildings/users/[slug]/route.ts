@@ -171,7 +171,7 @@ export async function PATCH(request: Request, { params }: { params: { slug: stri
             let attributes = formData.getAll(e) as any
 
             const tableName = e.endsWith('y') ? `Building_${e.slice(0, -1)}ies` : `Building_${e}s`
-            const values = attributes.map((attr: any) => `('${insert.rows[0].id}', '${attr}')`).join(", ");
+            const values = attributes.map((attr: any) => `('${id}', '${attr}')`).join(", ");
 
             const query = `INSERT INTO "${tableName}" (building_id, ${e}_id)
             VALUES ${values};`
@@ -181,7 +181,6 @@ export async function PATCH(request: Request, { params }: { params: { slug: stri
                 await client.query("ROLLBACK")
             }
         })
-
 
         await client.query('COMMIT');
 
