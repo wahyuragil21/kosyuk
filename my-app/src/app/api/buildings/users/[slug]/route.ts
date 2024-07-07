@@ -154,7 +154,7 @@ export async function PATCH(request: Request, { params }: { params: { slug: stri
 
             let queryDelete = `
             DELETE FROM ${tableName}
-            WHERE id = '${id}';
+            WHERE building_id = '${id}';
             `
 
             let deleted = await client.query(queryDelete)
