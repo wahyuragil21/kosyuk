@@ -114,8 +114,6 @@ export async function PATCH(request: Request, { params }: { params: { slug: stri
         if (e === 'thumbnail') {
           const thumbnail = formData.getAll(e)[0] as any;
           if (typeof thumbnail == "string") {
-            console.log(e);
-
             data[e] = thumbnail;
           } else {
             const type = thumbnail.type;
@@ -152,38 +150,52 @@ export async function PATCH(request: Request, { params }: { params: { slug: stri
         `
 
     const update = await client.query(query)
-    if (update.rowCount == 0) {
-      await client.query("ROLLBACK")
+    // if (update.rowCount == 0) {
+    //   await client.query("ROLLBACK")
+    // }
+    const hapus = async () => {
+
+      keyArr.map(async (e) => {
+        const tableName = e.endsWith('y') ? `Building_${e.slice(0, -1)}ies` : `Building_${e}s`
+
+        let queryDelete = `
+              DELETE FROM "${tableName}"
+              WHERE building_id = '${id}';
+              `
+
+        let deleted = await client.query(queryDelete)
+        // if (deleted.rowCount == 0) {
+        //   await client.query("ROLLBACK")
+        // }
+      })
+
     }
+    await hapus()
 
-    keyArr.map(async (e) => {
-      const tableName = e.endsWith('y') ? `Building_${e.slice(0, -1)}ies` : `Building_${e}s`
+    const insert = async () => {
+      keyArr.map(async (e) => {
+        let attributes = formData.getAll(e) as any
 
-      let queryDelete = `
-            DELETE FROM "${tableName}"
-            WHERE building_id = '${id}';
-            `
+        const tableName = e.endsWith('y') ? `Building_${e.slice(0, -1)}ies` : `Building_${e}s`
+        const values = attributes.map((attr: any) => `('${id}', '${attr}')`).join(", ")
+        console.log(tableName);
+        console.log(attributes);
+        console.log(values);
+        if (attributes.length) {
+          const query = `INSERT INTO "${tableName}" (building_id, ${e}_id)
+                VALUES ${values};`
 
-      let deleted = await client.query(queryDelete)
-      if (deleted.rowCount == 0) {
-        await client.query("ROLLBACK")
-      }
-    })
+          let insert = await pool.query(query)
+          console.log(query);
+        }
 
-    keyArr.map(async (e) => {
-      let attributes = formData.getAll(e) as any
+        // if (insert.rowCount == 0) {
+        //   await client.query("ROLLBACK")
+        // }
+      })
+    }
+    await insert()
 
-      const tableName = e.endsWith('y') ? `Building_${e.slice(0, -1)}ies` : `Building_${e}s`
-      const values = attributes.map((attr: any) => `('${id}', '${attr}')`).join(", ")
-
-      const query = `INSERT INTO "${tableName}" (building_id, ${e}_id)
-            VALUES ${values};`
-
-      let insert = await pool.query(query)
-      if (insert.rowCount == 0) {
-        await client.query("ROLLBACK")
-      }
-    })
 
     await client.query('COMMIT');
 
@@ -193,7 +205,7 @@ export async function PATCH(request: Request, { params }: { params: { slug: stri
     return NextResponse.json({ message: "success" }, { status: 201 });
 
   } catch (error) {
-    // console.log(error);
+    console.log(error);
     await client.query('ROLLBACK');
     return NextResponse.json({ error }, { status: 500 })
   } finally {
