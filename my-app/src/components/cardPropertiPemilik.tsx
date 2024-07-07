@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-export default function CardPropertiPemilik({ property }: { property : any}) {
+export default function CardPropertiPemilik({ property, handleDel }: { property : any, handleDel : any }) {
   const getStatusColor = (status: any) => {
     switch (status) {
       case "Tersedia":
@@ -40,7 +40,7 @@ export default function CardPropertiPemilik({ property }: { property : any}) {
               <Link href={`/properti-saya/${property?.slug}`} className="bg-blue-600 text-white py-1 px-3 rounded-lg font-bold hover:bg-blue-500">
                 Detail
               </Link>
-              <button className="bg-red-600 text-white py-1 px-3 rounded-lg font-bold hover:bg-red-500">
+              <button onClick={() =>handleDel(property?.slug)} className="bg-red-600 text-white py-1 px-3 rounded-lg font-bold hover:bg-red-500">
                 Hapus
               </button>
         </div>

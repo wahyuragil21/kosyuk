@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import logo from "../assets/logo.png";
 import Link from "next/link";
 import Image from "next/image";
+import { Logout } from "@/app/action";
 
 export default function Sidebar() { 
   const pathname = usePathname();
@@ -58,17 +59,17 @@ export default function Sidebar() {
               Manajemen Properti
             </a>
           </li>
-          <li>
+          {/* <li>
             <a href="/profil" className={`flex items-center font-bold text-base group mb-1 ${getMenuItemClass(['/profil'])}`}>
               <FaUser className={`w-5 h-5 ${getIconClass(['/profil'])}`} />
               Profil
             </a>
-          </li>
+          </li> */}
           <li>
-            <a href="/logout" className={`flex items-center font-bold text-base group ${getMenuItemClass(['/logout'])}`}>
+            <button onClick={() => Logout()} className={`flex items-center font-bold text-base group ${getMenuItemClass(['/logout'])}`}>
               <IoLogOut className={`w-5 h-5 ${getIconClass(['/logout'])}`} />
               Keluar
-            </a>
+            </button>
           </li>
         </ul>
       </div>

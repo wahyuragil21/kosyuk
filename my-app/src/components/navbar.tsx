@@ -81,10 +81,11 @@ export default function NavbarProduct({
             {pathname !== "/login/pencari" &&
               pathname !== "/login/pemilik" &&
               pathname !== "/register/pencari" &&
-              pathname !== "/register/pemilik" && (
+              pathname !== "/register/pemilik" &&
+              pathname !== "/" && (
                 <form className="mr-5">
                   <input
-                    className="border border-gray-400 bg-white h-10 px-5 pr-16 rounded-lg text-sm focus:border-none"
+                    className="border border-gray-400 bg-white text-black h-10 px-5 pr-16 rounded-lg text-sm focus:border-none"
                     type="search"
                     name="search"
                     placeholder="Masukkan lokasi..."

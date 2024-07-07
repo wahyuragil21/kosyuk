@@ -25,26 +25,18 @@ export default function ContentDetailRiwayatPengajuan({ property, isLogin, image
                   </div>
                 </div>
               </div>
-
-              <span className="font-bold">Spesifikasi :</span>
-              <p className="text-sm mt-2 mb-2 text-justify">
-                {/* {property.spesifikasi.length > 0
-                  ? property.spesifikasi.join(", ")
-                  : "-"} */}
-              </p>
-
               <span className="font-bold">Fasilitas :</span>
               <p className="text-sm mt-2 mb-2 text-justify">
-                {/* {property.fasilitas.length > 0
+                {property.fasilitas.length > 0
                   ? property.fasilitas.join(", ")
-                  : "-"} */}
+                  : "-"}
               </p>
 
               <span className="font-bold">Peraturan :</span>
               <p className="text-sm mt-2 mb-2 text-justify">
-                {/* {property.peraturan.length > 0
+                {property.peraturan.length > 0
                   ? property.peraturan.join(", ")
-                  : "-"} */}
+                  : "-"}
               </p>
               <div>
                 <span className="font-bold">Deskripsi Kost:</span>

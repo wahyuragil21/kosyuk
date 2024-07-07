@@ -5,21 +5,19 @@ import Footer from "@/components/footer";
 import { useEffect, useState } from "react";
 
 export default function KontrakanDetail({ params }: { params: { slug: string } }) {
-
+  
   const [isLogin, setIsLogin] = useState(false);
   const [currentImage, setCurrentImage] = useState([]);
   const [images, setImages] = useState([]);
   const [kontrakan, setKontrakan] = useState([]);
 
-  const getKontrakan = async () => {
+  const fetchKontrakan = async () => {
     const slug = params.slug;
     const response = await fetch(
       process.env.NEXT_PUBLIC_URL_SERVER + `/api/buildings/users/${slug}`,
       { cache: "no-store" }
     );
     const data = await response.json();
-    console.log(data);
-    
     setCurrentImage(data.images[0]);
     setImages(data.images);
     setKontrakan(data)
@@ -27,7 +25,7 @@ export default function KontrakanDetail({ params }: { params: { slug: string } }
 
 
   useEffect(() => {
-    getKontrakan();
+    fetchKontrakan();
     const isLogin = async () => {
       const isLogin = await isLoginCek();
       setIsLogin(isLogin);

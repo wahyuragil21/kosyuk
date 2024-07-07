@@ -1,11 +1,15 @@
 import Link from "next/link";
-import { redirect, usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 import register from "../assets/register.png";
 import { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+
 
 export default function FormRegister() {
   const pathname = usePathname();
+  const router = useRouter();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -33,10 +37,33 @@ export default function FormRegister() {
       const status = await response.json()
       
       if(!response.ok){
-            return redirect(`/register/pencari?error=${status.error}`)
+        toast.error("User sudah terdaftar!", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        return router.push(`/register/pencari?error=${status.message}`);
       }
 
-      return redirect("/login/pencari");
+      if(response.ok){
+        toast.success('Pendaftaran Berhasil!', {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
+
+      return router.push("/login/pencari");
     } else {
       const response = await fetch(process.env.NEXT_PUBLIC_URL_SERVER + "/api/auth/providers/register",
         {
@@ -54,12 +81,34 @@ export default function FormRegister() {
       const status = await response.json()
       
       if(!response.ok){
-            return redirect(`/resgister/pemilik?error=${status.error}`);
+        toast.error("User sudah terdaftar!", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        return router.push(`/register/pemilik?error=${status.message}`);
       }
 
-      return redirect("/login/pemilik");
+      if(response.ok){
+        toast.success('Pendaftaran Berhasil!', {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
+
+      return router.push("/login/pemilik");
     }
-    
   }
 
   const handleChange = (e: any) => {
@@ -71,6 +120,7 @@ export default function FormRegister() {
   };
 
   return (
+    <>
     <div className="bg-gray-100 text-gray-900 flex justify-center">
       <div className="bg-white shadow flex justify-center flex-1">
         <div className="hidden mt-5 mb-10 lg:flex lg:w-1/2 items-center justify-center">
@@ -156,5 +206,7 @@ export default function FormRegister() {
         </div>
       </div>
     </div>
+    <ToastContainer />
+    </>
   );
 }

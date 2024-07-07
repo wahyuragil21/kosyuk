@@ -17,7 +17,6 @@ export default function DetailRiwayatPengajuan({ params }: { params: { slug: str
       { cache: "no-store" }
     );
     const data = await response.json();
-    console.log(data)
     setCurrentImage(data.images[0]);
     setImages(data.images);
     setRiwayatPengajuan(data)

@@ -6,7 +6,10 @@ import { FaTrash } from "react-icons/fa";
 import { FaMinusCircle } from "react-icons/fa";
 import { usePathname, useRouter } from "next/navigation";
 
-export default function FormDetailProperti() {
+export default function FormDetailProperti({dataProperty} : {dataProperty: any}) {
+
+  const [properti, setproperti] = useState(dataProperty);
+  console.log(dataProperty);
   
   
   const router = useRouter();
@@ -36,6 +39,8 @@ export default function FormDetailProperti() {
   const [spesifikasiPreview, setSpesifikasiPreview] = useState<string[]>([]);
   const [imagePreviews, setImagePreviews] = useState(data);
   const [thumbnailPreview, setThumbnailPreview] = useState(null);
+
+  // setForm(dataProperty);
 
   const pathname = usePathname();
 
@@ -68,7 +73,7 @@ export default function FormDetailProperti() {
     }
   };
 
-  const handleAddFasilitas = (e: unknown) => {
+  const handleAddFasilitas = () => {
     if (fasilitas && !fasilitasPreview.includes(fasilitas)) {
       setFasilitasPreview([...fasilitasPreview, fasilitas]);
       setFasilitas("");
@@ -82,7 +87,7 @@ export default function FormDetailProperti() {
     setFasilitasPreview(newFasilitasPreview);
   };
 
-  const handleAddSpesifikasi = (e: unknown) => {
+  const handleAddSpesifikasi = () => {
     if (spesifikasi && !spesifikasiPreview.includes(spesifikasi)) {
       setSpesifikasiPreview([...spesifikasiPreview, spesifikasi]);
       setSpesifikasi("");
@@ -119,7 +124,7 @@ export default function FormDetailProperti() {
     }
   };
 
-  const handleAddPeraturan = (e: unknown) => {
+  const handleAddPeraturan = () => {
     if (peraturan && !peraturanPreview.includes(peraturan)) {
       setPeraturanPreview([...peraturanPreview, peraturan]);
       setPeraturan("");
@@ -238,7 +243,7 @@ export default function FormDetailProperti() {
                 type="text"
                 name="building_name"
                 id="building_name"
-                value={form.namaProperti}
+                value={dataProperty.nama}
                 onChange={handleChange}
                 className="bg-slate-100 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 // required
@@ -256,7 +261,7 @@ export default function FormDetailProperti() {
                 type="text"
                 name="address"
                 id="address"
-                value={form.alamat}
+                value={dataProperty.alamat}
                 onChange={handleChange}
                 className="bg-slate-100 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 // required
@@ -355,7 +360,7 @@ export default function FormDetailProperti() {
                 type="number"
                 name="price"
                 id="price"
-                value={form.price}
+                value={dataProperty.harga}
                 onChange={handleChange}
                 className="bg-slate-100 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 // required
@@ -372,7 +377,7 @@ export default function FormDetailProperti() {
               <textarea
                 name="description"
                 id="description"
-                value={form.deskripsi}
+                value={dataProperty.description}
                 onChange={handleChange}
                 className="bg-slate-100 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline h-[120px]"
                 // required
@@ -411,7 +416,7 @@ export default function FormDetailProperti() {
               <select
                 name="category"
                 id="category"
-                value={form.category}
+                value={dataProperty.kategori}
                 onChange={handleChange}
                 className="bg-slate-100 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 // required
@@ -434,7 +439,7 @@ export default function FormDetailProperti() {
               <select
                 name="type"
                 id="type"
-                value={form.type}
+                value={dataProperty.type}
                 onChange={handleChange}
                 className="bg-slate-100 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 // required
