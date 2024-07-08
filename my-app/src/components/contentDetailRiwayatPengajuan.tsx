@@ -2,6 +2,7 @@ import DetailImage from "./detailImage";
 import { GiRoundStar } from "react-icons/gi";
 
 export default function ContentDetailRiwayatPengajuan({ property, isLogin, images, currentImage, setCurrentImage }: { property : any, isLogin : any, images : any, currentImage : any, setCurrentImage : any }) {
+  
   return (
     <div className="bg-white py-8">
       <div className=" mx-auto px-4 sm:px-6 lg:px-8">
@@ -19,23 +20,27 @@ export default function ContentDetailRiwayatPengajuan({ property, isLogin, image
                     <button className="flex items-center justify-center text-black font-semibold py-0 px-1 mt-1 mb-2 rounded-lg border border-gray-300">
                       {property.type}
                     </button>
-                    <GiRoundStar className={`m-2 w-4 h-4 text-orange-500`} />{" "}
-                    <span className="text-orange-500 mr-2">0</span>{" "}
+                    <GiRoundStar className={`m-2 w-4 h-4 text-blue-500`} />{" "}
+                    <span className="text-blue-500 mr-2">0</span>{" "}
                     <span>{property.alamat}</span>
                   </div>
                 </div>
               </div>
               <span className="font-bold">Fasilitas :</span>
               <p className="text-sm mt-2 mb-2 text-justify">
-                {property.fasilitas.length > 0
-                  ? property.fasilitas.join(", ")
+              {property.fasilitas?.length > 0
+                  ? property.fasilitas
+                      .map((fasilitas: any) => fasilitas.facility_name)
+                      .join(", ")
                   : "-"}
               </p>
 
               <span className="font-bold">Peraturan :</span>
               <p className="text-sm mt-2 mb-2 text-justify">
-                {property.peraturan.length > 0
-                  ? property.peraturan.join(", ")
+              {property.peraturan?.length > 0
+                  ? property.peraturan
+                      .map((peraturan: any) => peraturan.rules_name)
+                      .join(", ")
                   : "-"}
               </p>
               <div>

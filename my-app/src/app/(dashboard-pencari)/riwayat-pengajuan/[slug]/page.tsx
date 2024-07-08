@@ -2,7 +2,7 @@
 import { isLoginCek } from "@/app/action";
 import ContentDetailRiwayatPengajuan from "@/components/contentDetailRiwayatPengajuan";
 import Footer from "@/components/footer";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function DetailRiwayatPengajuan({ params }: { params: { slug: string } }) {
@@ -19,12 +19,14 @@ export default function DetailRiwayatPengajuan({ params }: { params: { slug: str
       { cache: "no-store" }
     );
     const data = await response.json();
+    console.log(data);
+    
 
     if(data.message == 'Unauthorzied / Auth timeout') {
       return router.push('/login/pencari')
     }
 
-    setCurrentImage(data.images[0]);
+    setCurrentImage(data.images[0].image_url);
     setImages(data.images);
     setRiwayatPengajuan(data)
   };
