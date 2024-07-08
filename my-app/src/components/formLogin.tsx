@@ -3,7 +3,7 @@ import Link from "next/link";
 import login from "../assets/login.png";
 import Image from "next/image";
 import { redirect, usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -19,8 +19,12 @@ export default function FormLogin() {
     password: "",
   });
 
-  const urlLocalStorage = localStorage.getItem('pathname');
-  console.log(urlLocalStorage);
+  // const urlLocalStorage = localStorage.getItem('pathname');
+  const string : any = ""
+  const [urlLocalStorage, setUrlLocalStorage] = useState(string)
+  useEffect(()=>{
+    setUrlLocalStorage(localStorage.getItem('pathname'))
+  },[])
   
 
   const handleLogin = async (e : any) => {

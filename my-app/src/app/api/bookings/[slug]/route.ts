@@ -49,11 +49,31 @@ export async function GET(request: Request, { params }: { params: { slug: string
         bk.date,
         b.amount,
         ${queryPhone}
-        COALESCE(json_agg(DISTINCT i.image_url) FILTER (WHERE i.id IS NOT NULL), '[]') AS images,
-        COALESCE(json_agg(DISTINCT f.facility_name) FILTER (WHERE f.id IS NOT NULL), '[]') AS facilities,
+          COALESCE(
+    jsonb_agg(
+      DISTINCT jsonb_build_object('id', i.id, 'image_url', i.image_url)
+    ) FILTER (WHERE i.id IS NOT NULL), 
+    '[]'::jsonb
+  ) AS images,
+        COALESCE(
+    jsonb_agg(
+      DISTINCT jsonb_build_object('id', f.id, 'facility_name', f.facility_name)
+    ) FILTER (WHERE f.id IS NOT NULL), 
+    '[]'::jsonb
+  ) AS facilities,
         COALESCE(json_agg(DISTINCT bk.status) FILTER (WHERE bk.id IS NOT NULL), '[]') AS bookings,
-        COALESCE(json_agg(DISTINCT r.rules_name) FILTER (WHERE r.id IS NOT NULL), '[]') AS rules,
-        COALESCE(json_agg(DISTINCT s.specification_name) FILTER (WHERE s.id IS NOT NULL), '[]') AS specifications
+          COALESCE(
+    jsonb_agg(
+      DISTINCT jsonb_build_object('id', r.id, 'rules_name', r.rules_name)
+    ) FILTER (WHERE r.id IS NOT NULL), 
+    '[]'::jsonb
+  ) AS rules,
+       COALESCE(
+    jsonb_agg(
+      DISTINCT jsonb_build_object('id', s.id, 'specification_name', s.specification_name)
+    ) FILTER (WHERE s.id IS NOT NULL), 
+    '[]'::jsonb
+  ) AS specifications
       FROM 
         "Buildings" b
       LEFT JOIN 
