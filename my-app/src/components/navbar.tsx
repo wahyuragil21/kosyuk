@@ -133,6 +133,7 @@ export default function NavbarProduct({
               {isLogin ? (
 
                 <button onClick={() => {
+                  localStorage.removeItem('pathname')
                   Logout()
                 }} className="hover:text-blue-700 font-bold">
                  Keluar
