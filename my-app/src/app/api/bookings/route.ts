@@ -90,7 +90,13 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
     return NextResponse.json(error)
   }
 }
-
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: "dzakii8@gmail.com",
+    pass: "rytn fylw mddm auhb",
+  },
+});
 export async function POST(request: Request) {
   const user_id = request.headers.get('user_id')
   const user_email = request.headers.get('user_email')
@@ -115,43 +121,38 @@ export async function POST(request: Request) {
   const provider_email = rows[0].email
   const building_name = rows[0].building_name
   const provider_id = rows[0].provider_id
-  const insert = await pool.query(query, [user_id, provider_id, building_id, duration, 'PENDING', 'book-' + makeSlug(5), date])
+  const insert = await pool.query(query, [user_id, provider_id, building_id, duration, 'Menunggu', 'book-' + makeSlug(5), date])
 
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: "dzakii8@gmail.com",
-      pass: "rytn fylw mddm auhb",
-    },
-  });
   const info = await transporter.sendMail({
-    from: 'Kosyuk', // sender address
+    from: 'Serloc Aja', // sender address
     to: user_email, // list of receivers
-    subject: "Kosyuk Pemberitahuan Booking", // Subject line
+    subject: "Pemberitahuan Booking", // Subject line
     text: "", // plain text body
-    html: `<body>
-    <h2>Pemberitahuan Booking</h2>
+    html: `<body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+    <h2 style="color: #0056b3;">Pemberitahuan Booking</h2>
     <p>Terima kasih telah melakukan booking dengan kami.</p>
     <p>Booking ID: <strong>${insert.rows[0].slug}</strong></p>
     <p>Nama Kost/ Kontrakan: <strong>${building_name}</strong></p>
     <p>Kami akan segera mengkonfirmasi reservasi Anda. Mohon menunggu konfirmasi lebih lanjut dari kami.</p>
     <br>
-    <p>Terima kasih.</p>
+    <p>Terima kasih telah menggunakan layanan kami.</p>
+    <p><strong>Serlok Aja</strong></p>
     </body>`
   });
 
   const infoProvider = await transporter.sendMail({
-    from: 'Kosyuk', // sender address
+    from: 'Serloc Aja', // sender address
     to: provider_email, // list of receivers
-    subject: "Kosyuk Confirmation Booking", // Subject line
+    subject: "Confirmation Booking", // Subject line
     text: "", // plain text body
-    html: `<body>
-    <h2>Konfirmasi Pesanan Kost</h2>
+    html: `<body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+    <h2 style="color: #0056b3;">Konfirmasi Pesanan Kost</h2>
     <p>Ada pesanan kost yang perlu dikonfirmasi:</p>
     <p>Nama Kost/ Kontrakan: <strong>${building_name}</strong></p>
     <p>Silakan segera konfirmasi pesanan ini.</p>
     <br>
-    <p>Terima kasih.</p>
+    <p>Terima kasih telah menggunakan layanan kami.</p>
+    <p><strong>Serlok Aja</strong></p>
     </body>`
   });
   return NextResponse.json({ message: `Email terkait detail pesanan telah dikirimkan ke ${user_email}`, bookingId: insert.rows[0].slug }, { status: 201 })
@@ -169,17 +170,19 @@ export async function PATCH(request: Request) {
     }
 
     const { slug, status, nama, rekening, catatan } = await request.json();
-    const { rows: [{ building_id, status: statusBook }] } = await client.query('SELECT * FROM "Bookings" WHERE slug = $1', [slug]);
-    console.log(building_id);
+    const { rows: [{ building_id, status: statusBook, user_id }] } = await client.query('SELECT * FROM "Bookings" WHERE slug = $1', [slug]);
+    const { rows: [{ email }] } = await client.query('SELECT * FROM "Users" WHERE id = $1', [user_id]);
+
+    console.log(email);
 
 
     const queryAmount = `
-      SELECT b.amount
+      SELECT b.amount, b.building_name
       FROM "Buildings" b
       LEFT JOIN "Bookings" bk ON bk.building_id = b.id
       WHERE b.id = $1
     `;
-    const { rows: [{ amount }] } = await client.query(queryAmount, [building_id]);
+    const { rows: [{ amount, building_name }] } = await client.query(queryAmount, [building_id]);
 
     if (statusBook === "Disetujui" && status === "Disetujui") {
       return NextResponse.json({ message: 'pesanan telah diterima' }, { status: 400 });
@@ -188,7 +191,6 @@ export async function PATCH(request: Request) {
     if (amount < 1 && status === "Disetujui") {
       return NextResponse.json({ message: 'tidak dapat menerima karena sudah penuh' }, { status: 400 });
     }
-
 
     await client.query('BEGIN');
 
@@ -205,8 +207,26 @@ export async function PATCH(request: Request) {
 
     await client.query('COMMIT');
 
-    let message = `Pesanan ${slug} `;
+    if (status == "Disetujui") {
+      const infoProvider = await transporter.sendMail({
+        from: 'Serlok Aja', // sender address
+        to: email, // list of receivers
+        subject: "Pemberitahuan Booking", // Subject line
+        text: "", // plain text body
+        html: `<body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+          <h2 style="color: #0056b3;">Pesanan Ruko/Kontrakan Anda Telah Disetujui!</h2>
+          <p>Nama Ruko/Kontrakan: <strong>${building_name}</strong></p>
+          <p>Nomor Rekening: <strong>${rekening}</strong></p>
+          <p>Atas Nama: <strong>${nama}</strong></p>
+          <p>Catatan: ${catatan}</p>
+          <p>Silakan lanjutkan pembayaran ke rekening di atas untuk menyelesaikan proses booking Anda.</p>
+          <br>
+          <p>Terima kasih telah menggunakan layanan kami.</p>
+          <p><strong>Serlok Aja</strong></p>`
+      });
 
+    }
+    let message = `Pesanan ${slug} `;
     switch (status) {
       case "Disetujui":
         message += 'disetujui';
