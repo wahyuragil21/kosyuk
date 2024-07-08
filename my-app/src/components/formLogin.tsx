@@ -72,6 +72,7 @@ export default function FormLogin() {
     if (urlLocalStorage){
       router.push(urlLocalStorage);
       localStorage.removeItem('pathname');
+      router.refresh();
       return;
     }else{
       router.push(pathname === "/login/pencari" ? "/" : "/dashboard-pemilik");
